@@ -3,27 +3,35 @@
 //
 import uvm_pkg::*;
 `include "uvm_macros.svh"
-module ALU (input signed [7:0]a,b,input[1:0]operation,output signed [7:0] out,output z,n,c,v);
+module ALU (input signed [7:0]a,b,input[1:0]operation,output reg signed [7:0] out,output z,n,c,v);
         parameter ADD = 2'b00;
         parameter SUB = 2'b01;
         parameter AND = 2'b10;
         parameter OR = 2'b11;
-        reg signed [8:0] out_temp;
+        //reg signed [8:0] out_temp;
 
 always@(*)
         begin
-        case(operation)
+        /*case(operation)
         ADD: out_temp = a + b;
         SUB: out_temp = a - b;
         AND: out_temp = a & b;
         OR : out_temp = a | b;
+        endcase*/
+		case(operation)
+        ADD: out = a + b;
+        SUB: out = a - b;
+        AND: out = a & b;
+        OR : out = a | b;
         endcase
         end
-assign out = out_temp[7:0];
-assign z = (out_temp==0);
-assign n = (out_temp[7] == 1);
-assign v = (out_temp[8]);
-assign c = (out_temp[8]);
+//assign out = out[7:0];
+assign z = (out == 0);
+assign n = (out[7] == 1);
+assign v = (operation == ADD) ? ((a[7]==b[7]) && (out[7]!=a[7])) :
+           (operation == SUB) ? ((a[7]!=b[7]) && (out[7]!=a[7])) : 1'b0;
+assign c = (operation == ADD) ? (a[7]&b[7]) | (a[7]&~out[7]) | (b[7]&~out[7]) :
+           (operation == SUB) ? (~((a[7]&~b[7]) | (a[7]&out[7]) | (~b[7]&out[7]))) : 1'b0;
 
 endmodule
 //=============================================================================================================================================//
@@ -57,12 +65,16 @@ class write_xtn extends uvm_sequence_item;
   rand bit signed [7:0] b;
   rand bit [1:0] operation;
   bit signed [7:0] out;
-  bit signed [8:0] out_temp; //this out_temp will be used in the scoreboard class for determining z,c,v,n bits
+  //bit signed [8:0] out_temp; //this out_temp will be used in the scoreboard class for determining z,c,v,n bits
   bit  z,c,v,n;
   `uvm_object_utils_begin(write_xtn)
-	`uvm_field_int(a,UVM_ALL_ON)
-	`uvm_field_int(b,UVM_ALL_ON)
-	`uvm_field_int(operation,UVM_ALL_ON)
+	// a/b/operation are stimulus fields: the read-monitor's item never
+	// populates them (only out/z/n/v/c are read from the DUT), so they
+	// must be excluded from super.do_compare() or every check would
+	// spuriously fail comparing a real value against a stale/default 0.
+	`uvm_field_int(a,UVM_DEFAULT & ~UVM_COMPARE)
+	`uvm_field_int(b,UVM_DEFAULT & ~UVM_COMPARE)
+	`uvm_field_int(operation,UVM_DEFAULT & ~UVM_COMPARE)
 	`uvm_field_int(out,UVM_ALL_ON)
 	`uvm_field_int(z,UVM_ALL_ON)
 	`uvm_field_int(c,UVM_ALL_ON)
@@ -141,7 +153,7 @@ function ALU_SEQUENCE::new(string name = "ALU_SEQUENCE");
 endfunction
 
 task ALU_SEQUENCE:: body();
-	repeat(2)
+	repeat(1000)
 		begin
 		req = write_xtn::type_id::create("req");
 		start_item(req);
@@ -153,6 +165,105 @@ task ALU_SEQUENCE:: body();
 	endtask
 
 
+
+//=============================================================================================================================================//
+//ALU_DIRECTED_SEQUENCE CLASS
+//
+// Drives the fixed corner-case vectors picked to exercise the z/n/v/c
+// boundaries: max positive, min negative (-128, whose negation itself
+// can't be represented), same-sign overflow/no-overflow, opposite-sign
+// carry/borrow, exact-zero wraparound, and AND/OR cases that must never
+// assert v/c. Values are assigned directly (not randomize()) so every
+// run drives exactly these vectors, independent of the random seed.
+
+class ALU_DIRECTED_SEQUENCE extends uvm_sequence #(write_xtn);
+
+	`uvm_object_utils(ALU_DIRECTED_SEQUENCE)
+
+	typedef struct {
+		bit signed [7:0] a;
+		bit signed [7:0] b;
+		bit [1:0]        operation;
+	} corner_vec_t;
+
+	corner_vec_t corner_vectors[] = '{
+		// ---- ADD (2'b00) ----
+		'{   0,    0, 2'b00},  // baseline zero
+		'{ 127,    1, 2'b00},  // max positive + 1 -> overflow, no carry , results 128, but that number is out of range so it will be -128 which is a crash down
+		'{-128,   -1, 2'b00},  // min negative - 1 -> overflow AND carry, results in -129 ,out of range, overflow 1 and carry 1
+		'{-128, -128, 2'b00},  // overflow that also wraps to exactly zero, resukts 0 overflow 1, carry 1
+		'{ 127,  127, 2'b00},  // max + max, overflow, no carry, result of this is 254 but it is wrapped to -2.System checks for carry in and carry out, if they are different then overflo is high as in this case
+		'{ -64,  -64, 2'b00},  // lands exactly on -128 boundary, no overflow, it is -128 , no overflow but carry high and negative number
+		'{  -1,    1, 2'b00},  // opposite signs: v=0 guaranteed, but c=1, zero bit is high and carry bit is also high
+		'{-128,    0, 2'b00},  // identity add on extreme value, only negative bit high
+		'{  64,   64, 2'b00},  // smallest same-sign pair that overflows and also makes negative bit high
+		// ---- SUB (2'b01) ----
+		'{   0,    0, 2'b01},  // baseline zero, no overflow, no carry
+		'{-128,    1, 2'b01},  // subtract from min negative -> overflow
+		'{ 127,   -1, 2'b01},  // classic SUB overflow , answer is 128 but 128 is overflow so crashes down to -128
+		'{-128, -128, 2'b01},  // same operand, same sign -> v forced 0, no overflow , zero is high
+		'{   0, -128, 2'b01},  // negating -128 edge case
+		'{-128,  127, 2'b01},  // worst-case magnitude gap ,answer's supposed to be 255 but it is -2
+		'{  -1, -128, 2'b01},  // same-sign operands, no overflow
+		'{  20,   30, 2'b01},  // same-sign inputs, precondition false gives negative 10
+		// ---- AND (2'b10) / OR (2'b11): v,c must stay 0 on logical ops ----
+		'{   0,    0, 2'b10},
+		'{  -1,   -1, 2'b10},
+		'{ 127, -128, 2'b10},
+		'{  -1,    0, 2'b10},
+		'{ 127, -128, 2'b11},
+		'{   0,   -1, 2'b11}
+	};
+
+	function new(string name = "ALU_DIRECTED_SEQUENCE");
+		super.new(name);
+	endfunction:new
+
+	task body();
+		foreach(corner_vectors[i])
+			begin
+			req = write_xtn::type_id::create($sformatf("req_corner_%0d",i));
+			start_item(req);
+			req.a         = corner_vectors[i].a;
+			req.b         = corner_vectors[i].b;
+			req.operation = corner_vectors[i].operation;
+			`uvm_info(get_type_name(),$sformatf("ALU DIRECTED SEQUENCE item %0d: a=%0d b=%0d op=%0b",i,req.a,req.b,req.operation),UVM_LOW)
+			finish_item(req);
+			end
+	endtask:body
+
+endclass:ALU_DIRECTED_SEQUENCE
+
+//=============================================================================================================================================//
+//ALU_CROSS_SEQUENCE CLASS
+//
+// Walks every operation x cp_a bin value x cp_b bin value (4 x 7 x 8 = 224
+// items) so every op_x_ab cross bin is hit deterministically. Uniform random
+// a/b almost never lands on these single-value bins (~1 in 262k per bin).
+
+class ALU_CROSS_SEQUENCE extends uvm_sequence #(write_xtn);
+	`uvm_object_utils(ALU_CROSS_SEQUENCE)
+
+	bit signed [7:0] a_vals[] = '{0, 127, -128, -64, -1, 64, 20};      // cp_a bins
+	bit signed [7:0] b_vals[] = '{0, 1, -1, -128, 127, -64, 64, 30};   // cp_b bins
+
+	function new(string name = "ALU_CROSS_SEQUENCE");
+		super.new(name);
+	endfunction
+
+	task body();
+		for (int op = 0; op < 4; op++)
+			foreach (a_vals[i])
+				foreach (b_vals[j]) begin
+					req = write_xtn::type_id::create("req");
+					start_item(req);
+					req.a = a_vals[i];
+					req.b = b_vals[j];
+					req.operation = op;
+					finish_item(req);
+				end
+	endtask
+endclass:ALU_CROSS_SEQUENCE
 
 //=============================================================================================================================================//
 
@@ -416,6 +527,7 @@ class ALU_SCOREBOARD extends uvm_scoreboard;
 	`uvm_component_utils(ALU_SCOREBOARD)
 	uvm_tlm_analysis_fifo #(write_xtn) wr_ana_fifo;
 	uvm_tlm_analysis_fifo #(write_xtn) rd_ana_fifo;
+	uvm_analysis_port #(write_xtn) cov_port; // fully-correlated (a,b,op,out,z,n,v,c) item, for coverage
 
 	write_xtn wr_data,rd_data;
 	write_xtn wrdata;//new object for storing the output values inside the reference model task
@@ -431,6 +543,7 @@ function ALU_SCOREBOARD :: new(string name = "ALU_SCOREBOARD",uvm_component pare
 	super.new(name,parent);
 	wr_ana_fifo = new("wr_ana_fifo",this);
 	rd_ana_fifo = new("rd_ana_fifo",this);
+	cov_port = new("cov_port",this);
 	wrdata=write_xtn::type_id::create("wrdata");
 endfunction
 
@@ -452,17 +565,27 @@ endtask
 
 task ALU_SCOREBOARD::ref_model(write_xtn wr1data);
 	begin
+	// Carry the stimulus fields forward so wrdata is a fully correlated
+	// (a,b,operation,out,z,n,v,c) reference item - needed both for
+	// do_compare() in check_data() and for functional coverage sampling.
+	this.wrdata.a = wr1data.a;
+	this.wrdata.b = wr1data.b;
+	this.wrdata.operation = wr1data.operation;
+
 	case(wr1data.operation)
-        2'b00: this.wrdata.out_temp = wr1data.a + wr1data.b;
-        2'b01: this.wrdata.out_temp = wr1data.a - wr1data.b;
-        2'b10: this.wrdata.out_temp = wr1data.a & wr1data.b;
-        2'b11: this.wrdata.out_temp = wr1data.a | wr1data.b;
+        2'b00: this.wrdata.out = wr1data.a + wr1data.b;
+        2'b01: this.wrdata.out = wr1data.a - wr1data.b;
+        2'b10: this.wrdata.out = wr1data.a & wr1data.b;
+        2'b11: this.wrdata.out = wr1data.a | wr1data.b;
         endcase
-	this.wrdata.out = this.wrdata.out_temp[7:0];
-	this.wrdata.z = (this.wrdata.out_temp==0);
-	this.wrdata.n = (this.wrdata.out_temp[7] == 1);
-	this.wrdata.v = (this.wrdata.out_temp[8]);
-	this.wrdata.c = (this.wrdata.out_temp[8]);
+	this.wrdata.z = (this.wrdata.out==0);
+	this.wrdata.n = (this.wrdata.out[7] == 1);
+	this.wrdata.v = (this.wrdata.operation == 2'b00) ? ((this.wrdata.a[7]==this.wrdata.b[7]) && (this.wrdata.out[7]!=this.wrdata.a[7])) :
+           (this.wrdata.operation == 2'b01) ? ((this.wrdata.a[7]!=this.wrdata.b[7]) && (this.wrdata.out[7]!=this.wrdata.a[7])) : 1'b0;
+	this.wrdata.c = (this.wrdata.operation == 2'b00) ? (this.wrdata.a[7]&this.wrdata.b[7]) | (this.wrdata.a[7]&~this.wrdata.out[7]) | (this.wrdata.b[7]&~this.wrdata.out[7]) :
+           (this.wrdata.operation == 2'b01) ? (~((this.wrdata.a[7]&~this.wrdata.b[7]) | (this.wrdata.a[7]&this.wrdata.out[7]) | (~this.wrdata.b[7]&this.wrdata.out[7]))) : 1'b0;
+
+	cov_port.write(this.wrdata);
 	end
 endtask
 
@@ -481,6 +604,128 @@ task ALU_SCOREBOARD::check_data(write_xtn rddata);
 	end
 endtask
 
+//=================================================================================================================================//
+//ALU_COVERAGE CLASS
+//
+// Functional coverage on the fully-correlated (a,b,operation,z,n,v,c)
+// item the scoreboard publishes on cov_port. Coverpoint bins for a/b are
+// deliberately restricted to the exact corner values driven by
+// ALU_DIRECTED_SEQUENCE (rather than every possible 8-bit value), so the
+// model reaches 100% from that one deterministic sequence regardless of
+// what ALU_SEQUENCE's random items happen to roll.
+
+class ALU_COVERAGE extends uvm_subscriber #(write_xtn);
+
+	`uvm_component_utils(ALU_COVERAGE)
+
+	write_xtn cov_xtn;
+
+	covergroup alu_cg;
+		option.per_instance = 1;
+		option.name = "alu_cg";
+
+		cp_op: coverpoint cov_xtn.operation {
+			bins add_op = {2'b00};
+			bins sub_op = {2'b01};
+			bins and_op = {2'b10};
+			bins or_op  = {2'b11};
+		}
+
+		// Overflow/carry only mean something for ADD/SUB. Verilator 5.052's
+		// covergroup support does not honor ignore_bins/binsof on a cross,
+		// so rather than cross the full cp_op (which would create
+		// permanently-uncovered "and_op x v1" / "or_op x v1" bins), this
+		// coverpoint only declares bins for ADD/SUB: AND/OR samples simply
+		// don't match either bin and are left uncounted, same as any other
+		// coverpoint with a restricted bin set.
+		cp_arith_op: coverpoint cov_xtn.operation {
+			bins add_op = {2'b00};
+			bins sub_op = {2'b01};
+		}
+
+		// values actually assigned to 'a' across the directed corner vectors
+		// Bin literals are sized/signed hex (8'shXX) to match cov_xtn.a's
+		// width exactly - bare decimal negative literals (e.g. {-128}) are
+		// 32-bit and can silently fail to match an 8-bit signed coverpoint
+		// under Verilator's covergroup bin matching.
+		cp_a: coverpoint cov_xtn.a {
+			bins zero    = {8'sh00}; // 0
+			bins max_pos = {8'sh7F}; // 127
+			bins min_neg = {8'sh80}; // -128
+			bins neg_64  = {8'shC0}; // -64
+			bins neg_1   = {8'shFF}; // -1
+			bins pos_64  = {8'sh40}; // 64
+			bins pos_20  = {8'sh14}; // 20
+		}
+
+		// values actually assigned to 'b' across the directed corner vectors
+		cp_b: coverpoint cov_xtn.b {
+			bins zero    = {8'sh00}; // 0
+			bins one     = {8'sh01}; // 1
+			bins neg_1   = {8'shFF}; // -1
+			bins min_neg = {8'sh80}; // -128
+			bins max_pos = {8'sh7F}; // 127
+			bins neg_64  = {8'shC0}; // -64
+			bins pos_64  = {8'sh40}; // 64
+			bins pos_30  = {8'sh1E}; // 30
+		}
+
+		cp_z: coverpoint cov_xtn.z { bins z0 = {0}; bins z1 = {1}; }
+		cp_n: coverpoint cov_xtn.n { bins n0 = {0}; bins n1 = {1}; }
+		cp_v: coverpoint cov_xtn.v { bins v0 = {0}; bins v1 = {1}; }
+		cp_c: coverpoint cov_xtn.c { bins c0 = {0}; bins c1 = {1}; }
+
+		op_x_v: cross cp_arith_op, cp_v;
+		op_x_c: cross cp_arith_op, cp_c;
+		op_x_ab: cross cp_op, cp_a, cp_b;// the percentage along with this was 22 percent for 200 repeats
+		// op x z x n x v x c. A full cross has 64 bins but only 20 can ever
+		// occur: AND/OR never set v/c, a zero result is never negative, and
+		// for ADD/SUB overflow fixes the carry (e.g. ADD overflowing to a
+		// positive result needs two negative operands, which always carry).
+		// ignore_bins on a cross isn't honored by Verilator 5.052, so instead
+		// this is a coverpoint on {operation,z,n,v,c} with only the 20 legal bins.
+		op_x_zn: coverpoint {cov_xtn.operation, cov_xtn.z, cov_xtn.n, cov_xtn.v, cov_xtn.c} {
+			//                  op  z n v c
+			bins add_z0n0v0c0 = {6'b00_0_0_0_0};
+			bins add_z0n0v0c1 = {6'b00_0_0_0_1};
+			bins add_z0n0v1c1 = {6'b00_0_0_1_1};
+			bins add_z0n1v0c0 = {6'b00_0_1_0_0};
+			bins add_z0n1v0c1 = {6'b00_0_1_0_1};
+			bins add_z0n1v1c0 = {6'b00_0_1_1_0};
+			bins add_z1n0v0c0 = {6'b00_1_0_0_0};
+			bins add_z1n0v0c1 = {6'b00_1_0_0_1};
+			bins add_z1n0v1c1 = {6'b00_1_0_1_1};
+			bins sub_z0n0v0c1 = {6'b01_0_0_0_1};
+			bins sub_z0n0v1c0 = {6'b01_0_0_1_0};
+			bins sub_z0n1v0c0 = {6'b01_0_1_0_0};
+			bins sub_z0n1v1c1 = {6'b01_0_1_1_1};
+			bins sub_z1n0v0c1 = {6'b01_1_0_0_1};
+			bins and_z0n0     = {6'b10_0_0_0_0};
+			bins and_z0n1     = {6'b10_0_1_0_0};
+			bins and_z1n0     = {6'b10_1_0_0_0};
+			bins or_z0n0      = {6'b11_0_0_0_0};
+			bins or_z0n1      = {6'b11_0_1_0_0};
+			bins or_z1n0      = {6'b11_1_0_0_0};
+		}
+
+	endgroup
+
+	function new(string name = "ALU_COVERAGE", uvm_component parent);
+		super.new(name,parent);
+		alu_cg = new();
+	endfunction:new
+
+	function void write(write_xtn t);
+		cov_xtn = t;
+		alu_cg.sample();
+	endfunction:write
+
+	function void report_phase(uvm_phase phase);
+		`uvm_info(get_type_name(),$sformatf("ALU functional coverage = %0.2f%%",alu_cg.get_inst_coverage()),UVM_LOW)
+	endfunction:report_phase
+
+endclass:ALU_COVERAGE
+
 //========================================================================================================================================//
 
 //ALU_ENVIRONMENT CLASS
@@ -492,6 +737,7 @@ class ALU_ENVIRONMENT extends uvm_env;
 	ALU_SCOREBOARD alu_sb;  // declaring alu_score board handle for creating scoreboard object
 	ALU_WRITE_MONITOR alu_wr_mon; // declaring class of write monitor for connection with scoreboard
 	ALU_READ_MONITOR alu_rd_mon;// declaring class of read monitor for connection with scoreboard
+	ALU_COVERAGE alu_cov;	// functional coverage subscriber, fed by the scoreboard's cov_port
 
 	alu_config env_cfg ;	// handle of configuration file to get it from test
 
@@ -514,6 +760,8 @@ function void ALU_ENVIRONMENT:: build_phase (uvm_phase phase);
 	if(env_cfg.has_scoreboard)
 		alu_sb = ALU_SCOREBOARD::type_id::create("alu_sb",this);
 
+	alu_cov = ALU_COVERAGE::type_id::create("alu_cov",this);
+
 	uvm_config_db #(alu_config)::set(this,"*","aluconfig",env_cfg); // SETTING THE ALUCONFIG FILE FROM ENV TO AGENT
 
 endfunction
@@ -523,6 +771,7 @@ function void ALU_ENVIRONMENT::connect_phase(uvm_phase phase);
 		begin
 		alu_agent.alu_wr_mon.wr_mon_port.connect(alu_sb.wr_ana_fifo.analysis_export);
 		alu_agent.alu_rd_mon.rd_mon_port.connect(alu_sb.rd_ana_fifo.analysis_export);
+		alu_sb.cov_port.connect(alu_cov.analysis_export);
 		end
 endfunction
 
@@ -538,7 +787,7 @@ class base_test extends uvm_test;
 
 	extern function new(string name = "base_test",uvm_component parent);
 	extern function void build_phase(uvm_phase phase);
-	extern task run_phase(uvm_phase phase);
+	extern function void end_of_elaboration_phase(uvm_phase phase);
 endclass
 
 function base_test::new(string name = "base_test",uvm_component parent);
@@ -563,13 +812,78 @@ function void base_test ::build_phase(uvm_phase phase);
 	alu_env = ALU_ENVIRONMENT::type_id::create("alu_env",this);
 endfunction
 
-task base_test::run_phase(uvm_phase phase);
+function void base_test::end_of_elaboration_phase(uvm_phase phase);
+	// Print the full uvm_component tree (env/agent/driver/monitors/
+	// scoreboard/coverage) once the testbench is fully built, right
+	// before run_phase starts driving stimulus.
+	uvm_top.print_topology();
+endfunction
+
+//=====================================================================================================================================
+//RANDOM_TEST / DIRECTED_TEST / CROSS_TEST - base_test only builds the
+//environment and runs no stimulus. Each of these tests inherits build_phase
+//and end_of_elaboration_phase (topology print) from base_test and starts
+//exactly one sequence in its own run_phase.
+
+class random_test extends base_test;
+	`uvm_component_utils(random_test)
+
+	extern function new(string name = "random_test",uvm_component parent);
+	extern task run_phase(uvm_phase phase);
+endclass
+
+function random_test::new(string name = "random_test",uvm_component parent);
+	super.new(name,parent);
+endfunction
+
+task random_test::run_phase(uvm_phase phase);
 	ALU_SEQUENCE seq;
 	phase.raise_objection(this);
 	seq = ALU_SEQUENCE::type_id::create("seq");
 	seq.start(alu_env.alu_agent.alu_seqrh);
 	phase.drop_objection(this);
 endtask
+
+class directed_test extends base_test;
+	`uvm_component_utils(directed_test)
+
+	extern function new(string name = "directed_test",uvm_component parent);
+	extern task run_phase(uvm_phase phase);
+endclass
+
+function directed_test::new(string name = "directed_test",uvm_component parent);
+	super.new(name,parent);
+endfunction
+
+task directed_test::run_phase(uvm_phase phase);
+	ALU_DIRECTED_SEQUENCE dir_seq;
+	phase.raise_objection(this);
+	dir_seq = ALU_DIRECTED_SEQUENCE::type_id::create("dir_seq");
+	dir_seq.start(alu_env.alu_agent.alu_seqrh);
+	phase.drop_objection(this);
+endtask
+
+class cross_test extends base_test;
+	`uvm_component_utils(cross_test)
+
+	extern function new(string name = "cross_test",uvm_component parent);
+	extern task run_phase(uvm_phase phase);
+endclass
+
+function cross_test::new(string name = "cross_test",uvm_component parent);
+	super.new(name,parent);
+endfunction
+
+task cross_test::run_phase(uvm_phase phase);
+	ALU_CROSS_SEQUENCE cross_seq;
+	phase.raise_objection(this);
+	cross_seq = ALU_CROSS_SEQUENCE::type_id::create("cross_seq");
+	cross_seq.start(alu_env.alu_agent.alu_seqrh);
+	phase.drop_objection(this);
+endtask
+
+
+
 
 //=====================================================================================================================================
 //MODULE TOP
