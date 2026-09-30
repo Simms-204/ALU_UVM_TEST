@@ -658,7 +658,7 @@ class ALU_COVERAGE extends uvm_subscriber #(write_xtn);
 			bins pos_20  = {8'sh14}; // 20
 			bins range1 = {[8'sh01:8'sh7E]}; // 1..126
 			bins range2 = {[8'sh81:8'shBF]}; // -127..-65
-			bins range3 = {[8'shC0:8'sh00]}; // -64..-1
+			bins range3 = {[8'shC1:8'sh00]}; // -63..-1
 		}
 
 		// values actually assigned to 'b' across the directed corner vectors
@@ -673,12 +673,12 @@ class ALU_COVERAGE extends uvm_subscriber #(write_xtn);
 			bins pos_30  = {8'sh1E}; // 30
 			bins range1 = {[8'sh01:8'sh7E]}; // 1..126
 			bins range2 = {[8'sh81:8'shBF]}; // -127..-65
-			bins range3 = {[8'shC0:8'sh00]}; // -64..-1
+			bins range3 = {[8'shC1:8'sh00]}; // -63..-1
 		}
 		cp_out: coverpoint cov_xtn.out {
 			bins range1 = {[8'sh01:8'sh7E]}; // 1..126
 			bins range2 = {[8'sh81:8'shBF]}; // -127..-65
-			bins range3 = {[8'shC0:8'sh00]}; // -64..-1
+			bins range3 = {[8'shC1:8'sh00]}; // -63..-1
 			bins zero    = {8'sh00}; // 0
 		}
 		cp_z: coverpoint cov_xtn.z { bins z0 = {0}; bins z1 = {1}; }

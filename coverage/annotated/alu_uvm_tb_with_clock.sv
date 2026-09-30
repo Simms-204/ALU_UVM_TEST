@@ -657,6 +657,9 @@
  000040 			bins neg_1   = {8'shFF}; // -1
  000034 			bins pos_64  = {8'sh40}; // 64
  000036 			bins pos_20  = {8'sh14}; // 20
+ 000549 			bins range1 = {[8'sh01:8'sh7E]}; // 1..126
+ 000247 			bins range2 = {[8'sh81:8'shBF]}; // -127..-65
+ 000370 			bins range3 = {[8'shC0:8'sh00]}; // -64..-1
         		}
         
         		// values actually assigned to 'b' across the directed corner vectors
@@ -669,8 +672,16 @@
  000032 			bins neg_64  = {8'shC0}; // -64
  000032 			bins pos_64  = {8'sh40}; // 64
  000035 			bins pos_30  = {8'sh1E}; // 30
+ 000566 			bins range1 = {[8'sh01:8'sh7E]}; // 1..126
+ 000242 			bins range2 = {[8'sh81:8'shBF]}; // -127..-65
+ 000363 			bins range3 = {[8'shC0:8'sh00]}; // -64..-1
         		}
-        
+        		cp_out: coverpoint cov_xtn.out {
+ 000525 			bins range1 = {[8'sh01:8'sh7E]}; // 1..126
+ 000249 			bins range2 = {[8'sh81:8'shBF]}; // -127..-65
+ 000406 			bins range3 = {[8'shC0:8'sh00]}; // -64..-1
+ 000065 			bins zero    = {8'sh00}; // 0
+        		}
  001182 		cp_z: coverpoint cov_xtn.z { bins z0 = {0}; bins z1 = {1}; }
  000624 		cp_n: coverpoint cov_xtn.n { bins n0 = {0}; bins n1 = {1}; }
  001098 		cp_v: coverpoint cov_xtn.v { bins v0 = {0}; bins v1 = {1}; }
@@ -678,7 +689,7 @@
         
  000239 		op_x_v: cross cp_arith_op, cp_v;
  000167 		op_x_c: cross cp_arith_op, cp_c;
-%000002 		op_x_ab: cross cp_op, cp_a, cp_b;// the percentage along with this was 22 percent for 200 repeats
+~000071 		op_x_ab: cross cp_op, cp_a, cp_b;// the percentage along with this was 22 percent for 200 repeats
         		// op x z x n x v x c. A full cross has 64 bins but only 20 can ever
         		// occur: AND/OR never set v/c, a zero result is never negative, and
         		// for ADD/SUB overflow fixes the carry (e.g. ADD overflowing to a
@@ -687,22 +698,22 @@
         		// this is a coverpoint on {operation,z,n,v,c} with only the 20 legal bins.
         		op_x_zn: coverpoint {cov_xtn.operation, cov_xtn.z, cov_xtn.n, cov_xtn.v, cov_xtn.c} {
         			//                  op  z n v c
- 000045 			bins add_z0n0v0c0 = {6'b00_0_0_0_0};
- 000075 			bins add_z0n0v0c1 = {6'b00_0_0_0_1};
- 000038 			bins add_z0n0v1c1 = {6'b00_0_0_1_1};
- 000078 			bins add_z0n1v0c0 = {6'b00_0_1_0_0};
- 000033 			bins add_z0n1v0c1 = {6'b00_0_1_0_1};
- 000042 			bins add_z0n1v1c0 = {6'b00_0_1_1_0};
-%000002 			bins add_z1n0v0c0 = {6'b00_1_0_0_0};
-%000006 			bins add_z1n0v0c1 = {6'b00_1_0_0_1};
-%000002 			bins add_z1n0v1c1 = {6'b00_1_0_1_1};
- 000113 			bins sub_z0n0v0c1 = {6'b01_0_0_0_1};
- 000036 			bins sub_z0n0v1c0 = {6'b01_0_0_1_0};
- 000115 			bins sub_z0n1v0c0 = {6'b01_0_1_0_0};
- 000031 			bins sub_z0n1v1c1 = {6'b01_0_1_1_1};
-%000009 			bins sub_z1n0v0c1 = {6'b01_1_0_0_1};
- 000181 			bins and_z0n0     = {6'b10_0_0_0_0};
- 000074 			bins and_z0n1     = {6'b10_0_1_0_0};
+ 000045 			bins add_z0n0v0c0 = {6'b00_0_0_0_0};//0
+ 000075 			bins add_z0n0v0c1 = {6'b00_0_0_0_1};//1
+ 000038 			bins add_z0n0v1c1 = {6'b00_0_0_1_1};//3
+ 000078 			bins add_z0n1v0c0 = {6'b00_0_1_0_0};//4
+ 000033 			bins add_z0n1v0c1 = {6'b00_0_1_0_1};//5
+ 000042 			bins add_z0n1v1c0 = {6'b00_0_1_1_0};//6
+%000002 			bins add_z1n0v0c0 = {6'b00_1_0_0_0};//8
+%000006 			bins add_z1n0v0c1 = {6'b00_1_0_0_1};//9
+%000002 			bins add_z1n0v1c1 = {6'b00_1_0_1_1};//11
+ 000113 			bins sub_z0n0v0c1 = {6'b01_0_0_0_1};//17
+ 000036 			bins sub_z0n0v1c0 = {6'b01_0_0_1_0};//18
+ 000115 			bins sub_z0n1v0c0 = {6'b01_0_1_0_0};//
+ 000031 			bins sub_z0n1v1c1 = {6'b01_0_1_1_1};//
+%000009 			bins sub_z1n0v0c1 = {6'b01_1_0_0_1};//
+ 000181 			bins and_z0n0     = {6'b10_0_0_0_0};//
+ 000074 			bins and_z0n1     = {6'b10_0_1_0_0};//
  000045 			bins and_z1n0     = {6'b10_1_0_0_0};
  000071 			bins or_z0n0      = {6'b11_0_0_0_0};
  000250 			bins or_z0n1      = {6'b11_0_1_0_0};

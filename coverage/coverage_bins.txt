@@ -13,6 +13,9 @@ ALU_COVERAGE bins (HIT = sampled at least once, MISS = never hit):
   [HIT ] cp_a.neg_1                     hits=40
   [HIT ] cp_a.pos_64                    hits=34
   [HIT ] cp_a.pos_20                    hits=36
+  [HIT ] cp_a.range1                    hits=549
+  [HIT ] cp_a.range2                    hits=247
+  [HIT ] cp_a.range3                    hits=370
   [HIT ] cp_b.zero                      hits=37
   [HIT ] cp_b.one                       hits=34
   [HIT ] cp_b.neg_1                     hits=35
@@ -21,6 +24,13 @@ ALU_COVERAGE bins (HIT = sampled at least once, MISS = never hit):
   [HIT ] cp_b.neg_64                    hits=32
   [HIT ] cp_b.pos_64                    hits=32
   [HIT ] cp_b.pos_30                    hits=35
+  [HIT ] cp_b.range1                    hits=566
+  [HIT ] cp_b.range2                    hits=242
+  [HIT ] cp_b.range3                    hits=363
+  [HIT ] cp_out.range1                  hits=525
+  [HIT ] cp_out.range2                  hits=249
+  [HIT ] cp_out.range3                  hits=406
+  [HIT ] cp_out.zero                    hits=65
   [HIT ] cp_z.z0                        hits=1182
   [HIT ] cp_z.z1                        hits=65
   [HIT ] cp_n.n0                        hits=624
@@ -44,6 +54,9 @@ ALU_COVERAGE bins (HIT = sampled at least once, MISS = never hit):
   [HIT ] op_x_ab.add_op_x_max_pos_x_one hits=2
   [HIT ] op_x_ab.add_op_x_max_pos_x_pos_30 hits=1
   [HIT ] op_x_ab.add_op_x_max_pos_x_pos_64 hits=1
+  [HIT ] op_x_ab.add_op_x_max_pos_x_range1 hits=5
+  [MISS] op_x_ab.add_op_x_max_pos_x_range2 hits=0
+  [HIT ] op_x_ab.add_op_x_max_pos_x_range3 hits=3
   [HIT ] op_x_ab.add_op_x_max_pos_x_zero hits=1
   [HIT ] op_x_ab.add_op_x_min_neg_x_max_pos hits=1
   [HIT ] op_x_ab.add_op_x_min_neg_x_min_neg hits=2
@@ -52,6 +65,9 @@ ALU_COVERAGE bins (HIT = sampled at least once, MISS = never hit):
   [HIT ] op_x_ab.add_op_x_min_neg_x_one hits=1
   [HIT ] op_x_ab.add_op_x_min_neg_x_pos_30 hits=1
   [HIT ] op_x_ab.add_op_x_min_neg_x_pos_64 hits=1
+  [HIT ] op_x_ab.add_op_x_min_neg_x_range1 hits=4
+  [MISS] op_x_ab.add_op_x_min_neg_x_range2 hits=0
+  [HIT ] op_x_ab.add_op_x_min_neg_x_range3 hits=5
   [HIT ] op_x_ab.add_op_x_min_neg_x_zero hits=2
   [HIT ] op_x_ab.add_op_x_neg_1_x_max_pos hits=1
   [HIT ] op_x_ab.add_op_x_neg_1_x_min_neg hits=1
@@ -60,6 +76,9 @@ ALU_COVERAGE bins (HIT = sampled at least once, MISS = never hit):
   [HIT ] op_x_ab.add_op_x_neg_1_x_one   hits=2
   [HIT ] op_x_ab.add_op_x_neg_1_x_pos_30 hits=1
   [HIT ] op_x_ab.add_op_x_neg_1_x_pos_64 hits=1
+  [HIT ] op_x_ab.add_op_x_neg_1_x_range1 hits=4
+  [HIT ] op_x_ab.add_op_x_neg_1_x_range2 hits=1
+  [HIT ] op_x_ab.add_op_x_neg_1_x_range3 hits=3
   [HIT ] op_x_ab.add_op_x_neg_1_x_zero  hits=1
   [HIT ] op_x_ab.add_op_x_neg_64_x_max_pos hits=1
   [HIT ] op_x_ab.add_op_x_neg_64_x_min_neg hits=1
@@ -68,6 +87,9 @@ ALU_COVERAGE bins (HIT = sampled at least once, MISS = never hit):
   [HIT ] op_x_ab.add_op_x_neg_64_x_one  hits=1
   [HIT ] op_x_ab.add_op_x_neg_64_x_pos_30 hits=1
   [HIT ] op_x_ab.add_op_x_neg_64_x_pos_64 hits=1
+  [HIT ] op_x_ab.add_op_x_neg_64_x_range1 hits=3
+  [MISS] op_x_ab.add_op_x_neg_64_x_range2 hits=0
+  [HIT ] op_x_ab.add_op_x_neg_64_x_range3 hits=4
   [HIT ] op_x_ab.add_op_x_neg_64_x_zero hits=1
   [HIT ] op_x_ab.add_op_x_pos_20_x_max_pos hits=1
   [HIT ] op_x_ab.add_op_x_pos_20_x_min_neg hits=1
@@ -76,6 +98,9 @@ ALU_COVERAGE bins (HIT = sampled at least once, MISS = never hit):
   [HIT ] op_x_ab.add_op_x_pos_20_x_one  hits=1
   [HIT ] op_x_ab.add_op_x_pos_20_x_pos_30 hits=1
   [HIT ] op_x_ab.add_op_x_pos_20_x_pos_64 hits=1
+  [HIT ] op_x_ab.add_op_x_pos_20_x_range1 hits=3
+  [MISS] op_x_ab.add_op_x_pos_20_x_range2 hits=0
+  [HIT ] op_x_ab.add_op_x_pos_20_x_range3 hits=3
   [HIT ] op_x_ab.add_op_x_pos_20_x_zero hits=1
   [HIT ] op_x_ab.add_op_x_pos_64_x_max_pos hits=1
   [HIT ] op_x_ab.add_op_x_pos_64_x_min_neg hits=1
@@ -84,7 +109,43 @@ ALU_COVERAGE bins (HIT = sampled at least once, MISS = never hit):
   [HIT ] op_x_ab.add_op_x_pos_64_x_one  hits=1
   [HIT ] op_x_ab.add_op_x_pos_64_x_pos_30 hits=1
   [HIT ] op_x_ab.add_op_x_pos_64_x_pos_64 hits=2
+  [HIT ] op_x_ab.add_op_x_pos_64_x_range1 hits=4
+  [MISS] op_x_ab.add_op_x_pos_64_x_range2 hits=0
+  [HIT ] op_x_ab.add_op_x_pos_64_x_range3 hits=3
   [HIT ] op_x_ab.add_op_x_pos_64_x_zero hits=1
+  [HIT ] op_x_ab.add_op_x_range1_x_max_pos hits=2
+  [HIT ] op_x_ab.add_op_x_range1_x_min_neg hits=3
+  [HIT ] op_x_ab.add_op_x_range1_x_neg_1 hits=2
+  [HIT ] op_x_ab.add_op_x_range1_x_neg_64 hits=2
+  [HIT ] op_x_ab.add_op_x_range1_x_one  hits=2
+  [HIT ] op_x_ab.add_op_x_range1_x_pos_30 hits=2
+  [HIT ] op_x_ab.add_op_x_range1_x_pos_64 hits=3
+  [HIT ] op_x_ab.add_op_x_range1_x_range1 hits=71
+  [HIT ] op_x_ab.add_op_x_range1_x_range2 hits=33
+  [HIT ] op_x_ab.add_op_x_range1_x_range3 hits=31
+  [HIT ] op_x_ab.add_op_x_range1_x_zero hits=2
+  [MISS] op_x_ab.add_op_x_range2_x_max_pos hits=0
+  [MISS] op_x_ab.add_op_x_range2_x_min_neg hits=0
+  [MISS] op_x_ab.add_op_x_range2_x_neg_1 hits=0
+  [MISS] op_x_ab.add_op_x_range2_x_neg_64 hits=0
+  [MISS] op_x_ab.add_op_x_range2_x_one  hits=0
+  [HIT ] op_x_ab.add_op_x_range2_x_pos_30 hits=1
+  [MISS] op_x_ab.add_op_x_range2_x_pos_64 hits=0
+  [HIT ] op_x_ab.add_op_x_range2_x_range1 hits=31
+  [HIT ] op_x_ab.add_op_x_range2_x_range2 hits=17
+  [HIT ] op_x_ab.add_op_x_range2_x_range3 hits=15
+  [MISS] op_x_ab.add_op_x_range2_x_zero hits=0
+  [HIT ] op_x_ab.add_op_x_range3_x_max_pos hits=3
+  [HIT ] op_x_ab.add_op_x_range3_x_min_neg hits=3
+  [HIT ] op_x_ab.add_op_x_range3_x_neg_1 hits=3
+  [HIT ] op_x_ab.add_op_x_range3_x_neg_64 hits=6
+  [HIT ] op_x_ab.add_op_x_range3_x_one  hits=4
+  [HIT ] op_x_ab.add_op_x_range3_x_pos_30 hits=4
+  [HIT ] op_x_ab.add_op_x_range3_x_pos_64 hits=3
+  [HIT ] op_x_ab.add_op_x_range3_x_range1 hits=49
+  [HIT ] op_x_ab.add_op_x_range3_x_range2 hits=15
+  [HIT ] op_x_ab.add_op_x_range3_x_range3 hits=25
+  [HIT ] op_x_ab.add_op_x_range3_x_zero hits=4
   [HIT ] op_x_ab.add_op_x_zero_x_max_pos hits=1
   [HIT ] op_x_ab.add_op_x_zero_x_min_neg hits=1
   [HIT ] op_x_ab.add_op_x_zero_x_neg_1  hits=1
@@ -92,6 +153,9 @@ ALU_COVERAGE bins (HIT = sampled at least once, MISS = never hit):
   [HIT ] op_x_ab.add_op_x_zero_x_one    hits=1
   [HIT ] op_x_ab.add_op_x_zero_x_pos_30 hits=1
   [HIT ] op_x_ab.add_op_x_zero_x_pos_64 hits=1
+  [HIT ] op_x_ab.add_op_x_zero_x_range1 hits=3
+  [MISS] op_x_ab.add_op_x_zero_x_range2 hits=0
+  [HIT ] op_x_ab.add_op_x_zero_x_range3 hits=4
   [HIT ] op_x_ab.add_op_x_zero_x_zero   hits=2
   [HIT ] op_x_ab.and_op_x_max_pos_x_max_pos hits=1
   [HIT ] op_x_ab.and_op_x_max_pos_x_min_neg hits=2
@@ -100,6 +164,9 @@ ALU_COVERAGE bins (HIT = sampled at least once, MISS = never hit):
   [HIT ] op_x_ab.and_op_x_max_pos_x_one hits=1
   [HIT ] op_x_ab.and_op_x_max_pos_x_pos_30 hits=1
   [HIT ] op_x_ab.and_op_x_max_pos_x_pos_64 hits=2
+  [HIT ] op_x_ab.and_op_x_max_pos_x_range1 hits=5
+  [MISS] op_x_ab.and_op_x_max_pos_x_range2 hits=0
+  [HIT ] op_x_ab.and_op_x_max_pos_x_range3 hits=3
   [HIT ] op_x_ab.and_op_x_max_pos_x_zero hits=1
   [HIT ] op_x_ab.and_op_x_min_neg_x_max_pos hits=1
   [HIT ] op_x_ab.and_op_x_min_neg_x_min_neg hits=1
@@ -108,6 +175,9 @@ ALU_COVERAGE bins (HIT = sampled at least once, MISS = never hit):
   [HIT ] op_x_ab.and_op_x_min_neg_x_one hits=1
   [HIT ] op_x_ab.and_op_x_min_neg_x_pos_30 hits=1
   [HIT ] op_x_ab.and_op_x_min_neg_x_pos_64 hits=1
+  [HIT ] op_x_ab.and_op_x_min_neg_x_range1 hits=3
+  [HIT ] op_x_ab.and_op_x_min_neg_x_range2 hits=1
+  [HIT ] op_x_ab.and_op_x_min_neg_x_range3 hits=3
   [HIT ] op_x_ab.and_op_x_min_neg_x_zero hits=1
   [HIT ] op_x_ab.and_op_x_neg_1_x_max_pos hits=1
   [HIT ] op_x_ab.and_op_x_neg_1_x_min_neg hits=1
@@ -116,6 +186,9 @@ ALU_COVERAGE bins (HIT = sampled at least once, MISS = never hit):
   [HIT ] op_x_ab.and_op_x_neg_1_x_one   hits=1
   [HIT ] op_x_ab.and_op_x_neg_1_x_pos_30 hits=1
   [HIT ] op_x_ab.and_op_x_neg_1_x_pos_64 hits=1
+  [HIT ] op_x_ab.and_op_x_neg_1_x_range1 hits=3
+  [MISS] op_x_ab.and_op_x_neg_1_x_range2 hits=0
+  [HIT ] op_x_ab.and_op_x_neg_1_x_range3 hits=6
   [HIT ] op_x_ab.and_op_x_neg_1_x_zero  hits=2
   [HIT ] op_x_ab.and_op_x_neg_64_x_max_pos hits=1
   [HIT ] op_x_ab.and_op_x_neg_64_x_min_neg hits=1
@@ -124,6 +197,9 @@ ALU_COVERAGE bins (HIT = sampled at least once, MISS = never hit):
   [HIT ] op_x_ab.and_op_x_neg_64_x_one  hits=1
   [HIT ] op_x_ab.and_op_x_neg_64_x_pos_30 hits=1
   [HIT ] op_x_ab.and_op_x_neg_64_x_pos_64 hits=1
+  [HIT ] op_x_ab.and_op_x_neg_64_x_range1 hits=3
+  [MISS] op_x_ab.and_op_x_neg_64_x_range2 hits=0
+  [HIT ] op_x_ab.and_op_x_neg_64_x_range3 hits=3
   [HIT ] op_x_ab.and_op_x_neg_64_x_zero hits=1
   [HIT ] op_x_ab.and_op_x_pos_20_x_max_pos hits=1
   [HIT ] op_x_ab.and_op_x_pos_20_x_min_neg hits=1
@@ -132,6 +208,9 @@ ALU_COVERAGE bins (HIT = sampled at least once, MISS = never hit):
   [HIT ] op_x_ab.and_op_x_pos_20_x_one  hits=1
   [HIT ] op_x_ab.and_op_x_pos_20_x_pos_30 hits=1
   [HIT ] op_x_ab.and_op_x_pos_20_x_pos_64 hits=1
+  [HIT ] op_x_ab.and_op_x_pos_20_x_range1 hits=4
+  [HIT ] op_x_ab.and_op_x_pos_20_x_range2 hits=1
+  [HIT ] op_x_ab.and_op_x_pos_20_x_range3 hits=3
   [HIT ] op_x_ab.and_op_x_pos_20_x_zero hits=1
   [HIT ] op_x_ab.and_op_x_pos_64_x_max_pos hits=1
   [HIT ] op_x_ab.and_op_x_pos_64_x_min_neg hits=1
@@ -140,7 +219,43 @@ ALU_COVERAGE bins (HIT = sampled at least once, MISS = never hit):
   [HIT ] op_x_ab.and_op_x_pos_64_x_one  hits=1
   [HIT ] op_x_ab.and_op_x_pos_64_x_pos_30 hits=1
   [HIT ] op_x_ab.and_op_x_pos_64_x_pos_64 hits=1
+  [HIT ] op_x_ab.and_op_x_pos_64_x_range1 hits=3
+  [MISS] op_x_ab.and_op_x_pos_64_x_range2 hits=0
+  [HIT ] op_x_ab.and_op_x_pos_64_x_range3 hits=3
   [HIT ] op_x_ab.and_op_x_pos_64_x_zero hits=1
+  [HIT ] op_x_ab.and_op_x_range1_x_max_pos hits=3
+  [HIT ] op_x_ab.and_op_x_range1_x_min_neg hits=2
+  [HIT ] op_x_ab.and_op_x_range1_x_neg_1 hits=2
+  [HIT ] op_x_ab.and_op_x_range1_x_neg_64 hits=2
+  [HIT ] op_x_ab.and_op_x_range1_x_one  hits=2
+  [HIT ] op_x_ab.and_op_x_range1_x_pos_30 hits=2
+  [HIT ] op_x_ab.and_op_x_range1_x_pos_64 hits=3
+  [HIT ] op_x_ab.and_op_x_range1_x_range1 hits=60
+  [HIT ] op_x_ab.and_op_x_range1_x_range2 hits=25
+  [HIT ] op_x_ab.and_op_x_range1_x_range3 hits=33
+  [HIT ] op_x_ab.and_op_x_range1_x_zero hits=2
+  [MISS] op_x_ab.and_op_x_range2_x_max_pos hits=0
+  [MISS] op_x_ab.and_op_x_range2_x_min_neg hits=0
+  [HIT ] op_x_ab.and_op_x_range2_x_neg_1 hits=1
+  [MISS] op_x_ab.and_op_x_range2_x_neg_64 hits=0
+  [MISS] op_x_ab.and_op_x_range2_x_one  hits=0
+  [HIT ] op_x_ab.and_op_x_range2_x_pos_30 hits=2
+  [MISS] op_x_ab.and_op_x_range2_x_pos_64 hits=0
+  [HIT ] op_x_ab.and_op_x_range2_x_range1 hits=24
+  [HIT ] op_x_ab.and_op_x_range2_x_range2 hits=8
+  [HIT ] op_x_ab.and_op_x_range2_x_range3 hits=22
+  [MISS] op_x_ab.and_op_x_range2_x_zero hits=0
+  [HIT ] op_x_ab.and_op_x_range3_x_max_pos hits=4
+  [HIT ] op_x_ab.and_op_x_range3_x_min_neg hits=4
+  [HIT ] op_x_ab.and_op_x_range3_x_neg_1 hits=5
+  [HIT ] op_x_ab.and_op_x_range3_x_neg_64 hits=3
+  [HIT ] op_x_ab.and_op_x_range3_x_one  hits=3
+  [HIT ] op_x_ab.and_op_x_range3_x_pos_30 hits=3
+  [HIT ] op_x_ab.and_op_x_range3_x_pos_64 hits=3
+  [HIT ] op_x_ab.and_op_x_range3_x_range1 hits=51
+  [HIT ] op_x_ab.and_op_x_range3_x_range2 hits=10
+  [HIT ] op_x_ab.and_op_x_range3_x_range3 hits=34
+  [HIT ] op_x_ab.and_op_x_range3_x_zero hits=5
   [HIT ] op_x_ab.and_op_x_zero_x_max_pos hits=1
   [HIT ] op_x_ab.and_op_x_zero_x_min_neg hits=1
   [HIT ] op_x_ab.and_op_x_zero_x_neg_1  hits=1
@@ -148,6 +263,9 @@ ALU_COVERAGE bins (HIT = sampled at least once, MISS = never hit):
   [HIT ] op_x_ab.and_op_x_zero_x_one    hits=1
   [HIT ] op_x_ab.and_op_x_zero_x_pos_30 hits=1
   [HIT ] op_x_ab.and_op_x_zero_x_pos_64 hits=1
+  [HIT ] op_x_ab.and_op_x_zero_x_range1 hits=3
+  [MISS] op_x_ab.and_op_x_zero_x_range2 hits=0
+  [HIT ] op_x_ab.and_op_x_zero_x_range3 hits=4
   [HIT ] op_x_ab.and_op_x_zero_x_zero   hits=2
   [HIT ] op_x_ab.or_op_x_max_pos_x_max_pos hits=1
   [HIT ] op_x_ab.or_op_x_max_pos_x_min_neg hits=2
@@ -156,6 +274,9 @@ ALU_COVERAGE bins (HIT = sampled at least once, MISS = never hit):
   [HIT ] op_x_ab.or_op_x_max_pos_x_one  hits=1
   [HIT ] op_x_ab.or_op_x_max_pos_x_pos_30 hits=1
   [HIT ] op_x_ab.or_op_x_max_pos_x_pos_64 hits=1
+  [HIT ] op_x_ab.or_op_x_max_pos_x_range1 hits=3
+  [MISS] op_x_ab.or_op_x_max_pos_x_range2 hits=0
+  [HIT ] op_x_ab.or_op_x_max_pos_x_range3 hits=3
   [HIT ] op_x_ab.or_op_x_max_pos_x_zero hits=1
   [HIT ] op_x_ab.or_op_x_min_neg_x_max_pos hits=1
   [HIT ] op_x_ab.or_op_x_min_neg_x_min_neg hits=1
@@ -164,6 +285,9 @@ ALU_COVERAGE bins (HIT = sampled at least once, MISS = never hit):
   [HIT ] op_x_ab.or_op_x_min_neg_x_one  hits=1
   [HIT ] op_x_ab.or_op_x_min_neg_x_pos_30 hits=1
   [HIT ] op_x_ab.or_op_x_min_neg_x_pos_64 hits=1
+  [HIT ] op_x_ab.or_op_x_min_neg_x_range1 hits=3
+  [MISS] op_x_ab.or_op_x_min_neg_x_range2 hits=0
+  [HIT ] op_x_ab.or_op_x_min_neg_x_range3 hits=3
   [HIT ] op_x_ab.or_op_x_min_neg_x_zero hits=1
   [HIT ] op_x_ab.or_op_x_neg_1_x_max_pos hits=1
   [HIT ] op_x_ab.or_op_x_neg_1_x_min_neg hits=1
@@ -172,6 +296,9 @@ ALU_COVERAGE bins (HIT = sampled at least once, MISS = never hit):
   [HIT ] op_x_ab.or_op_x_neg_1_x_one    hits=1
   [HIT ] op_x_ab.or_op_x_neg_1_x_pos_30 hits=1
   [HIT ] op_x_ab.or_op_x_neg_1_x_pos_64 hits=1
+  [HIT ] op_x_ab.or_op_x_neg_1_x_range1 hits=4
+  [MISS] op_x_ab.or_op_x_neg_1_x_range2 hits=0
+  [HIT ] op_x_ab.or_op_x_neg_1_x_range3 hits=3
   [HIT ] op_x_ab.or_op_x_neg_1_x_zero   hits=1
   [HIT ] op_x_ab.or_op_x_neg_64_x_max_pos hits=1
   [HIT ] op_x_ab.or_op_x_neg_64_x_min_neg hits=1
@@ -180,6 +307,9 @@ ALU_COVERAGE bins (HIT = sampled at least once, MISS = never hit):
   [HIT ] op_x_ab.or_op_x_neg_64_x_one   hits=1
   [HIT ] op_x_ab.or_op_x_neg_64_x_pos_30 hits=1
   [HIT ] op_x_ab.or_op_x_neg_64_x_pos_64 hits=1
+  [HIT ] op_x_ab.or_op_x_neg_64_x_range1 hits=3
+  [MISS] op_x_ab.or_op_x_neg_64_x_range2 hits=0
+  [HIT ] op_x_ab.or_op_x_neg_64_x_range3 hits=3
   [HIT ] op_x_ab.or_op_x_neg_64_x_zero  hits=1
   [HIT ] op_x_ab.or_op_x_pos_20_x_max_pos hits=1
   [HIT ] op_x_ab.or_op_x_pos_20_x_min_neg hits=1
@@ -188,6 +318,9 @@ ALU_COVERAGE bins (HIT = sampled at least once, MISS = never hit):
   [HIT ] op_x_ab.or_op_x_pos_20_x_one   hits=1
   [HIT ] op_x_ab.or_op_x_pos_20_x_pos_30 hits=1
   [HIT ] op_x_ab.or_op_x_pos_20_x_pos_64 hits=1
+  [HIT ] op_x_ab.or_op_x_pos_20_x_range1 hits=4
+  [MISS] op_x_ab.or_op_x_pos_20_x_range2 hits=0
+  [HIT ] op_x_ab.or_op_x_pos_20_x_range3 hits=3
   [HIT ] op_x_ab.or_op_x_pos_20_x_zero  hits=1
   [HIT ] op_x_ab.or_op_x_pos_64_x_max_pos hits=1
   [HIT ] op_x_ab.or_op_x_pos_64_x_min_neg hits=1
@@ -196,7 +329,43 @@ ALU_COVERAGE bins (HIT = sampled at least once, MISS = never hit):
   [HIT ] op_x_ab.or_op_x_pos_64_x_one   hits=1
   [HIT ] op_x_ab.or_op_x_pos_64_x_pos_30 hits=1
   [HIT ] op_x_ab.or_op_x_pos_64_x_pos_64 hits=1
+  [HIT ] op_x_ab.or_op_x_pos_64_x_range1 hits=3
+  [MISS] op_x_ab.or_op_x_pos_64_x_range2 hits=0
+  [HIT ] op_x_ab.or_op_x_pos_64_x_range3 hits=3
   [HIT ] op_x_ab.or_op_x_pos_64_x_zero  hits=1
+  [HIT ] op_x_ab.or_op_x_range1_x_max_pos hits=3
+  [HIT ] op_x_ab.or_op_x_range1_x_min_neg hits=3
+  [HIT ] op_x_ab.or_op_x_range1_x_neg_1 hits=2
+  [HIT ] op_x_ab.or_op_x_range1_x_neg_64 hits=3
+  [HIT ] op_x_ab.or_op_x_range1_x_one   hits=4
+  [HIT ] op_x_ab.or_op_x_range1_x_pos_30 hits=2
+  [HIT ] op_x_ab.or_op_x_range1_x_pos_64 hits=3
+  [HIT ] op_x_ab.or_op_x_range1_x_range1 hits=55
+  [HIT ] op_x_ab.or_op_x_range1_x_range2 hits=40
+  [HIT ] op_x_ab.or_op_x_range1_x_range3 hits=52
+  [HIT ] op_x_ab.or_op_x_range1_x_zero  hits=3
+  [MISS] op_x_ab.or_op_x_range2_x_max_pos hits=0
+  [MISS] op_x_ab.or_op_x_range2_x_min_neg hits=0
+  [MISS] op_x_ab.or_op_x_range2_x_neg_1 hits=0
+  [MISS] op_x_ab.or_op_x_range2_x_neg_64 hits=0
+  [HIT ] op_x_ab.or_op_x_range2_x_one   hits=1
+  [MISS] op_x_ab.or_op_x_range2_x_pos_30 hits=0
+  [MISS] op_x_ab.or_op_x_range2_x_pos_64 hits=0
+  [HIT ] op_x_ab.or_op_x_range2_x_range1 hits=25
+  [HIT ] op_x_ab.or_op_x_range2_x_range2 hits=23
+  [HIT ] op_x_ab.or_op_x_range2_x_range3 hits=15
+  [MISS] op_x_ab.or_op_x_range2_x_zero  hits=0
+  [HIT ] op_x_ab.or_op_x_range3_x_max_pos hits=3
+  [HIT ] op_x_ab.or_op_x_range3_x_min_neg hits=5
+  [HIT ] op_x_ab.or_op_x_range3_x_neg_1 hits=4
+  [HIT ] op_x_ab.or_op_x_range3_x_neg_64 hits=3
+  [HIT ] op_x_ab.or_op_x_range3_x_one   hits=3
+  [HIT ] op_x_ab.or_op_x_range3_x_pos_30 hits=3
+  [HIT ] op_x_ab.or_op_x_range3_x_pos_64 hits=3
+  [HIT ] op_x_ab.or_op_x_range3_x_range1 hits=37
+  [HIT ] op_x_ab.or_op_x_range3_x_range2 hits=15
+  [HIT ] op_x_ab.or_op_x_range3_x_range3 hits=29
+  [HIT ] op_x_ab.or_op_x_range3_x_zero  hits=3
   [HIT ] op_x_ab.or_op_x_zero_x_max_pos hits=1
   [HIT ] op_x_ab.or_op_x_zero_x_min_neg hits=1
   [HIT ] op_x_ab.or_op_x_zero_x_neg_1   hits=2
@@ -204,6 +373,9 @@ ALU_COVERAGE bins (HIT = sampled at least once, MISS = never hit):
   [HIT ] op_x_ab.or_op_x_zero_x_one     hits=1
   [HIT ] op_x_ab.or_op_x_zero_x_pos_30  hits=1
   [HIT ] op_x_ab.or_op_x_zero_x_pos_64  hits=1
+  [HIT ] op_x_ab.or_op_x_zero_x_range1  hits=4
+  [MISS] op_x_ab.or_op_x_zero_x_range2  hits=0
+  [HIT ] op_x_ab.or_op_x_zero_x_range3  hits=4
   [HIT ] op_x_ab.or_op_x_zero_x_zero    hits=1
   [HIT ] op_x_ab.sub_op_x_max_pos_x_max_pos hits=1
   [HIT ] op_x_ab.sub_op_x_max_pos_x_min_neg hits=1
@@ -212,6 +384,9 @@ ALU_COVERAGE bins (HIT = sampled at least once, MISS = never hit):
   [HIT ] op_x_ab.sub_op_x_max_pos_x_one hits=1
   [HIT ] op_x_ab.sub_op_x_max_pos_x_pos_30 hits=1
   [HIT ] op_x_ab.sub_op_x_max_pos_x_pos_64 hits=1
+  [HIT ] op_x_ab.sub_op_x_max_pos_x_range1 hits=3
+  [MISS] op_x_ab.sub_op_x_max_pos_x_range2 hits=0
+  [HIT ] op_x_ab.sub_op_x_max_pos_x_range3 hits=4
   [HIT ] op_x_ab.sub_op_x_max_pos_x_zero hits=1
   [HIT ] op_x_ab.sub_op_x_min_neg_x_max_pos hits=2
   [HIT ] op_x_ab.sub_op_x_min_neg_x_min_neg hits=2
@@ -220,6 +395,9 @@ ALU_COVERAGE bins (HIT = sampled at least once, MISS = never hit):
   [HIT ] op_x_ab.sub_op_x_min_neg_x_one hits=2
   [HIT ] op_x_ab.sub_op_x_min_neg_x_pos_30 hits=1
   [HIT ] op_x_ab.sub_op_x_min_neg_x_pos_64 hits=1
+  [HIT ] op_x_ab.sub_op_x_min_neg_x_range1 hits=5
+  [MISS] op_x_ab.sub_op_x_min_neg_x_range2 hits=0
+  [HIT ] op_x_ab.sub_op_x_min_neg_x_range3 hits=3
   [HIT ] op_x_ab.sub_op_x_min_neg_x_zero hits=1
   [HIT ] op_x_ab.sub_op_x_neg_1_x_max_pos hits=1
   [HIT ] op_x_ab.sub_op_x_neg_1_x_min_neg hits=2
@@ -228,6 +406,9 @@ ALU_COVERAGE bins (HIT = sampled at least once, MISS = never hit):
   [HIT ] op_x_ab.sub_op_x_neg_1_x_one   hits=1
   [HIT ] op_x_ab.sub_op_x_neg_1_x_pos_30 hits=1
   [HIT ] op_x_ab.sub_op_x_neg_1_x_pos_64 hits=1
+  [HIT ] op_x_ab.sub_op_x_neg_1_x_range1 hits=3
+  [MISS] op_x_ab.sub_op_x_neg_1_x_range2 hits=0
+  [HIT ] op_x_ab.sub_op_x_neg_1_x_range3 hits=4
   [HIT ] op_x_ab.sub_op_x_neg_1_x_zero  hits=1
   [HIT ] op_x_ab.sub_op_x_neg_64_x_max_pos hits=1
   [HIT ] op_x_ab.sub_op_x_neg_64_x_min_neg hits=1
@@ -236,6 +417,9 @@ ALU_COVERAGE bins (HIT = sampled at least once, MISS = never hit):
   [HIT ] op_x_ab.sub_op_x_neg_64_x_one  hits=1
   [HIT ] op_x_ab.sub_op_x_neg_64_x_pos_30 hits=1
   [HIT ] op_x_ab.sub_op_x_neg_64_x_pos_64 hits=1
+  [HIT ] op_x_ab.sub_op_x_neg_64_x_range1 hits=3
+  [MISS] op_x_ab.sub_op_x_neg_64_x_range2 hits=0
+  [HIT ] op_x_ab.sub_op_x_neg_64_x_range3 hits=3
   [HIT ] op_x_ab.sub_op_x_neg_64_x_zero hits=1
   [HIT ] op_x_ab.sub_op_x_pos_20_x_max_pos hits=1
   [HIT ] op_x_ab.sub_op_x_pos_20_x_min_neg hits=1
@@ -244,6 +428,9 @@ ALU_COVERAGE bins (HIT = sampled at least once, MISS = never hit):
   [HIT ] op_x_ab.sub_op_x_pos_20_x_one  hits=1
   [HIT ] op_x_ab.sub_op_x_pos_20_x_pos_30 hits=2
   [HIT ] op_x_ab.sub_op_x_pos_20_x_pos_64 hits=1
+  [HIT ] op_x_ab.sub_op_x_pos_20_x_range1 hits=4
+  [MISS] op_x_ab.sub_op_x_pos_20_x_range2 hits=0
+  [HIT ] op_x_ab.sub_op_x_pos_20_x_range3 hits=3
   [HIT ] op_x_ab.sub_op_x_pos_20_x_zero hits=1
   [HIT ] op_x_ab.sub_op_x_pos_64_x_max_pos hits=1
   [HIT ] op_x_ab.sub_op_x_pos_64_x_min_neg hits=1
@@ -252,7 +439,43 @@ ALU_COVERAGE bins (HIT = sampled at least once, MISS = never hit):
   [HIT ] op_x_ab.sub_op_x_pos_64_x_one  hits=1
   [HIT ] op_x_ab.sub_op_x_pos_64_x_pos_30 hits=1
   [HIT ] op_x_ab.sub_op_x_pos_64_x_pos_64 hits=1
+  [HIT ] op_x_ab.sub_op_x_pos_64_x_range1 hits=4
+  [MISS] op_x_ab.sub_op_x_pos_64_x_range2 hits=0
+  [HIT ] op_x_ab.sub_op_x_pos_64_x_range3 hits=3
   [HIT ] op_x_ab.sub_op_x_pos_64_x_zero hits=1
+  [HIT ] op_x_ab.sub_op_x_range1_x_max_pos hits=2
+  [HIT ] op_x_ab.sub_op_x_range1_x_min_neg hits=2
+  [HIT ] op_x_ab.sub_op_x_range1_x_neg_1 hits=2
+  [HIT ] op_x_ab.sub_op_x_range1_x_neg_64 hits=2
+  [HIT ] op_x_ab.sub_op_x_range1_x_one  hits=2
+  [HIT ] op_x_ab.sub_op_x_range1_x_pos_30 hits=5
+  [HIT ] op_x_ab.sub_op_x_range1_x_pos_64 hits=2
+  [HIT ] op_x_ab.sub_op_x_range1_x_range1 hits=65
+  [HIT ] op_x_ab.sub_op_x_range1_x_range2 hits=23
+  [HIT ] op_x_ab.sub_op_x_range1_x_range3 hits=41
+  [HIT ] op_x_ab.sub_op_x_range1_x_zero hits=3
+  [HIT ] op_x_ab.sub_op_x_range2_x_max_pos hits=1
+  [HIT ] op_x_ab.sub_op_x_range2_x_min_neg hits=1
+  [HIT ] op_x_ab.sub_op_x_range2_x_neg_1 hits=1
+  [MISS] op_x_ab.sub_op_x_range2_x_neg_64 hits=0
+  [MISS] op_x_ab.sub_op_x_range2_x_one  hits=0
+  [MISS] op_x_ab.sub_op_x_range2_x_pos_30 hits=0
+  [MISS] op_x_ab.sub_op_x_range2_x_pos_64 hits=0
+  [HIT ] op_x_ab.sub_op_x_range2_x_range1 hits=31
+  [HIT ] op_x_ab.sub_op_x_range2_x_range2 hits=18
+  [HIT ] op_x_ab.sub_op_x_range2_x_range3 hits=16
+  [HIT ] op_x_ab.sub_op_x_range2_x_zero hits=2
+  [HIT ] op_x_ab.sub_op_x_range3_x_max_pos hits=4
+  [HIT ] op_x_ab.sub_op_x_range3_x_min_neg hits=6
+  [HIT ] op_x_ab.sub_op_x_range3_x_neg_1 hits=3
+  [HIT ] op_x_ab.sub_op_x_range3_x_neg_64 hits=3
+  [HIT ] op_x_ab.sub_op_x_range3_x_one  hits=3
+  [HIT ] op_x_ab.sub_op_x_range3_x_pos_30 hits=3
+  [HIT ] op_x_ab.sub_op_x_range3_x_pos_64 hits=3
+  [HIT ] op_x_ab.sub_op_x_range3_x_range1 hits=36
+  [HIT ] op_x_ab.sub_op_x_range3_x_range2 hits=14
+  [HIT ] op_x_ab.sub_op_x_range3_x_range3 hits=23
+  [HIT ] op_x_ab.sub_op_x_range3_x_zero hits=4
   [HIT ] op_x_ab.sub_op_x_zero_x_max_pos hits=1
   [HIT ] op_x_ab.sub_op_x_zero_x_min_neg hits=2
   [HIT ] op_x_ab.sub_op_x_zero_x_neg_1  hits=1
@@ -260,6 +483,9 @@ ALU_COVERAGE bins (HIT = sampled at least once, MISS = never hit):
   [HIT ] op_x_ab.sub_op_x_zero_x_one    hits=1
   [HIT ] op_x_ab.sub_op_x_zero_x_pos_30 hits=1
   [HIT ] op_x_ab.sub_op_x_zero_x_pos_64 hits=1
+  [HIT ] op_x_ab.sub_op_x_zero_x_range1 hits=3
+  [MISS] op_x_ab.sub_op_x_zero_x_range2 hits=0
+  [HIT ] op_x_ab.sub_op_x_zero_x_range3 hits=4
   [HIT ] op_x_ab.sub_op_x_zero_x_zero   hits=2
   [HIT ] op_x_zn.add_z0n0v0c0           hits=45
   [HIT ] op_x_zn.add_z0n0v0c1           hits=75
@@ -286,18 +512,19 @@ Per coverpoint / cross:
   NAME                HIT   MISS  TOTAL  COVERAGE
   cp_op                 4      0      4   100.00%
   cp_arith_op           2      0      2   100.00%
-  cp_a                  7      0      7   100.00%
-  cp_b                  8      0      8   100.00%
+  cp_a                 10      0     10   100.00%
+  cp_b                 11      0     11   100.00%
+  cp_out                4      0      4   100.00%
   cp_z                  2      0      2   100.00%
   cp_n                  2      0      2   100.00%
   cp_v                  2      0      2   100.00%
   cp_c                  2      0      2   100.00%
   op_x_v                4      0      4   100.00%
   op_x_c                4      0      4   100.00%
-  op_x_ab             224      0    224   100.00%
+  op_x_ab             391     49    440    88.86%
   op_x_zn              20      0     20   100.00%
 --------------------------------------------------------------
-Bins hit     : 281
-Bins missed  : 0
-Total bins   : 281
-Functional coverage: 100.00% (281/281 bins hit)
+Bins hit     : 458
+Bins missed  : 49
+Total bins   : 507
+Functional coverage: 90.34% (458/507 bins hit)
