@@ -144,6 +144,7 @@ class ALU_SEQUENCE extends uvm_sequence #(write_xtn);
 
 
 write_xtn gen_q[$];// every transaction this sequence generated, in order
+	
 	extern function new(string name = "ALU_SEQUENCE");
 	extern task body();
 endclass
@@ -153,6 +154,8 @@ function ALU_SEQUENCE::new(string name = "ALU_SEQUENCE");
 endfunction
 
 task ALU_SEQUENCE:: body();
+string op_name[4] = '{"ADD", "SUB", "AND", "OR"};
+	string table_str;
 	repeat(10)
 		begin
 		req = write_xtn::type_id::create("req");
