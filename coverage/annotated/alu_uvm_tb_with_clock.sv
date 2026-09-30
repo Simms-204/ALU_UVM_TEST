@@ -659,7 +659,7 @@
  000036 			bins pos_20  = {8'sh14}; // 20
  000549 			bins range1 = {[8'sh01:8'sh7E]}; // 1..126
  000247 			bins range2 = {[8'sh81:8'shBF]}; // -127..-65
- 000370 			bins range3 = {[8'shC0:8'sh00]}; // -64..-1
+ 000337 			bins range3 = {[8'shC1:8'sh00]}; // -63..-1
         		}
         
         		// values actually assigned to 'b' across the directed corner vectors
@@ -674,12 +674,12 @@
  000035 			bins pos_30  = {8'sh1E}; // 30
  000566 			bins range1 = {[8'sh01:8'sh7E]}; // 1..126
  000242 			bins range2 = {[8'sh81:8'shBF]}; // -127..-65
- 000363 			bins range3 = {[8'shC0:8'sh00]}; // -64..-1
+ 000331 			bins range3 = {[8'shC1:8'sh00]}; // -63..-1
         		}
         		cp_out: coverpoint cov_xtn.out {
  000525 			bins range1 = {[8'sh01:8'sh7E]}; // 1..126
  000249 			bins range2 = {[8'sh81:8'shBF]}; // -127..-65
- 000406 			bins range3 = {[8'shC0:8'sh00]}; // -64..-1
+ 000382 			bins range3 = {[8'shC1:8'sh00]}; // -63..-1
  000065 			bins zero    = {8'sh00}; // 0
         		}
  001182 		cp_z: coverpoint cov_xtn.z { bins z0 = {0}; bins z1 = {1}; }
