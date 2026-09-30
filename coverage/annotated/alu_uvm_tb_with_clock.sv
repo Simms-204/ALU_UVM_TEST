@@ -4,35 +4,35 @@
         //
         import uvm_pkg::*;
         `include "uvm_macros.svh"
- 000346 module ALU (input signed [7:0]a,b,input[1:0]operation,output reg signed [7:0] out,output z,n,c,v);
+~000095 module ALU (input signed [7:0]a,b,input[1:0]operation,output reg signed [7:0] out,output z,n,c,v);
                 parameter ADD = 2'b00;
                 parameter SUB = 2'b01;
                 parameter AND = 2'b10;
                 parameter OR = 2'b11;
                 //reg signed [8:0] out_temp;
         
- 002493 always@(*)
- 002493         begin
+ 000513 always@(*)
+ 000513         begin
                 /*case(operation)
                 ADD: out_temp = a + b;
                 SUB: out_temp = a - b;
                 AND: out_temp = a & b;
                 OR : out_temp = a | b;
                 endcase*/
- 002493 		case(operation)
- 000641         ADD: out = a + b;
- 000608         SUB: out = a - b;
- 000600         AND: out = a & b;
- 000644         OR : out = a | b;
+ 000513 		case(operation)
+ 000131         ADD: out = a + b;
+ 000128         SUB: out = a - b;
+ 000132         AND: out = a & b;
+ 000122         OR : out = a | b;
                 endcase
                 end
         //assign out = out[7:0];
         assign z = (out == 0);
         assign n = (out[7] == 1);
- 001852 assign v = (operation == ADD) ? ((a[7]==b[7]) && (out[7]!=a[7])) :
- 001244            (operation == SUB) ? ((a[7]!=b[7]) && (out[7]!=a[7])) : 1'b0;
- 001852 assign c = (operation == ADD) ? (a[7]&b[7]) | (a[7]&~out[7]) | (b[7]&~out[7]) :
- 001244            (operation == SUB) ? (~((a[7]&~b[7]) | (a[7]&out[7]) | (~b[7]&out[7]))) : 1'b0;
+ 000382 assign v = (operation == ADD) ? ((a[7]==b[7]) && (out[7]!=a[7])) :
+ 000254            (operation == SUB) ? ((a[7]!=b[7]) && (out[7]!=a[7])) : 1'b0;
+ 000382 assign c = (operation == ADD) ? (a[7]&b[7]) | (a[7]&~out[7]) | (b[7]&~out[7]) :
+ 000254            (operation == SUB) ? (~((a[7]&~b[7]) | (a[7]&out[7]) | (~b[7]&out[7]))) : 1'b0;
         
         endmodule
         //=============================================================================================================================================//
@@ -44,12 +44,12 @@
         // the clock only paces WHEN the driver drives and WHEN the monitors sample,
         // so that driver / write-monitor / read-monitor never race each other.
         
- 001250 interface ALU_IF(input bit clk);
- 000279 logic signed[7:0] a;
- 000346 logic signed[7:0] b;
- 000251 logic [1:0] operation;
- 000319 logic signed[7:0] out;
- 000292 logic z,n,c,v;
+ 000260 interface ALU_IF(input bit clk);
+ 000022 logic signed[7:0] a;
+ 000095 logic signed[7:0] b;
+%000006 logic [1:0] operation;
+ 000060 logic signed[7:0] out;
+ 000055 logic z,n,c,v;
         
         // Driver drives on the NEGEDGE, monitors sample on the POSEDGE.
         // That guarantees a full half-cycle of settling time between a stimulus
@@ -61,47 +61,47 @@
         // ==============================================================================================================================================//
         
         //ALU WRITE TRANSACTION
- 001000 class write_xtn extends uvm_sequence_item;
+ 000010 class write_xtn extends uvm_sequence_item;
           rand bit signed[7:0] a;
           rand bit signed [7:0] b;
           rand bit [1:0] operation;
           bit signed [7:0] out;
           //bit signed [8:0] out_temp; //this out_temp will be used in the scoreboard class for determining z,c,v,n bits
           bit  z,c,v,n;
-~008482   `uvm_object_utils_begin(write_xtn)
+~001552   `uvm_object_utils_begin(write_xtn)
         	// a/b/operation are stimulus fields: the read-monitor's item never
         	// populates them (only out/z/n/v/c are read from the DUT), so they
         	// must be excluded from super.do_compare() or every check would
         	// spuriously fail comparing a real value against a stale/default 0.
-~008482 	`uvm_field_int(a,UVM_DEFAULT & ~UVM_COMPARE)
-~008482 	`uvm_field_int(b,UVM_DEFAULT & ~UVM_COMPARE)
-~008482 	`uvm_field_int(operation,UVM_DEFAULT & ~UVM_COMPARE)
-~009729 	`uvm_field_int(out,UVM_ALL_ON)
-~009729 	`uvm_field_int(z,UVM_ALL_ON)
-~009729 	`uvm_field_int(c,UVM_ALL_ON)
-~009729 	`uvm_field_int(v,UVM_ALL_ON)
-~009729 	`uvm_field_int(n,UVM_ALL_ON)
+~001552 	`uvm_field_int(a,UVM_DEFAULT & ~UVM_COMPARE)
+~001552 	`uvm_field_int(b,UVM_DEFAULT & ~UVM_COMPARE)
+~001552 	`uvm_field_int(operation,UVM_DEFAULT & ~UVM_COMPARE)
+~001809 	`uvm_field_int(out,UVM_ALL_ON)
+~001809 	`uvm_field_int(z,UVM_ALL_ON)
+~001809 	`uvm_field_int(c,UVM_ALL_ON)
+~001809 	`uvm_field_int(v,UVM_ALL_ON)
+~001809 	`uvm_field_int(n,UVM_ALL_ON)
         `uvm_object_utils_end
           // data members
         
           // constructor
-~003750   function new(string name = "write_xtn");
- 003750 	super.new(name);
+~000780   function new(string name = "write_xtn");
+ 000780 	super.new(name);
           endfunction:new
         
- 001247 virtual function bit do_compare(uvm_object rhs, uvm_comparer comparer = null);
- 001247 	write_xtn rhs_;
-~001247 	if(!$cast(rhs_,rhs))
+ 000257 virtual function bit do_compare(uvm_object rhs, uvm_comparer comparer = null);
+ 000257 	write_xtn rhs_;
+~000257 	if(!$cast(rhs_,rhs))
 %000000 	begin
 %000000 		`uvm_error("do_compare","cast if the object failed");
 %000000 		return 0;
         	end
- 001247 	return
- 001247 	super.do_compare(rhs,comparer) &&
- 001247 		this.out == rhs_.out &&
- 001247 		this.z == rhs_.z &&
- 001247 		this.c == rhs_.c &&
- 001247 		this.v == rhs_.v &&
+ 000257 	return
+ 000257 	super.do_compare(rhs,comparer) &&
+ 000257 		this.out == rhs_.out &&
+ 000257 		this.z == rhs_.z &&
+ 000257 		this.c == rhs_.c &&
+ 000257 		this.v == rhs_.v &&
         		this.n == rhs_.n;
         endfunction:do_compare
         
@@ -141,7 +141,7 @@
         
         class ALU_SEQUENCE extends uvm_sequence #(write_xtn);
         
-~003001 	`uvm_object_utils(ALU_SEQUENCE)
+~000031 	`uvm_object_utils(ALU_SEQUENCE)
         
         
         
@@ -154,14 +154,14 @@
         endfunction
         
 %000001 task ALU_SEQUENCE:: body();
-~001000 	repeat(1000)
- 001000 		begin
- 001000 		req = write_xtn::type_id::create("req");
- 001000 		start_item(req);
- 001000 		assert(req.randomize());
-~001000 		`uvm_info(get_type_name(),"ALU SEQUENCE",UVM_LOW)
- 001000 		req.print();
- 001000 		finish_item(req);
+~000010 	repeat(10)
+ 000010 		begin
+ 000010 		req = write_xtn::type_id::create("req");
+ 000010 		start_item(req);
+ 000010 		assert(req.randomize());
+~000010 		`uvm_info(get_type_name(),"ALU SEQUENCE",UVM_LOW)
+ 000010 		req.print();
+ 000010 		finish_item(req);
         		end
         	endtask
         
@@ -273,7 +273,7 @@
         
         
         class ALU_DRIVER extends uvm_driver #(write_xtn);
-~011229 	`uvm_component_utils(ALU_DRIVER)
+~002319 	`uvm_component_utils(ALU_DRIVER)
         	virtual ALU_IF.ALU_DRV vif;
         	alu_config drv_cfg;
         	extern function new (string name = "ALU_DRIVER",uvm_component parent);
@@ -303,27 +303,27 @@
         	// Wait for the very first negedge so the first item lines up with the
         	// clock instead of racing the interface at time 0.
         	
- 001247 	forever
- 001247 		begin
- 001247 		seq_item_port.get_next_item(req);
- 001247 		req.print();
- 001247 		drive_item(req);
-~001247 		`uvm_info(get_type_name(),"ALU DRIVER",UVM_LOW)
- 001247 		seq_item_port.item_done();
+ 000257 	forever
+ 000257 		begin
+ 000257 		seq_item_port.get_next_item(req);
+ 000257 		req.print();
+ 000257 		drive_item(req);
+~000257 		`uvm_info(get_type_name(),"ALU DRIVER",UVM_LOW)
+ 000257 		seq_item_port.item_done();
         		end
         endtask
         
- 001247 task ALU_DRIVER::drive_item(write_xtn item);
-~001247 `uvm_info(get_type_name(),"ALU DRIVING DATA",UVM_LOW)
+ 000257 task ALU_DRIVER::drive_item(write_xtn item);
+~000257 `uvm_info(get_type_name(),"ALU DRIVING DATA",UVM_LOW)
         	// Drive on the negedge: this gives the DUT (and the sampling monitors,
         	// which trigger on posedge) a guaranteed half clock period to settle
         	// before anything reads a,b,operation or the resulting output.
- 001247 	@(negedge vif.clk);
- 001247 	vif.a <= item.a;
- 001247 	vif.b <= item.b;
- 001247 	vif.operation <= item.operation;
- 001247 	@(posedge vif.clk);
-~001247 `uvm_info(get_type_name(),"ALU DRIVING SUCCESSFUL",UVM_LOW)
+ 000257 	@(negedge vif.clk);
+ 000257 	vif.a <= item.a;
+ 000257 	vif.b <= item.b;
+ 000257 	vif.operation <= item.operation;
+ 000257 	@(posedge vif.clk);
+~000257 `uvm_info(get_type_name(),"ALU DRIVING SUCCESSFUL",UVM_LOW)
         endtask:drive_item
         
         //=============================================================================================================================================//
@@ -332,7 +332,7 @@
         
         
         class ALU_WRITE_MONITOR extends uvm_monitor;
-~011229 	`uvm_component_utils(ALU_WRITE_MONITOR)
+~002319 	`uvm_component_utils(ALU_WRITE_MONITOR)
         	uvm_analysis_port #(write_xtn) wr_mon_port; // Analysis port declaration
         
         	virtual ALU_IF.ALU_WRITE_MON vif;
@@ -366,29 +366,29 @@
         
         
         
- 001247 forever
- 001247 	begin
- 001247 	data_sentwr = write_xtn::type_id::create("data_sentwr");
- 001247 	collect_data();
- 001247 	wr_mon_port.write(data_sentwr);
-~001247 	`uvm_info(get_type_name(),"ALU WRITE MONITORED DATA",UVM_LOW)
- 001247 	data_sentwr.print();
+ 000257 forever
+ 000257 	begin
+ 000257 	data_sentwr = write_xtn::type_id::create("data_sentwr");
+ 000257 	collect_data();
+ 000257 	wr_mon_port.write(data_sentwr);
+~000257 	`uvm_info(get_type_name(),"ALU WRITE MONITORED DATA",UVM_LOW)
+ 000257 	data_sentwr.print();
         	end
         
         endtask
         
- 001247 task ALU_WRITE_MONITOR::collect_data();
+ 000257 task ALU_WRITE_MONITOR::collect_data();
         	// Sample strictly on the posedge: the driver only ever changes a,b,
         	// operation on the negedge, so by the time posedge arrives the values
         	// are guaranteed stable - no more racing the driver's nonblocking assigns.
- 001247 	@(negedge vif.clk);
- 001247 	@(posedge vif.clk);
+ 000257 	@(negedge vif.clk);
+ 000257 	@(posedge vif.clk);
         	//#2;
-~001247 	`uvm_info(get_type_name(),"ALU WRITE MONITORING DATA",UVM_LOW)
- 001247 	data_sentwr.a = vif.a;
- 001247 	data_sentwr.b = vif.b;
- 001247 	data_sentwr.operation = vif.operation;
-~001247 	`uvm_info(get_type_name(),"ALU WRITE MONITORING SUCCESSFUL",UVM_LOW)
+~000257 	`uvm_info(get_type_name(),"ALU WRITE MONITORING DATA",UVM_LOW)
+ 000257 	data_sentwr.a = vif.a;
+ 000257 	data_sentwr.b = vif.b;
+ 000257 	data_sentwr.operation = vif.operation;
+~000257 	`uvm_info(get_type_name(),"ALU WRITE MONITORING SUCCESSFUL",UVM_LOW)
         
         endtask
         
@@ -397,7 +397,7 @@
         
         
         class ALU_READ_MONITOR extends uvm_monitor;
-~011229 	`uvm_component_utils(ALU_READ_MONITOR)
+~002319 	`uvm_component_utils(ALU_READ_MONITOR)
         	uvm_analysis_port #(write_xtn) rd_mon_port; // Analysis port declaration
         
         	virtual ALU_IF.ALU_READ_MON vif;
@@ -431,30 +431,30 @@
         
         
         
- 001247 forever
- 001247 	begin
- 001247 	data_sent = write_xtn::type_id::create("data_sent");
- 001247 	collect_data();
- 001247 	rd_mon_port.write(data_sent);
-~001247 	`uvm_info(get_type_name(),"ALU READ MONITORED DATA",UVM_LOW)
- 001247 	data_sent.print();
+ 000257 forever
+ 000257 	begin
+ 000257 	data_sent = write_xtn::type_id::create("data_sent");
+ 000257 	collect_data();
+ 000257 	rd_mon_port.write(data_sent);
+~000257 	`uvm_info(get_type_name(),"ALU READ MONITORED DATA",UVM_LOW)
+ 000257 	data_sent.print();
         	end
         endtask
         
- 001247 task ALU_READ_MONITOR::collect_data();
+ 000257 task ALU_READ_MONITOR::collect_data();
         	// Same posedge sample point as the write monitor, so a given posedge's
         	// write-monitor transaction and read-monitor transaction always
         	// correspond to the same driven item in the scoreboard.
- 001247 	@(negedge vif.clk);
- 001247 	@(posedge vif.clk);
+ 000257 	@(negedge vif.clk);
+ 000257 	@(posedge vif.clk);
         	//#2;
-~001247 	`uvm_info(get_type_name(),"ALU READ MONITORING DATA",UVM_LOW)
- 001247 	data_sent.z = vif.z;
- 001247 	data_sent.n = vif.n;
- 001247 	data_sent.c = vif.c;
- 001247 	data_sent.v = vif.v;
- 001247 	data_sent.out = vif.out;
-~001247 	`uvm_info(get_type_name(),"ALU READ MONITORING SUCCESSFUL",UVM_LOW)
+~000257 	`uvm_info(get_type_name(),"ALU READ MONITORING DATA",UVM_LOW)
+ 000257 	data_sent.z = vif.z;
+ 000257 	data_sent.n = vif.n;
+ 000257 	data_sent.c = vif.c;
+ 000257 	data_sent.v = vif.v;
+ 000257 	data_sent.out = vif.out;
+~000257 	`uvm_info(get_type_name(),"ALU READ MONITORING SUCCESSFUL",UVM_LOW)
         
         endtask
         
@@ -525,7 +525,7 @@
         
         class ALU_SCOREBOARD extends uvm_scoreboard;
         
-~003747 	`uvm_component_utils(ALU_SCOREBOARD)
+~000777 	`uvm_component_utils(ALU_SCOREBOARD)
         	uvm_tlm_analysis_fifo #(write_xtn) wr_ana_fifo;
         	uvm_tlm_analysis_fifo #(write_xtn) rd_ana_fifo;
         	uvm_analysis_port #(write_xtn) cov_port; // fully-correlated (a,b,op,out,z,n,v,c) item, for coverage
@@ -550,58 +550,58 @@
         
 %000000 task ALU_SCOREBOARD::run_phase (uvm_phase phase);
 %000000 	fork
-~001247 	forever
- 001247 		begin
- 001247 		wr_ana_fifo.get(wr_data);
- 001247 		ref_model(wr_data);
+~000257 	forever
+ 000257 		begin
+ 000257 		wr_ana_fifo.get(wr_data);
+ 000257 		ref_model(wr_data);
         		end
-~001247 	forever
- 001247 		begin
- 001247 		rd_ana_fifo.get(rd_data);
- 001247 		check_data(rd_data);
+~000257 	forever
+ 000257 		begin
+ 000257 		rd_ana_fifo.get(rd_data);
+ 000257 		check_data(rd_data);
         		end
         	join
         endtask
         
         
- 001247 task ALU_SCOREBOARD::ref_model(write_xtn wr1data);
- 001247 	begin
+ 000257 task ALU_SCOREBOARD::ref_model(write_xtn wr1data);
+ 000257 	begin
         	// Carry the stimulus fields forward so wrdata is a fully correlated
         	// (a,b,operation,out,z,n,v,c) reference item - needed both for
         	// do_compare() in check_data() and for functional coverage sampling.
- 001247 	this.wrdata.a = wr1data.a;
- 001247 	this.wrdata.b = wr1data.b;
- 001247 	this.wrdata.operation = wr1data.operation;
+ 000257 	this.wrdata.a = wr1data.a;
+ 000257 	this.wrdata.b = wr1data.b;
+ 000257 	this.wrdata.operation = wr1data.operation;
         
- 001247 	case(wr1data.operation)
- 000321         2'b00: this.wrdata.out = wr1data.a + wr1data.b;
- 000304         2'b01: this.wrdata.out = wr1data.a - wr1data.b;
- 000300         2'b10: this.wrdata.out = wr1data.a & wr1data.b;
- 000322         2'b11: this.wrdata.out = wr1data.a | wr1data.b;
+ 000257 	case(wr1data.operation)
+ 000066         2'b00: this.wrdata.out = wr1data.a + wr1data.b;
+ 000064         2'b01: this.wrdata.out = wr1data.a - wr1data.b;
+ 000066         2'b10: this.wrdata.out = wr1data.a & wr1data.b;
+ 000061         2'b11: this.wrdata.out = wr1data.a | wr1data.b;
                 endcase
- 001247 	this.wrdata.z = (this.wrdata.out==0);
- 001247 	this.wrdata.n = (this.wrdata.out[7] == 1);
- 001247 	this.wrdata.v = (this.wrdata.operation == 2'b00) ? ((this.wrdata.a[7]==this.wrdata.b[7]) && (this.wrdata.out[7]!=this.wrdata.a[7])) :
+ 000257 	this.wrdata.z = (this.wrdata.out==0);
+ 000257 	this.wrdata.n = (this.wrdata.out[7] == 1);
+ 000257 	this.wrdata.v = (this.wrdata.operation == 2'b00) ? ((this.wrdata.a[7]==this.wrdata.b[7]) && (this.wrdata.out[7]!=this.wrdata.a[7])) :
                    (this.wrdata.operation == 2'b01) ? ((this.wrdata.a[7]!=this.wrdata.b[7]) && (this.wrdata.out[7]!=this.wrdata.a[7])) : 1'b0;
- 001247 	this.wrdata.c = (this.wrdata.operation == 2'b00) ? (this.wrdata.a[7]&this.wrdata.b[7]) | (this.wrdata.a[7]&~this.wrdata.out[7]) | (this.wrdata.b[7]&~this.wrdata.out[7]) :
+ 000257 	this.wrdata.c = (this.wrdata.operation == 2'b00) ? (this.wrdata.a[7]&this.wrdata.b[7]) | (this.wrdata.a[7]&~this.wrdata.out[7]) | (this.wrdata.b[7]&~this.wrdata.out[7]) :
                    (this.wrdata.operation == 2'b01) ? (~((this.wrdata.a[7]&~this.wrdata.b[7]) | (this.wrdata.a[7]&this.wrdata.out[7]) | (~this.wrdata.b[7]&this.wrdata.out[7]))) : 1'b0;
         
- 001247 	cov_port.write(this.wrdata);
+ 000257 	cov_port.write(this.wrdata);
         	end
         endtask
         
- 001247 task ALU_SCOREBOARD::check_data(write_xtn rddata);
-~001247 	if(!rddata.compare(wrdata))
+ 000257 task ALU_SCOREBOARD::check_data(write_xtn rddata);
+~000257 	if(!rddata.compare(wrdata))
 %000000 	begin
 %000000 		`uvm_error(get_type_name(),"Scoreboard error")
 %000000 		rddata.print();
 %000000 		wrdata.print();
         	end
         	else
- 001247 	begin
-~001247 		`uvm_info(get_type_name(),"Data match successful",UVM_LOW)
- 001247 		rddata.print();
- 001247 		wrdata.print();
+ 000257 	begin
+~000257 		`uvm_info(get_type_name(),"Data match successful",UVM_LOW)
+ 000257 		rddata.print();
+ 000257 		wrdata.print();
         	end
         endtask
         
@@ -626,10 +626,10 @@
         		option.name = "alu_cg";
         
         		cp_op: coverpoint cov_xtn.operation {
- 000321 			bins add_op = {2'b00};
- 000304 			bins sub_op = {2'b01};
- 000300 			bins and_op = {2'b10};
- 000322 			bins or_op  = {2'b11};
+ 000066 			bins add_op = {2'b00};
+ 000064 			bins sub_op = {2'b01};
+ 000066 			bins and_op = {2'b10};
+ 000061 			bins or_op  = {2'b11};
         		}
         
         		// Overflow/carry only mean something for ADD/SUB. Verilator 5.052's
@@ -640,8 +640,8 @@
         		// don't match either bin and are left uncounted, same as any other
         		// coverpoint with a restricted bin set.
         		cp_arith_op: coverpoint cov_xtn.operation {
- 000321 			bins add_op = {2'b00};
- 000304 			bins sub_op = {2'b01};
+ 000066 			bins add_op = {2'b00};
+ 000064 			bins sub_op = {2'b01};
         		}
         
         		// values actually assigned to 'a' across the directed corner vectors
@@ -650,46 +650,46 @@
         		// 32-bit and can silently fail to match an 8-bit signed coverpoint
         		// under Verilator's covergroup bin matching.
         		cp_a: coverpoint cov_xtn.a {
- 000038 			bins zero    = {8'sh00}; // 0
- 000040 			bins max_pos = {8'sh7F}; // 127
- 000041 			bins min_neg = {8'sh80}; // -128
+ 000037 			bins zero    = {8'sh00}; // 0
+ 000037 			bins max_pos = {8'sh7F}; // 127
+ 000038 			bins min_neg = {8'sh80}; // -128
  000033 			bins neg_64  = {8'shC0}; // -64
- 000040 			bins neg_1   = {8'shFF}; // -1
- 000034 			bins pos_64  = {8'sh40}; // 64
- 000036 			bins pos_20  = {8'sh14}; // 20
- 000549 			bins range1 = {[8'sh01:8'sh7E]}; // 1..126
- 000247 			bins range2 = {[8'sh81:8'shBF]}; // -127..-65
- 000337 			bins range3 = {[8'shC1:8'sh00]}; // -63..-1
+ 000036 			bins neg_1   = {8'shFF}; // -1
+ 000033 			bins pos_64  = {8'sh40}; // 64
+ 000033 			bins pos_20  = {8'sh14}; // 20
+ 000070 			bins range1 = {[8'sh01:8'sh7E]}; // 1..126
+%000003 			bins range2 = {[8'sh81:8'shBF]}; // -127..-65
+ 000076 			bins range3 = {[8'shC1:8'sh00]}; // -63..-1
         		}
         
         		// values actually assigned to 'b' across the directed corner vectors
         		cp_b: coverpoint cov_xtn.b {
- 000037 			bins zero    = {8'sh00}; // 0
- 000034 			bins one     = {8'sh01}; // 1
- 000035 			bins neg_1   = {8'shFF}; // -1
- 000041 			bins min_neg = {8'sh80}; // -128
- 000035 			bins max_pos = {8'sh7F}; // 127
- 000032 			bins neg_64  = {8'shC0}; // -64
- 000032 			bins pos_64  = {8'sh40}; // 64
- 000035 			bins pos_30  = {8'sh1E}; // 30
- 000566 			bins range1 = {[8'sh01:8'sh7E]}; // 1..126
- 000242 			bins range2 = {[8'sh81:8'shBF]}; // -127..-65
- 000331 			bins range3 = {[8'shC1:8'sh00]}; // -63..-1
+ 000033 			bins zero    = {8'sh00}; // 0
+ 000031 			bins one     = {8'sh01}; // 1
+ 000032 			bins neg_1   = {8'shFF}; // -1
+ 000034 			bins min_neg = {8'sh80}; // -128
+ 000030 			bins max_pos = {8'sh7F}; // 127
+ 000029 			bins neg_64  = {8'shC0}; // -64
+ 000029 			bins pos_64  = {8'sh40}; // 64
+ 000029 			bins pos_30  = {8'sh1E}; // 30
+ 000093 			bins range1 = {[8'sh01:8'sh7E]}; // 1..126
+%000004 			bins range2 = {[8'sh81:8'shBF]}; // -127..-65
+ 000067 			bins range3 = {[8'shC1:8'sh00]}; // -63..-1
         		}
         		cp_out: coverpoint cov_xtn.out {
- 000525 			bins range1 = {[8'sh01:8'sh7E]}; // 1..126
- 000249 			bins range2 = {[8'sh81:8'shBF]}; // -127..-65
- 000382 			bins range3 = {[8'shC1:8'sh00]}; // -63..-1
- 000065 			bins zero    = {8'sh00}; // 0
+ 000071 			bins range1 = {[8'sh01:8'sh7E]}; // 1..126
+ 000023 			bins range2 = {[8'sh81:8'shBF]}; // -127..-65
+ 000097 			bins range3 = {[8'shC1:8'sh00]}; // -63..-1
+ 000049 			bins zero    = {8'sh00}; // 0
         		}
- 001182 		cp_z: coverpoint cov_xtn.z { bins z0 = {0}; bins z1 = {1}; }
- 000624 		cp_n: coverpoint cov_xtn.n { bins n0 = {0}; bins n1 = {1}; }
- 001098 		cp_v: coverpoint cov_xtn.v { bins v0 = {0}; bins v1 = {1}; }
- 000940 		cp_c: coverpoint cov_xtn.c { bins c0 = {0}; bins c1 = {1}; }
+ 000208 		cp_z: coverpoint cov_xtn.z { bins z0 = {0}; bins z1 = {1}; }
+ 000141 		cp_n: coverpoint cov_xtn.n { bins n0 = {0}; bins n1 = {1}; }
+ 000223 		cp_v: coverpoint cov_xtn.v { bins v0 = {0}; bins v1 = {1}; }
+ 000197 		cp_c: coverpoint cov_xtn.c { bins c0 = {0}; bins c1 = {1}; }
         
- 000239 		op_x_v: cross cp_arith_op, cp_v;
- 000167 		op_x_c: cross cp_arith_op, cp_c;
-~000071 		op_x_ab: cross cp_op, cp_a, cp_b;// the percentage along with this was 22 percent for 200 repeats
+ 000048 		op_x_v: cross cp_arith_op, cp_v;
+ 000041 		op_x_c: cross cp_arith_op, cp_c;
+%000008 		op_x_ab: cross cp_op, cp_a, cp_b;// the percentage along with this was 22 percent for 200 repeats
         		// op x z x n x v x c. A full cross has 64 bins but only 20 can ever
         		// occur: AND/OR never set v/c, a zero result is never negative, and
         		// for ADD/SUB overflow fixes the carry (e.g. ADD overflowing to a
@@ -698,25 +698,25 @@
         		// this is a coverpoint on {operation,z,n,v,c} with only the 20 legal bins.
         		op_x_zn: coverpoint {cov_xtn.operation, cov_xtn.z, cov_xtn.n, cov_xtn.v, cov_xtn.c} {
         			//                  op  z n v c
- 000045 			bins add_z0n0v0c0 = {6'b00_0_0_0_0};//0
- 000075 			bins add_z0n0v0c1 = {6'b00_0_0_0_1};//1
- 000038 			bins add_z0n0v1c1 = {6'b00_0_0_1_1};//3
- 000078 			bins add_z0n1v0c0 = {6'b00_0_1_0_0};//4
- 000033 			bins add_z0n1v0c1 = {6'b00_0_1_0_1};//5
- 000042 			bins add_z0n1v1c0 = {6'b00_0_1_1_0};//6
+ 000012 			bins add_z0n0v0c0 = {6'b00_0_0_0_0};//0
+%000008 			bins add_z0n0v0c1 = {6'b00_0_0_0_1};//1
+%000006 			bins add_z0n0v1c1 = {6'b00_0_0_1_1};//3
+ 000017 			bins add_z0n1v0c0 = {6'b00_0_1_0_0};//4
+%000005 			bins add_z0n1v0c1 = {6'b00_0_1_0_1};//5
+ 000010 			bins add_z0n1v1c0 = {6'b00_0_1_1_0};//6
 %000002 			bins add_z1n0v0c0 = {6'b00_1_0_0_0};//8
-%000006 			bins add_z1n0v0c1 = {6'b00_1_0_0_1};//9
+%000004 			bins add_z1n0v0c1 = {6'b00_1_0_0_1};//9
 %000002 			bins add_z1n0v1c1 = {6'b00_1_0_1_1};//11
- 000113 			bins sub_z0n0v0c1 = {6'b01_0_0_0_1};//17
- 000036 			bins sub_z0n0v1c0 = {6'b01_0_0_1_0};//18
- 000115 			bins sub_z0n1v0c0 = {6'b01_0_1_0_0};//
- 000031 			bins sub_z0n1v1c1 = {6'b01_0_1_1_1};//
-%000009 			bins sub_z1n0v0c1 = {6'b01_1_0_0_1};//
- 000181 			bins and_z0n0     = {6'b10_0_0_0_0};//
- 000074 			bins and_z0n1     = {6'b10_0_1_0_0};//
- 000045 			bins and_z1n0     = {6'b10_1_0_0_0};
- 000071 			bins or_z0n0      = {6'b11_0_0_0_0};
- 000250 			bins or_z0n1      = {6'b11_0_1_0_0};
+ 000018 			bins sub_z0n0v0c1 = {6'b01_0_0_0_1};//17
+%000007 			bins sub_z0n0v1c0 = {6'b01_0_0_1_0};//18
+ 000022 			bins sub_z0n1v0c0 = {6'b01_0_1_0_0};//
+%000009 			bins sub_z0n1v1c1 = {6'b01_0_1_1_1};//
+%000008 			bins sub_z1n0v0c1 = {6'b01_1_0_0_1};//
+ 000022 			bins and_z0n0     = {6'b10_0_0_0_0};//
+ 000012 			bins and_z0n1     = {6'b10_0_1_0_0};//
+ 000032 			bins and_z1n0     = {6'b10_1_0_0_0};
+ 000019 			bins or_z0n0      = {6'b11_0_0_0_0};
+ 000041 			bins or_z0n1      = {6'b11_0_1_0_0};
 %000001 			bins or_z1n0      = {6'b11_1_0_0_0};
         		}
         
@@ -727,9 +727,9 @@
 %000003 		alu_cg = new();
         	endfunction:new
         
- 001247 	function void write(write_xtn t);
- 001247 		cov_xtn = t;
- 001247 		alu_cg.sample();
+ 000257 	function void write(write_xtn t);
+ 000257 		cov_xtn = t;
+ 000257 		alu_cg.sample();
         	endfunction:write
         
 %000003 	function void report_phase(uvm_phase phase);
@@ -908,9 +908,9 @@
         // this clock exists ONLY to synchronize the testbench: driver drives on
         // negedge, both monitors sample on posedge. That removes the races that
         // come from triggering everything off `@(vif.a or vif.b or ...)`.
- 001250 bit clk;
+ 000260 bit clk;
 %000003 initial clk = 0;
- 002497 always #5 clk = ~clk;   // 10-unit period, 5-unit half period
+ 000517 always #5 clk = ~clk;   // 10-unit period, 5-unit half period
         
         ALU_IF if1(clk);
         

@@ -54,7 +54,7 @@
         //------------------------------------------------------------------------------
         
         // @uvm-ieee 1800.2-2020 auto 5.2
- 047379 virtual class uvm_void;
+ 012729 virtual class uvm_void;
         endclass
         
         // Append/prepend symbolic values for order-dependent APIs
@@ -110,33 +110,33 @@
         // A function that returns the scope that the UVM library lives in, either
         // an instance, a module, or a package.
         //
- 003953 function string uvm_instance_scope();
- 003953   byte c;
- 003953   int pos;
+ 002963 function string uvm_instance_scope();
+ 002963   byte c;
+ 002963   int pos;
           //first time through the scope is ~null~ and we need to calculate, afterwards it
           //is correctly set.
         
-~001433   if(uvm_instance_scope != "") begin 
+~000443   if(uvm_instance_scope != "") begin 
             
 %000000     return uvm_instance_scope;
           end
         
         
- 003953   $swrite(uvm_instance_scope, "%m");
+ 002963   $swrite(uvm_instance_scope, "%m");
           //remove the extraneous .uvm_instance_scope piece or ::uvm_instance_scope
- 003953   pos = uvm_instance_scope.len()-1;
- 003953   c = uvm_instance_scope[pos];
- 025794   while(pos && (c != ".") && (c != ":")) begin 
+ 002963   pos = uvm_instance_scope.len()-1;
+ 002963   c = uvm_instance_scope[pos];
+ 007974   while(pos && (c != ".") && (c != ":")) begin 
             
- 025794     c = uvm_instance_scope[--pos];
+ 007974     c = uvm_instance_scope[--pos];
           end
         
-~001433   if(pos == 0) begin
+~000443   if(pos == 0) begin
             
 %000000     uvm_report_error("SCPSTR", $sformatf("Illegal name %s in scope string",uvm_instance_scope));
           end
         
- 003953   uvm_instance_scope = uvm_instance_scope.substr(0,pos);
+ 002963   uvm_instance_scope = uvm_instance_scope.substr(0,pos);
         endfunction
         
         
@@ -187,65 +187,65 @@
         // by instance name and get a map of type name hashes which the type_id uses
         // for its lookup.
         
- 003953 function int unsigned uvm_create_random_seed ( string type_id, string inst_id="" );
- 003953   uvm_seed_map seed_map;
+ 002963 function int unsigned uvm_create_random_seed ( string type_id, string inst_id="" );
+ 002963   uvm_seed_map seed_map;
         
- 003890   if(inst_id == "") begin
+ 002900   if(inst_id == "") begin
             
  000063     inst_id = "__global__";
           end
         
         
- 003802   if(!uvm_random_seed_table_lookup.exists(inst_id)) begin
+ 002812   if(!uvm_random_seed_table_lookup.exists(inst_id)) begin
             
  000151     uvm_random_seed_table_lookup[inst_id] = new;
           end
         
- 003953   seed_map = uvm_random_seed_table_lookup[inst_id];
+ 002963   seed_map = uvm_random_seed_table_lookup[inst_id];
         
- 003953   type_id = {uvm_instance_scope(),type_id};
+ 002963   type_id = {uvm_instance_scope(),type_id};
         
- 003682   if(!seed_map.seed_table.exists(type_id)) begin
+ 002692   if(!seed_map.seed_table.exists(type_id)) begin
  000271     seed_map.seed_table[type_id] = uvm_oneway_hash ({type_id,"::",inst_id}, uvm_global_random_seed);
           end
- 003682   if (!seed_map.count.exists(type_id)) begin
+ 002692   if (!seed_map.count.exists(type_id)) begin
  000271     seed_map.count[type_id] = 0;
           end
         
           //can't just increment, otherwise too much chance for collision, so 
           //randomize the seed using the last seed as the seed value. Check if
           //the seed has been used before and if so increment it.
- 003953   seed_map.seed_table[type_id] = seed_map.seed_table[type_id]+seed_map.count[type_id]; 
- 003953   seed_map.count[type_id]++;
+ 002963   seed_map.seed_table[type_id] = seed_map.seed_table[type_id]+seed_map.count[type_id]; 
+ 002963   seed_map.count[type_id]++;
         
- 003953   return seed_map.seed_table[type_id];
+ 002963   return seed_map.seed_table[type_id];
         endfunction
         
         
         // Function- uvm_object_value_str 
         //
         //
- 007325 function string uvm_object_value_str(uvm_object v);
-~007325   if (v == null) begin
+ 001385 function string uvm_object_value_str(uvm_object v);
+~001385   if (v == null) begin
             
 %000000     return "<null>";
           end
         
- 007325   uvm_object_value_str.itoa(v.get_inst_id());
- 007325   uvm_object_value_str = {"@",uvm_object_value_str};
+ 001385   uvm_object_value_str.itoa(v.get_inst_id());
+ 001385   uvm_object_value_str = {"@",uvm_object_value_str};
         endfunction
         
         
         // Function- uvm_leaf_scope
         //
         //
- 062380 function string uvm_leaf_scope (string full_name, byte scope_separator = ".");
- 062380   byte bracket_match;
- 062380   int  pos;
- 062380   int  bmatches;
+ 010900 function string uvm_leaf_scope (string full_name, byte scope_separator = ".");
+ 010900   byte bracket_match;
+ 010900   int  pos;
+ 010900   int  bmatches;
         
- 062380   bmatches = 0;
- 062380   case(scope_separator)
+ 010900   bmatches = 0;
+ 010900   case(scope_separator)
 %000000     "[": begin
 %000000       bracket_match = "]";
             end
@@ -262,25 +262,25 @@
 %000000       bracket_match = "}";
             end
         
- 062380     default: begin
- 062380       bracket_match = "";
+ 010900     default: begin
+ 010900       bracket_match = "";
             end
         
           endcase
         
           //Only use bracket matching if the input string has the end match
-~062380   if(bracket_match != "" && bracket_match != full_name[full_name.len()-1]) begin
+~010900   if(bracket_match != "" && bracket_match != full_name[full_name.len()-1]) begin
             
 %000000     bracket_match = "";
           end
         
         
- 101633   for(pos=full_name.len()-1; pos>0; --pos) begin
+ 016493   for(pos=full_name.len()-1; pos>0; --pos) begin
 %000000     if(full_name[pos] == bracket_match) begin
 %000000       bmatches++;
             end
         
-~101633     else if(full_name[pos] == scope_separator) begin
+~016493     else if(full_name[pos] == scope_separator) begin
 %000000       bmatches--;
 %000000       if(!bmatches || (bracket_match == "")) begin
 %000000         break;
@@ -288,15 +288,15 @@
         
             end
           end
-~062380   if(pos) begin
+~010900   if(pos) begin
 %000000     if(scope_separator != ".") begin
 %000000       pos--;
             end
         
 %000000     uvm_leaf_scope = full_name.substr(pos+1,full_name.len()-1);
           end
- 062380   else begin
- 062380     uvm_leaf_scope = full_name;
+ 010900   else begin
+ 010900     uvm_leaf_scope = full_name;
           end
         endfunction
         
@@ -320,17 +320,17 @@
           // The return value is the converted string.
           //
           // @uvm-contrib - For potential contribution to a future 1800.2 standard
-~062380   static function string to_string(T value, int size,
+~010900   static function string to_string(T value, int size,
                                            uvm_radix_enum radix=UVM_NORADIX,
                                            string radix_str="");
             // sign extend & don't show radix for negative values
-~062380     if (radix == UVM_DEC && value[size-1] === 1) begin
+~010900     if (radix == UVM_DEC && value[size-1] === 1) begin
 %000000       return $sformatf("%0d", value);
             end
         
         
             // TODO $countbits(value,'z) would be even better
-~062380     if($isunknown(value)) begin
+~010900     if($isunknown(value)) begin
 %000000       T _t;
 %000000       _t=0;
 %000000       for(int idx=0;idx<size;idx++) begin
@@ -339,12 +339,12 @@
         
 %000000       value=_t;
             end
-~062380     else begin
-~062380       value &= (1 << size)-1;
+~010900     else begin
+~010900       value &= (1 << size)-1;
             end
         
         
-~062380     case(radix)
+~010900     case(radix)
 %000000       UVM_BIN:      begin
 %000000         return $sformatf("%0s%0b", radix_str, value);
               end

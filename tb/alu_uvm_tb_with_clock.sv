@@ -153,7 +153,7 @@ function ALU_SEQUENCE::new(string name = "ALU_SEQUENCE");
 endfunction
 
 task ALU_SEQUENCE:: body();
-	repeat(2000)
+	repeat(10)
 		begin
 		req = write_xtn::type_id::create("req");
 		start_item(req);

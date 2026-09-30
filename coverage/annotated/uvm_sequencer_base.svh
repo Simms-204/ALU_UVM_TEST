@@ -420,8 +420,8 @@
           // This function is implemented here to allow <uvm_push_sequencer#(REQ,RSP)>
           // and <uvm_push_driver#(REQ,RSP)> access to the call.
           //
- 002494   virtual function bit is_auto_item_recording_enabled();
- 002494     return m_auto_item_recording;
+ 000514   virtual function bit is_auto_item_recording_enabled();
+ 000514     return m_auto_item_recording;
           endfunction
         
           static uvm_sequencer_base all_sequencer_insts[int unsigned];
@@ -490,8 +490,8 @@
         // m_update_lists
         // --------------
         
- 002494 function void uvm_sequencer_base::m_update_lists();
- 002494   m_lock_arb_size++;
+ 000514 function void uvm_sequencer_base::m_update_lists();
+ 000514   m_lock_arb_size++;
         endfunction
         
         
@@ -525,7 +525,7 @@
         // m_register_sequence
         // -------------------
         
- 001250 function int uvm_sequencer_base::m_register_sequence(uvm_sequence_base sequence_ptr);
+ 000260 function int uvm_sequencer_base::m_register_sequence(uvm_sequence_base sequence_ptr);
         
 %000003   if (sequence_ptr.m_get_sqr_sequence_id(m_sequencer_id, 1) > 0) begin
             
@@ -533,9 +533,9 @@
           end
         
         
- 001250   sequence_ptr.m_set_sqr_sequence_id(m_sequencer_id, g_sequence_id++);
- 001250   reg_sequences[sequence_ptr.get_sequence_id()] = sequence_ptr;
- 001250   return sequence_ptr.get_sequence_id();
+ 000260   sequence_ptr.m_set_sqr_sequence_id(m_sequencer_id, g_sequence_id++);
+ 000260   reg_sequences[sequence_ptr.get_sequence_id()] = sequence_ptr;
+ 000260   return sequence_ptr.get_sequence_id();
         endfunction
         
         
@@ -591,22 +591,22 @@
         // granted at the earliest possible time.  This function grants any queues
         // at the front that are not locked out
         
- 003744 function void uvm_sequencer_base::grant_queued_locks();
+ 000774 function void uvm_sequencer_base::grant_queued_locks();
             // remove and report any zombies
- 003744     begin
- 003744       uvm_sequence_request zombies[$];
- 003744       zombies = arb_sequence_q.find(item) with (item.request==SEQ_TYPE_LOCK && item.process_id.status inside {process::KILLED,process::FINISHED});
-~003744       foreach(zombies[idx]) begin
+ 000774     begin
+ 000774       uvm_sequence_request zombies[$];
+ 000774       zombies = arb_sequence_q.find(item) with (item.request==SEQ_TYPE_LOCK && item.process_id.status inside {process::KILLED,process::FINISHED});
+~000774       foreach(zombies[idx]) begin
 %000000         `uvm_error("SEQLCKZMB", $sformatf("The task responsible for requesting a lock on sequencer '%s' for sequence '%s' has been killed, to avoid a deadlock the sequence will be removed from the arbitration queues", this.get_full_name(), zombies[idx].sequence_ptr.get_full_name()))
 %000000         remove_sequence_from_queues(zombies[idx].sequence_ptr);
               end
             end
          
             // grant the first lock request that is not blocked, if any
- 003744     begin
- 003744       int lock_req_indices[$];
- 003744       lock_req_indices = arb_sequence_q.find_first_index(item) with (item.request==SEQ_TYPE_LOCK && is_blocked(item.sequence_ptr) == 0);
-~003744       if(lock_req_indices.size()) begin
+ 000774     begin
+ 000774       int lock_req_indices[$];
+ 000774       lock_req_indices = arb_sequence_q.find_first_index(item) with (item.request==SEQ_TYPE_LOCK && is_blocked(item.sequence_ptr) == 0);
+~000774       if(lock_req_indices.size()) begin
 %000000         uvm_sequence_request lock_req = arb_sequence_q[lock_req_indices[0]];
 %000000         lock_list.push_back(lock_req.sequence_ptr);
 %000000         m_set_arbitration_completed(lock_req.request_id);
@@ -620,12 +620,12 @@
         // m_select_sequence
         // -----------------
         
- 001247 task uvm_sequencer_base::m_select_sequence(output uvm_sequence_request selected_sequence_request);
- 001247    int selected_sequence;
+ 000257 task uvm_sequencer_base::m_select_sequence(output uvm_sequence_request selected_sequence_request);
+ 000257    int selected_sequence;
         
             // Select a sequence
-~001247     do begin
-~001247       repeat(m_wait_for_sequences_count) begin
+~000257     do begin
+~000257       repeat(m_wait_for_sequences_count) begin
 %000003         wait_for_sequences();
 %000003         selected_sequence = m_choose_next_request();
 %000003         if (selected_sequence != -1) begin
@@ -634,16 +634,16 @@
                 end
         
               end
-~001247       if (selected_sequence == -1) begin
+~000257       if (selected_sequence == -1) begin
 %000000         m_wait_for_available_sequence();
               end
-~001247     end while (selected_sequence == -1);
+~000257     end while (selected_sequence == -1);
             // issue grant
-~001247     if (selected_sequence >= 0) begin
- 001247       selected_sequence_request = arb_sequence_q[selected_sequence];
- 001247       m_set_arbitration_completed(selected_sequence_request.request_id);
- 001247       arb_sequence_q.delete(selected_sequence);
- 001247       m_update_lists();
+~000257     if (selected_sequence >= 0) begin
+ 000257       selected_sequence_request = arb_sequence_q[selected_sequence];
+ 000257       m_set_arbitration_completed(selected_sequence_request.request_id);
+ 000257       arb_sequence_q.delete(selected_sequence);
+ 000257       m_update_lists();
             end
         endtask
         
@@ -656,22 +656,22 @@
         // This function returns -1 if no sequences are available or the entry into
         // arb_sequence_q for the chosen sequence
         
- 001250 function int uvm_sequencer_base::m_choose_next_request();
- 001250   int i, temp;
- 001250   int avail_sequence_count;
- 001250   int sum_priority_val;
- 001250   int avail_sequences[$];
- 001250   int highest_sequences[$];
- 001250   int highest_pri;
- 001250   string  s;
+ 000260 function int uvm_sequencer_base::m_choose_next_request();
+ 000260   int i, temp;
+ 000260   int avail_sequence_count;
+ 000260   int sum_priority_val;
+ 000260   int avail_sequences[$];
+ 000260   int highest_sequences[$];
+ 000260   int highest_pri;
+ 000260   string  s;
         
- 001250   avail_sequence_count = 0;
+ 000260   avail_sequence_count = 0;
         
- 001250   grant_queued_locks();
+ 000260   grant_queued_locks();
         
- 001250   i = 0;
+ 000260   i = 0;
 %000000   while (i < arb_sequence_q.size()) begin
-~001247     if ((arb_sequence_q[i].process_id.status == process::KILLED) ||
+~000257     if ((arb_sequence_q[i].process_id.status == process::KILLED) ||
 %000000     (arb_sequence_q[i].process_id.status == process::FINISHED)) begin
 %000000       `uvm_error("SEQREQZMB", $sformatf("The task responsible for requesting a wait_for_grant on sequencer '%s' for sequence '%s' has been killed, to avoid a deadlock the sequence will be removed from the arbitration queues", this.get_full_name(), arb_sequence_q[i].sequence_ptr.get_full_name()))
 %000000       remove_sequence_from_queues(arb_sequence_q[i].sequence_ptr);
@@ -764,7 +764,7 @@
           end
         
           //  Strict Fifo
-~001250   if ((m_arbitration == UVM_SEQ_ARB_STRICT_FIFO) || m_arbitration == UVM_SEQ_ARB_STRICT_RANDOM) begin
+~000260   if ((m_arbitration == UVM_SEQ_ARB_STRICT_FIFO) || m_arbitration == UVM_SEQ_ARB_STRICT_RANDOM) begin
 %000000     highest_pri = 0;
             // Build a list of sequences at the highest priority
 %000000     for (i = 0; i < avail_sequences.size(); i++) begin
@@ -802,7 +802,7 @@
 %000000     return(i);
           end
         
- 001250   uvm_report_fatal("Sequencer", "Internal error: Failed to choose sequence", UVM_NONE);
+ 000260   uvm_report_fatal("Sequencer", "Internal error: Failed to choose sequence", UVM_NONE);
         
         endfunction
         
@@ -916,19 +916,19 @@
         // m_wait_for_arbitration_completed
         // --------------------------------
         
- 001247 task uvm_sequencer_base::m_wait_for_arbitration_completed(int request_id);
- 001247   int lock_arb_size;
+ 000257 task uvm_sequencer_base::m_wait_for_arbitration_completed(int request_id);
+ 000257   int lock_arb_size;
         
           // Search the list of arb_wait_q, see if this item is done
- 001247   forever begin
+ 000257   forever begin
             
- 001247     lock_arb_size  = m_lock_arb_size;
+ 000257     lock_arb_size  = m_lock_arb_size;
         
-~001247     if (arb_completed.exists(request_id)) begin
+~000257     if (arb_completed.exists(request_id)) begin
 %000000       arb_completed.delete(request_id);
 %000000       return;
             end
- 001247     wait (lock_arb_size != m_lock_arb_size);
+ 000257     wait (lock_arb_size != m_lock_arb_size);
           end
         endtask
         
@@ -936,8 +936,8 @@
         // m_set_arbitration_completed
         // ---------------------------
         
- 001247 function void uvm_sequencer_base::m_set_arbitration_completed(int request_id);
- 001247   arb_completed[request_id] = 1;
+ 000257 function void uvm_sequencer_base::m_set_arbitration_completed(int request_id);
+ 000257   arb_completed[request_id] = 1;
         endfunction
         
         
@@ -995,24 +995,24 @@
         // wait_for_grant
         // --------------
         
- 001247 task uvm_sequencer_base::wait_for_grant(uvm_sequence_base sequence_ptr,
+ 000257 task uvm_sequencer_base::wait_for_grant(uvm_sequence_base sequence_ptr,
                                                 int item_priority = -1,
                                                 bit lock_request = 0);
- 001247   uvm_sequence_request req_s;
- 001247   int my_seq_id;
+ 000257   uvm_sequence_request req_s;
+ 000257   int my_seq_id;
         
-~001247   if (sequence_ptr == null) begin
+~000257   if (sequence_ptr == null) begin
             
 %000000     uvm_report_fatal("uvm_sequencer",
 %000000        "wait_for_grant passed null sequence_ptr", UVM_NONE);
           end
         
         
- 001247   my_seq_id = m_register_sequence(sequence_ptr);
+ 000257   my_seq_id = m_register_sequence(sequence_ptr);
         
           // If lock_request is asserted, then issue a lock.  Don't wait for the response, since
           // there is a request immediately following the lock request
-~001247   if (lock_request == 1) begin
+~000257   if (lock_request == 1) begin
 %000000     req_s = new();
 %000000     req_s.grant = 0;
 %000000     req_s.sequence_id = my_seq_id;
@@ -1024,25 +1024,25 @@
           end
         
           // Push the request onto the queue
- 001247   req_s = new();
- 001247   req_s.grant = 0;
- 001247   req_s.request = SEQ_TYPE_REQ;
- 001247   req_s.sequence_id = my_seq_id;
- 001247   req_s.item_priority = item_priority;
- 001247   req_s.sequence_ptr = sequence_ptr;
- 001247   req_s.request_id = g_request_id++;
- 001247   req_s.process_id = process::self();
- 001247   arb_sequence_q.push_back(req_s);
- 001247   m_update_lists();
+ 000257   req_s = new();
+ 000257   req_s.grant = 0;
+ 000257   req_s.request = SEQ_TYPE_REQ;
+ 000257   req_s.sequence_id = my_seq_id;
+ 000257   req_s.item_priority = item_priority;
+ 000257   req_s.sequence_ptr = sequence_ptr;
+ 000257   req_s.request_id = g_request_id++;
+ 000257   req_s.process_id = process::self();
+ 000257   arb_sequence_q.push_back(req_s);
+ 000257   m_update_lists();
         
           // Wait until this entry is granted
           // Continue to point to the element, since location in queue will change
- 001247   m_wait_for_arbitration_completed(req_s.request_id);
+ 000257   m_wait_for_arbitration_completed(req_s.request_id);
         
           // The wait_for_grant_semaphore is used only to check that send_request
           // is only called after wait_for_grant.  This is not a complete check, since
           // requests might be done in parallel, but it will catch basic errors
- 001247   req_s.sequence_ptr.m_wait_for_grant_semaphore++;
+ 000257   req_s.sequence_ptr.m_wait_for_grant_semaphore++;
         
         endtask
         
@@ -1050,17 +1050,17 @@
         // wait_for_item_done
         // ------------------
         
- 001247 task uvm_sequencer_base::wait_for_item_done(uvm_sequence_base sequence_ptr,
+ 000257 task uvm_sequencer_base::wait_for_item_done(uvm_sequence_base sequence_ptr,
                                                     int transaction_id);
- 001247   int sequence_id;
+ 000257   int sequence_id;
         
- 001247   sequence_id = sequence_ptr.m_get_sqr_sequence_id(m_sequencer_id, 1);
- 001247   m_wait_for_item_sequence_id = -1;
- 001247   m_wait_for_item_transaction_id = -1;
+ 000257   sequence_id = sequence_ptr.m_get_sqr_sequence_id(m_sequencer_id, 1);
+ 000257   m_wait_for_item_sequence_id = -1;
+ 000257   m_wait_for_item_transaction_id = -1;
         
-~001247   if (transaction_id == -1) begin
+~000257   if (transaction_id == -1) begin
             
- 001247     wait (m_wait_for_item_sequence_id == sequence_id);
+ 000257     wait (m_wait_for_item_sequence_id == sequence_id);
           end
         
 %000000   else begin
@@ -1075,23 +1075,23 @@
         // is_blocked
         // ----------
         
- 001247 function bit uvm_sequencer_base::is_blocked(uvm_sequence_base sequence_ptr);
+ 000257 function bit uvm_sequencer_base::is_blocked(uvm_sequence_base sequence_ptr);
         
-~001247   if (sequence_ptr == null) begin
+~000257   if (sequence_ptr == null) begin
             
 %000000     uvm_report_fatal("uvm_sequence_controller",
 %000000                      "is_blocked passed null sequence_ptr", UVM_NONE);
           end
         
         
-~001247   foreach (lock_list[i]) begin
+~000257   foreach (lock_list[i]) begin
 %000000     if ((lock_list[i].get_inst_id() !=
             sequence_ptr.get_inst_id()) &&
 %000000     (is_child(lock_list[i], sequence_ptr) == 0)) begin
 %000000       return 1;
             end
           end
- 001247   return 0;
+ 000257   return 0;
         endfunction
         
         
@@ -1378,8 +1378,8 @@
         // wait_for_sequences
         // ------------------
         
- 001250 task uvm_sequencer_base::wait_for_sequences();
- 001250   uvm_wait_for_nba_region();
+ 000260 task uvm_sequencer_base::wait_for_sequences();
+ 000260   uvm_wait_for_nba_region();
         endtask
         
         
@@ -1516,7 +1516,7 @@
         //
         //------------------------------------------------------------------------------
         
- 001247 class uvm_sequence_request;
+ 000257 class uvm_sequence_request;
           bit        grant;
           int        sequence_id;
           int        request_id;

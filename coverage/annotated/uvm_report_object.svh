@@ -101,8 +101,8 @@
           uvm_report_handler m_rh;
         
           local bit m_rh_set;
- 040140   local function void m_rh_init();
-~040140     if (!m_rh_set)
+ 008460   local function void m_rh_init();
+~008460     if (!m_rh_set)
  000162       begin
  000162         set_report_handler(uvm_report_handler::type_id::create(get_name()));
               end
@@ -132,8 +132,8 @@
           // See also the global version of <uvm_get_report_object>.
         
           // @uvm-ieee 1800.2-2020 auto 6.3.3.1
- 026152   function uvm_report_object uvm_get_report_object();
- 026152     return this;
+ 005362   function uvm_report_object uvm_get_report_object();
+ 005362     return this;
           endfunction
         
           // Function -- NODOCS -- uvm_report_enabled
@@ -158,7 +158,7 @@
           // Function -- NODOCS -- uvm_report
         
           // @uvm-ieee 1800.2-2020 auto 6.3.3.3
- 012497   virtual function void uvm_report( uvm_severity severity,
+ 002597   virtual function void uvm_report( uvm_severity severity,
                                             string id,
                                             string message,
                                             int verbosity = (severity == uvm_severity'(UVM_ERROR)) ? UVM_NONE :
@@ -168,8 +168,8 @@
                                             int line = 0,
                                             string context_name = "",
                                             bit report_enabled_checked =0);
- 012497     uvm_report_message l_report_message;
-~012494     if ((severity == UVM_INFO) && (report_enabled_checked == 0)) 
+ 002597     uvm_report_message l_report_message;
+~002594     if ((severity == UVM_INFO) && (report_enabled_checked == 0)) 
 %000003       begin
 %000003         if (!uvm_report_enabled(verbosity, severity, id))
 %000000         begin
@@ -177,17 +177,17 @@
                 end
         
               end
- 012497     l_report_message = uvm_report_message::new_report_message();
- 012497     l_report_message.set_report_message(severity, id, message, 
- 012497                     verbosity, filename, line, context_name);
- 012497     uvm_process_report_message(l_report_message);
+ 002597     l_report_message = uvm_report_message::new_report_message();
+ 002597     l_report_message.set_report_message(severity, id, message, 
+ 002597                     verbosity, filename, line, context_name);
+ 002597     uvm_process_report_message(l_report_message);
           endfunction 
         
         
           // Function -- NODOCS -- uvm_report_info
         
           // @uvm-ieee 1800.2-2020 auto 6.3.3.3
- 012491   virtual function void uvm_report_info( string id,
+ 002591   virtual function void uvm_report_info( string id,
                              string message,
                              int verbosity = UVM_MEDIUM,
                              string filename = "",
@@ -195,8 +195,8 @@
                                  string context_name = "",
                              bit report_enabled_checked = 0);
         
- 012491     uvm_report (UVM_INFO, id, message, verbosity, 
- 012491                 filename, line, context_name, report_enabled_checked);
+ 002591     uvm_report (UVM_INFO, id, message, verbosity, 
+ 002591                 filename, line, context_name, report_enabled_checked);
           endfunction
         
           // Function -- NODOCS -- uvm_report_warning
@@ -288,10 +288,10 @@
           // It is expected to be checked for verbosity and populated.
         
           // @uvm-ieee 1800.2-2020 auto 6.3.3.4
- 012497   virtual function void uvm_process_report_message(uvm_report_message report_message);
- 012497     m_rh_init();
- 012497     report_message.set_report_object(this);
- 012497     m_rh.process_report_message(report_message);
+ 002597   virtual function void uvm_process_report_message(uvm_report_message report_message);
+ 002597     m_rh_init();
+ 002597     report_message.set_report_object(this);
+ 002597     m_rh.process_report_message(report_message);
           endfunction
         
         
@@ -308,9 +308,9 @@
           // specific severity/tag combinations.
         
           // @uvm-ieee 1800.2-2020 auto 6.3.4.1
- 013880   function int get_report_verbosity_level(uvm_severity severity=UVM_INFO, string id="");
- 013880     m_rh_init();
- 013880     return m_rh.get_verbosity_level(severity, id);
+ 002990   function int get_report_verbosity_level(uvm_severity severity=UVM_INFO, string id="");
+ 002990     m_rh_init();
+ 002990     return m_rh.get_verbosity_level(severity, id);
           endfunction
         
         
@@ -378,9 +378,9 @@
           // and ~id~.
         
           // @uvm-ieee 1800.2-2020 auto 6.3.5.1
- 013517   function int get_report_action(uvm_severity severity, string id);
- 013517     m_rh_init();
- 013517     return m_rh.get_action(severity,id);
+ 002627   function int get_report_action(uvm_severity severity, string id);
+ 002627     m_rh_init();
+ 002627     return m_rh.get_action(severity,id);
           endfunction
         
         

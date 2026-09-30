@@ -52,9 +52,9 @@
         // @uvm-ieee 1800.2-2020 auto 14.1.1
 %000000 class uvm_sequence_item extends uvm_transaction;
         
- 003753   local      int                m_sequence_id = -1;
+ 000783   local      int                m_sequence_id = -1;
           protected  bit                m_use_sequence_info;
- 003753   protected  int                m_depth = -1;
+ 000783   protected  int                m_depth = -1;
           protected  uvm_sequencer_base m_sequencer;
           protected  uvm_sequence_base  m_parent_sequence;
           static     bit issued1,issued2;
@@ -66,8 +66,8 @@
           // The constructor method for uvm_sequence_item. 
           
           // @uvm-ieee 1800.2-2020 auto 14.1.2.1
- 003753   function new (string name = "uvm_sequence_item");
- 003753     super.new(name);
+ 000783   function new (string name = "uvm_sequence_item");
+ 000783     super.new(name);
           endfunction
         
 %000000   function string get_type_name();
@@ -80,8 +80,8 @@
         
           // Function- set_sequence_id
         
- 005003   function void set_sequence_id(int id);
- 005003     m_sequence_id = id;
+ 001043   function void set_sequence_id(int id);
+ 001043     m_sequence_id = id;
           endfunction
         
         
@@ -115,8 +115,8 @@
           // sequence may use the transaction_id to correlate responses with their
           // requests.
         
- 002500   function int get_sequence_id();
- 002500     return (m_sequence_id);
+ 000520   function int get_sequence_id();
+ 000520     return (m_sequence_id);
           endfunction
         
         
@@ -125,23 +125,23 @@
           // Set the sequence and sequencer execution context for a sequence item
         
           // @uvm-ieee 1800.2-2020 auto 14.1.2.2
- 001250   function void set_item_context(uvm_sequence_base  parent_seq,
+ 000260   function void set_item_context(uvm_sequence_base  parent_seq,
                                          uvm_sequencer_base sequencer = null);
- 001250      set_use_sequence_info(1);
-~001247      if (parent_seq != null) begin
- 001247        set_parent_sequence(parent_seq);
+ 000260      set_use_sequence_info(1);
+~000257      if (parent_seq != null) begin
+ 000257        set_parent_sequence(parent_seq);
              end
         
-~001250      if (sequencer == null && m_parent_sequence != null) begin
+~000260      if (sequencer == null && m_parent_sequence != null) begin
 %000000        sequencer = m_parent_sequence.get_sequencer();
              end
         
- 001250      set_sequencer(sequencer); 
-~001247      if (m_parent_sequence != null) begin
- 001247        set_depth(m_parent_sequence.get_depth() + 1);
+ 000260      set_sequencer(sequencer); 
+~000257      if (m_parent_sequence != null) begin
+ 000257        set_depth(m_parent_sequence.get_depth() + 1);
              end
          
- 001250      reseed();      
+ 000260      reseed();      
           endfunction
         
         
@@ -149,8 +149,8 @@
           //
         
           // @uvm-ieee 1800.2-2020 auto 14.1.2.3
- 001250   function void set_use_sequence_info(bit value);
- 001250     m_use_sequence_info = value;
+ 000260   function void set_use_sequence_info(bit value);
+ 000260     m_use_sequence_info = value;
           endfunction
         
         
@@ -192,9 +192,9 @@
           // actively communicating with the sequencer.
         
           // @uvm-ieee 1800.2-2020 auto 14.1.2.6
- 002497   virtual function void set_sequencer(uvm_sequencer_base sequencer);
- 002497     m_sequencer = sequencer;
- 002497     m_set_p_sequencer();
+ 000517   virtual function void set_sequencer(uvm_sequencer_base sequencer);
+ 000517     m_sequencer = sequencer;
+ 000517     m_set_p_sequencer();
           endfunction
         
         
@@ -203,8 +203,8 @@
           // Returns a reference to the default sequencer used by this sequence.
         
           // @uvm-ieee 1800.2-2020 auto 14.1.2.5
- 003753   function uvm_sequencer_base get_sequencer();
- 003753     return m_sequencer;
+ 000783   function uvm_sequencer_base get_sequencer();
+ 000783     return m_sequencer;
           endfunction
         
         
@@ -214,8 +214,8 @@
           // the source sequence of a sequence_item.
         
           // @uvm-ieee 1800.2-2020 auto 14.1.2.8
- 001247   function void set_parent_sequence(uvm_sequence_base parent);
- 001247     m_parent_sequence = parent;
+ 000257   function void set_parent_sequence(uvm_sequence_base parent);
+ 000257     m_parent_sequence = parent;
           endfunction
         
         
@@ -225,8 +225,8 @@
           // method was called. If this is a parent sequence, the method returns ~null~.
         
           // @uvm-ieee 1800.2-2020 auto 14.1.2.7
- 004767   function uvm_sequence_base get_parent_sequence();
- 004767     return (m_parent_sequence);
+ 000807   function uvm_sequence_base get_parent_sequence();
+ 000807     return (m_parent_sequence);
           endfunction 
         
         
@@ -238,8 +238,8 @@
           // incorrect.  
         
           // @uvm-ieee 1800.2-2020 auto 14.1.2.10
- 001247   function void set_depth(int value);
- 001247     m_depth = value;
+ 000257   function void set_depth(int value);
+ 000257     m_depth = value;
           endfunction
         
         
@@ -250,21 +250,21 @@
           // will have a depth of 3.
         
           // @uvm-ieee 1800.2-2020 auto 14.1.2.9
- 008482   function int get_depth();
+ 001552   function int get_depth();
         
             // If depth has been set or calculated, then use that
-~002500     if (m_depth != -1) begin
+~000520     if (m_depth != -1) begin
 %000000       return (m_depth);
             end
         
             // Calculate the depth, store it, and return the value
-~002500     if (m_parent_sequence == null) begin
- 002500       m_depth = 1;
+~000520     if (m_parent_sequence == null) begin
+ 000520       m_depth = 1;
 %000000     end else begin
 %000000       m_depth = m_parent_sequence.get_depth() + 1;
             end
         
- 008482     return (m_depth);
+ 001552     return (m_depth);
           endfunction 
         
         
@@ -274,8 +274,8 @@
           // return 1 for items and 0 for sequences (which derive from this class).
         
           // @uvm-ieee 1800.2-2020 auto 14.1.2.11
- 001247   virtual function bit is_item();
- 001247     return(1);
+ 000257   virtual function bit is_item();
+ 000257     return(1);
           endfunction
         
         
@@ -283,20 +283,20 @@
           //
           // Internal method; overrides must follow same naming convention
         
- 004756   function string get_full_name();
- 001247     if(m_parent_sequence != null) begin 
+ 000796   function string get_full_name();
+ 000257     if(m_parent_sequence != null) begin 
               
- 001247       get_full_name = {m_parent_sequence.get_full_name(), "."};
+ 000257       get_full_name = {m_parent_sequence.get_full_name(), "."};
             end
         
-~003503     else if(m_sequencer!=null) begin
+~000533     else if(m_sequencer!=null) begin
               
- 003503       get_full_name = {m_sequencer.get_full_name(), "."};
+ 000533       get_full_name = {m_sequencer.get_full_name(), "."};
             end
         
-~004756     if(get_name() != "") begin 
+~000796     if(get_name() != "") begin 
               
- 004756       get_full_name = {get_full_name, get_name()};
+ 000796       get_full_name = {get_full_name, get_name()};
             end
         
 %000000     else begin
@@ -310,9 +310,9 @@
           // Provides the name of the root sequence (the top-most parent sequence).
         
           // @uvm-ieee 1800.2-2020 auto 14.1.2.12
- 001247   function string get_root_sequence_name();
- 001247     uvm_sequence_base root_seq;
- 001247     root_seq = get_root_sequence();
+ 000257   function string get_root_sequence_name();
+ 000257     uvm_sequence_base root_seq;
+ 000257     root_seq = get_root_sequence();
 %000000     if (root_seq == null) begin
               
 %000000       return "";
@@ -330,8 +330,8 @@
           //
           // Internal method
         
- 002497   virtual function void m_set_p_sequencer();
- 002497     return;
+ 000517   virtual function void m_set_p_sequencer();
+ 000517     return;
           endfunction  
         
         
@@ -340,15 +340,15 @@
           // Provides a reference to the root sequence (the top-most parent sequence).
         
           // @uvm-ieee 1800.2-2020 auto 14.1.2.13
- 001247   function uvm_sequence_base get_root_sequence();
- 001247 	uvm_sequence_base curr_seq, next_seq;
+ 000257   function uvm_sequence_base get_root_sequence();
+ 000257 	uvm_sequence_base curr_seq, next_seq;
         	// Note that curr_seq defaults to null
- 001247 	next_seq = this.get_parent_sequence();
- 001247 	while (next_seq != null) begin
- 001247       curr_seq = next_seq;
- 001247       next_seq = curr_seq.get_parent_sequence();
+ 000257 	next_seq = this.get_parent_sequence();
+ 000257 	while (next_seq != null) begin
+ 000257       curr_seq = next_seq;
+ 000257       next_seq = curr_seq.get_parent_sequence();
         	end
- 001247 	return curr_seq;
+ 000257 	return curr_seq;
         
           endfunction
         
@@ -359,17 +359,17 @@
           // path. A "." is used as the separator between each sequence.
         
           // @uvm-ieee 1800.2-2020 auto 14.1.2.14
- 001023   function string get_sequence_path();
- 001023     uvm_sequence_item this_item;
- 001023     string seq_path;
- 001023     this_item = this;
- 001023     seq_path = this.get_name();
+ 000033   function string get_sequence_path();
+ 000033     uvm_sequence_item this_item;
+ 000033     string seq_path;
+ 000033     this_item = this;
+ 000033     seq_path = this.get_name();
 %000000     while (this_item.get_parent_sequence()!=null) begin
 %000000         this_item = this_item.get_parent_sequence();
 %000000         seq_path = {this_item.get_name(), ".", seq_path};
             end
                 
- 001023     return seq_path;
+ 000033     return seq_path;
           endfunction
         
         
@@ -384,7 +384,7 @@
           // then the global reporter will be used.
         
           // @uvm-ieee 1800.2-2020 auto 14.1.3.1
- 002046   virtual function uvm_report_object uvm_get_report_object();
+ 000066   virtual function uvm_report_object uvm_get_report_object();
 %000000     if(m_sequencer == null) begin
 %000000       uvm_coreservice_t cs = uvm_coreservice_t::get();
 %000000       return cs.get_root();
@@ -409,7 +409,7 @@
         
         
           // @uvm-ieee 1800.2-2020 auto 14.1.3.3
- 001023   virtual function void uvm_report( uvm_severity severity,
+ 000033   virtual function void uvm_report( uvm_severity severity,
                                             string id,
                                             string message,
                                             int verbosity = (severity == uvm_severity'(UVM_ERROR)) ? UVM_NONE :
@@ -419,25 +419,25 @@
                                             int line = 0,
                                             string context_name = "",
                                             bit report_enabled_checked = 0);
- 001023     uvm_report_message l_report_message;
-~001023     if ((severity == UVM_INFO) && (report_enabled_checked == 0)) begin
+ 000033     uvm_report_message l_report_message;
+~000033     if ((severity == UVM_INFO) && (report_enabled_checked == 0)) begin
 %000000       if (!uvm_report_enabled(verbosity, severity, id)) begin
                 
 %000000         return;
               end
         
             end
- 001023     l_report_message = uvm_report_message::new_report_message();
- 001023     l_report_message.set_report_message(severity, id, message, 
- 001023                     verbosity, filename, line, context_name);
- 001023     uvm_process_report_message(l_report_message);
+ 000033     l_report_message = uvm_report_message::new_report_message();
+ 000033     l_report_message.set_report_message(severity, id, message, 
+ 000033                     verbosity, filename, line, context_name);
+ 000033     uvm_process_report_message(l_report_message);
         
           endfunction
             
           // Function -- NODOCS -- uvm_report_info
         
           // @uvm-ieee 1800.2-2020 auto 14.1.3.3
- 001023   virtual function void uvm_report_info( string id,
+ 000033   virtual function void uvm_report_info( string id,
                              string message,
                                 int verbosity = UVM_MEDIUM,
                              string filename = "",
@@ -445,8 +445,8 @@
                                 string context_name = "",
                              bit report_enabled_checked = 0);
         
- 001023     this.uvm_report(UVM_INFO, id, message, verbosity, filename, line,
- 001023                     context_name, report_enabled_checked);
+ 000033     this.uvm_report(UVM_INFO, id, message, verbosity, filename, line,
+ 000033                     context_name, report_enabled_checked);
           endfunction
         
           // Function -- NODOCS -- uvm_report_warning
@@ -500,15 +500,15 @@
           endfunction
         
           // @uvm-ieee 1800.2-2020 auto 14.1.3.4
- 001023   virtual function void uvm_process_report_message (uvm_report_message report_message);
- 001023     uvm_report_object l_report_object = uvm_get_report_object();
- 001023     report_message.set_report_object(l_report_object);
-~001023     if (report_message.get_context() == "") begin
+ 000033   virtual function void uvm_process_report_message (uvm_report_message report_message);
+ 000033     uvm_report_object l_report_object = uvm_get_report_object();
+ 000033     report_message.set_report_object(l_report_object);
+~000033     if (report_message.get_context() == "") begin
               
- 001023       report_message.set_context(get_sequence_path());
+ 000033       report_message.set_context(get_sequence_path());
             end
         
- 001023     l_report_object.m_rh.process_report_message(report_message);
+ 000033     l_report_object.m_rh.process_report_message(report_message);
           endfunction
         
         
@@ -516,23 +516,23 @@
           //
           // Internal method
         
- 007235   function void do_print (uvm_printer printer);
- 007235     string temp_str0, temp_str1;
- 007235     int depth = get_depth();
- 007235     super.do_print(printer);
-~004988     if(print_sequence_info || m_use_sequence_info) begin
- 002247       printer.print_field_int("depth", depth, $bits(depth), UVM_DEC, ".", "int");
-~002247       if(m_parent_sequence != null) begin
- 002247         temp_str0 = m_parent_sequence.get_name();
- 002247         temp_str1 = m_parent_sequence.get_full_name();
+ 001295   function void do_print (uvm_printer printer);
+ 001295     string temp_str0, temp_str1;
+ 001295     int depth = get_depth();
+ 001295     super.do_print(printer);
+~001028     if(print_sequence_info || m_use_sequence_info) begin
+ 000267       printer.print_field_int("depth", depth, $bits(depth), UVM_DEC, ".", "int");
+~000267       if(m_parent_sequence != null) begin
+ 000267         temp_str0 = m_parent_sequence.get_name();
+ 000267         temp_str1 = m_parent_sequence.get_full_name();
               end
- 002247       printer.print_string("parent sequence (name)", temp_str0);
- 002247       printer.print_string("parent sequence (full name)", temp_str1);
- 002247       temp_str1 = "";
-~002247       if(m_sequencer != null) begin
- 002247         temp_str1 = m_sequencer.get_full_name();
+ 000267       printer.print_string("parent sequence (name)", temp_str0);
+ 000267       printer.print_string("parent sequence (full name)", temp_str1);
+ 000267       temp_str1 = "";
+~000267       if(m_sequencer != null) begin
+ 000267         temp_str1 = m_sequencer.get_full_name();
               end
- 002247       printer.print_string("sequencer", temp_str1);
+ 000267       printer.print_string("sequencer", temp_str1);
             end
           endfunction
         

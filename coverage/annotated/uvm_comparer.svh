@@ -200,10 +200,10 @@
           endfunction
         
           // @uvm-ieee 1800.2-2020 auto 16.3.2.5
- 001247   static function uvm_comparer get_default () ;
- 001247      uvm_coreservice_t coreservice ;
- 001247      coreservice = uvm_coreservice_t::get() ;
- 001247      return coreservice.get_default_comparer() ;
+ 000257   static function uvm_comparer get_default () ;
+ 000257      uvm_coreservice_t coreservice ;
+ 000257      coreservice = uvm_coreservice_t::get() ;
+ 000257      return coreservice.get_default_comparer() ;
           endfunction
         
            
@@ -411,32 +411,32 @@
           // ~rhs.get_type_name()~).
         
           // @uvm-ieee 1800.2-2020 auto 16.3.3.4
- 001247   virtual function bit compare_object (string name,
+ 000257   virtual function bit compare_object (string name,
                                                uvm_object lhs,
                                                uvm_object rhs);
- 001247     int old_result ;
- 001247     uvm_field_op field_op ;
- 001247     uvm_policy::recursion_state_e prev_state;
- 001247     bit ret_val = 1;
+ 000257     int old_result ;
+ 000257     uvm_field_op field_op ;
+ 000257     uvm_policy::recursion_state_e prev_state;
+ 000257     bit ret_val = 1;
         
             // Fast Pass
-~001247     if (rhs == lhs) begin
+~000257     if (rhs == lhs) begin
               
 %000000       return ret_val;
             end
         
         
             // Push the name on the stack
- 001247     m_object_names.push_back(name);
+ 000257     m_object_names.push_back(name);
         
             // Reference Fail
-~001247     if (policy == UVM_REFERENCE && lhs != rhs) begin
+~000257     if (policy == UVM_REFERENCE && lhs != rhs) begin
 %000000       print_msg_object(lhs, rhs);
 %000000       ret_val = 0;
             end
         
             // Fast fail on null
-~001247     if (ret_val && (rhs == null || lhs == null)) begin
+~000257     if (ret_val && (rhs == null || lhs == null)) begin
 %000000       print_msg_object(lhs, rhs);
               // if ((get_active_object_depth() == 0) && (lhs != null)) begin
               //   uvm_report_info("MISCMP",
@@ -450,22 +450,22 @@
             end
         
             // Hierarchical comparison
-~001247     if (ret_val) begin
+~000257     if (ret_val) begin
               // Warn on possible infinite loop
- 001247       prev_state      = object_compared(lhs,rhs,get_recursion_policy(),ret_val);
-~001247       if (prev_state != uvm_policy::NEVER) begin
+ 000257       prev_state      = object_compared(lhs,rhs,get_recursion_policy(),ret_val);
+~000257       if (prev_state != uvm_policy::NEVER) begin
                 
                 `uvm_warning("UVM/COPIER/LOOP", {"Possible loop when comparing '", 
 %000000         lhs.get_full_name(), "' to '", rhs.get_full_name(), "'"})
               end    
         
- 001247       push_active_object(lhs);
- 001247       m_recur_states[lhs][rhs][get_recursion_policy()]  = '{uvm_policy::STARTED,0};
- 001247       old_result = get_result();
+ 000257       push_active_object(lhs);
+ 000257       m_recur_states[lhs][rhs][get_recursion_policy()]  = '{uvm_policy::STARTED,0};
+ 000257       old_result = get_result();
         
               // Check typename
               // Implemented as if Mantis 6602 was accepted
-~001247       if (get_check_type() && (lhs.get_object_type() != rhs.get_object_type())) begin
+~000257       if (get_check_type() && (lhs.get_object_type() != rhs.get_object_type())) begin
 %000000         if(lhs.get_type_name() != rhs.get_type_name()) begin
 %000000           print_msg({"type: lhs = \"", lhs.get_type_name(), "\" : rhs = \"", rhs.get_type_name(), "\""});
                 end
@@ -474,33 +474,33 @@
                 end  
               end
         
- 001247       field_op = uvm_field_op::m_get_available_op();
- 001247       field_op.set(UVM_COMPARE,this,rhs);
- 001247       lhs.do_execute_op(field_op);
-~001247       if (field_op.user_hook_enabled()) begin
- 001247         ret_val = lhs.do_compare(rhs,this);
+ 000257       field_op = uvm_field_op::m_get_available_op();
+ 000257       field_op.set(UVM_COMPARE,this,rhs);
+ 000257       lhs.do_execute_op(field_op);
+~000257       if (field_op.user_hook_enabled()) begin
+ 000257         ret_val = lhs.do_compare(rhs,this);
               end
- 001247       field_op.m_recycle();
+ 000257       field_op.m_recycle();
         
               // If do_compare() returned 1, check for a change
               // in the result count.
-~001247       if (ret_val && (get_result() > old_result)) begin
+~000257       if (ret_val && (get_result() > old_result)) begin
                 
 %000000         ret_val = 0;
               end
         
         
               // Save off the comparison result
- 001247       m_recur_states[lhs][rhs][get_recursion_policy()]  = '{uvm_policy::FINISHED,ret_val};
- 001247       void'(pop_active_object());
+ 000257       m_recur_states[lhs][rhs][get_recursion_policy()]  = '{uvm_policy::FINISHED,ret_val};
+ 000257       void'(pop_active_object());
             end // if (ret_val)
         
             // Pop the name off the stack
- 001247     void'(m_object_names.pop_back());
+ 000257     void'(m_object_names.pop_back());
         
             // Only emit a message on a miscompare, and only if
             // we're at the top level
-~001247     if (!ret_val && (get_active_object_depth() == 0)) begin
+~000257     if (!ret_val && (get_active_object_depth() == 0)) begin
 %000000       string msg ;
         
               // If there are stored results
@@ -529,7 +529,7 @@
                 
             end // if (!ret_val && (get_active_object_depth() == 1))
             
- 001247     return ret_val;
+ 000257     return ret_val;
           endfunction
           
           
@@ -610,18 +610,18 @@
         
         endclass
         
- 001247 function void uvm_comparer::flush();
- 001247   miscompares = "" ;
- 001247   check_type = 1 ;
- 001247   result = 0 ;
- 001247   m_recur_states.delete();
+ 000257 function void uvm_comparer::flush();
+ 000257   miscompares = "" ;
+ 000257   check_type = 1 ;
+ 000257   result = 0 ;
+ 000257   m_recur_states.delete();
         endfunction
         
- 001247 function uvm_policy::recursion_state_e uvm_comparer::object_compared(
+ 000257 function uvm_policy::recursion_state_e uvm_comparer::object_compared(
           uvm_object lhs,
           uvm_object rhs,
           uvm_recursion_policy_enum recursion,
- 001247   output bit ret_val
+ 000257   output bit ret_val
         );
 %000000   if (!m_recur_states.exists(lhs)) begin
 %000000     return NEVER ;
@@ -649,8 +649,8 @@
 %000000    return miscompares ;
         endfunction
         
- 011223 function int unsigned uvm_comparer::get_result();
- 011223    return result ;
+ 002313 function int unsigned uvm_comparer::get_result();
+ 002313    return result ;
         endfunction
         
 %000000 function void uvm_comparer::set_result(int unsigned result);
@@ -661,16 +661,16 @@
 %000000    this.policy = policy ;
         endfunction
         
- 003741 function uvm_recursion_policy_enum uvm_comparer::get_recursion_policy();
- 003741    return policy ;
+ 000771 function uvm_recursion_policy_enum uvm_comparer::get_recursion_policy();
+ 000771    return policy ;
         endfunction
         
 %000000 function void uvm_comparer::set_check_type( bit enabled );
 %000000    check_type = enabled ;
         endfunction
         
- 001247 function bit uvm_comparer::get_check_type();
- 001247    return check_type ;
+ 000257 function bit uvm_comparer::get_check_type();
+ 000257    return check_type ;
         endfunction
         
 %000000 function void uvm_comparer::set_show_max (int unsigned show_max);
@@ -701,8 +701,8 @@
 %000000    m_threshold = threshold;
         endfunction
         
- 012470 function int unsigned uvm_comparer::get_threshold();
- 012470    return m_threshold;
+ 002570 function int unsigned uvm_comparer::get_threshold();
+ 002570    return m_threshold;
         endfunction
         
         

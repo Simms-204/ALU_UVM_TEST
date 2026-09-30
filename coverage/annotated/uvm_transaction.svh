@@ -441,7 +441,7 @@
           // The event pool instance for this transaction. This pool is used to track
           // various milestones: by default, begin, accept, and end
         
- 003753   const uvm_event_pool events = new("events");
+ 000783   const uvm_event_pool events = new("events");
         
         
           //----------------------------------------------------------------------------
@@ -459,11 +459,11 @@
           extern protected function uvm_tr_handle_t m_begin_tr (time    begin_time=0, 
                                                         uvm_tr_handle_t parent_handle=0);
         
- 003753   local uvm_transaction_id_t m_transaction_id = -1;
+ 000783   local uvm_transaction_id_t m_transaction_id = -1;
         
- 003753   local time    begin_time=-1;
- 003753   local time    end_time=-1;
- 003753   local time    accept_time=-1;
+ 000783   local time    begin_time=-1;
+ 000783   local time    end_time=-1;
+ 000783   local time    accept_time=-1;
         
           local uvm_component initiator;
           local uvm_tr_stream stream_handle;
@@ -485,25 +485,25 @@
         // new
         // ---
         
- 003753 function uvm_transaction::new (string name="", 
+ 000783 function uvm_transaction::new (string name="", 
                                        uvm_component initiator = null);
         
- 003753   super.new(name);
- 003753   this.initiator = initiator;
- 003753   m_transaction_id = -1;
- 003753   begin_event = events.get("begin");
- 003753   end_event = events.get("end");
+ 000783   super.new(name);
+ 000783   this.initiator = initiator;
+ 000783   m_transaction_id = -1;
+ 000783   begin_event = events.get("begin");
+ 000783   end_event = events.get("end");
         endfunction // uvm_transaction
         
         
         // set_transaction_id
- 001247 function void uvm_transaction::set_transaction_id(uvm_transaction_id_t id);
- 001247     m_transaction_id = id;
+ 000257 function void uvm_transaction::set_transaction_id(uvm_transaction_id_t id);
+ 000257     m_transaction_id = id;
         endfunction
         
         // get_transaction_id
- 002494 function uvm_transaction_id_t uvm_transaction::get_transaction_id();
- 002494     return (m_transaction_id);
+ 000514 function uvm_transaction_id_t uvm_transaction::get_transaction_id();
+ 000514     return (m_transaction_id);
         endfunction
         
         // set_initiator
@@ -571,41 +571,41 @@
         // do_begin_tr
         // ------------
         
- 001250 function void uvm_transaction::do_begin_tr();
- 001250   return;
+ 000260 function void uvm_transaction::do_begin_tr();
+ 000260   return;
         endfunction
         
         
         // do_end_tr
         // ----------
         
- 001250 function void uvm_transaction::do_end_tr();
- 001250   return;
+ 000260 function void uvm_transaction::do_end_tr();
+ 000260   return;
         endfunction
         
         // do_print
         // --------
         
- 007235 function void uvm_transaction::do_print (uvm_printer printer);
- 007235   string str;
- 007235   uvm_component tmp_initiator; //work around $swrite bug
- 007235   super.do_print(printer);
-~007235   if(accept_time != -1)
+ 001295 function void uvm_transaction::do_print (uvm_printer printer);
+ 001295   string str;
+ 001295   uvm_component tmp_initiator; //work around $swrite bug
+ 001295   super.do_print(printer);
+~001295   if(accept_time != -1)
 %000000     begin
 %000000       printer.print_time("accept_time", accept_time);
             end
         
- 004988   if(begin_time != -1)
- 002247     begin
- 002247       printer.print_time("begin_time", begin_time);
+ 001028   if(begin_time != -1)
+ 000267     begin
+ 000267       printer.print_time("begin_time", begin_time);
             end
         
-~007235   if(end_time != -1)
+~001295   if(end_time != -1)
 %000000     begin
 %000000       printer.print_time("end_time", end_time);
             end
         
-~007235   if(initiator != null) 
+~001295   if(initiator != null) 
 %000000     begin
 %000000       tmp_initiator = initiator;
 %000000       $swrite(str,"@%0d", tmp_initiator.get_inst_id());
@@ -690,8 +690,8 @@
         // is_recording_enabled
         // --------------------
         
- 002500 function bit uvm_transaction::is_recording_enabled ();
- 002500   return (this.stream_handle != null);
+ 000520 function bit uvm_transaction::is_recording_enabled ();
+ 000520   return (this.stream_handle != null);
         endfunction
         
         
@@ -725,13 +725,13 @@
         // begin_tr
         // -----------
         
- 001250 function uvm_tr_handle_t uvm_transaction::begin_tr (
+ 000260 function uvm_tr_handle_t uvm_transaction::begin_tr (
              time begin_time = 0
              , uvm_tr_handle_t parent_handle = 0
         ); 
- 001250    return m_begin_tr(
- 001250       begin_time 
- 001250       , parent_handle 
+ 000260    return m_begin_tr(
+ 000260       begin_time 
+ 000260       , parent_handle 
            );
         endfunction
         
@@ -747,19 +747,19 @@
         // m_begin_tr
         // -----------
         
- 001250 function uvm_tr_handle_t uvm_transaction::m_begin_tr (time begin_time=0, 
+ 000260 function uvm_tr_handle_t uvm_transaction::m_begin_tr (time begin_time=0, 
                                                       uvm_tr_handle_t parent_handle=0);
-~001250    time tmp_time = (begin_time == 0) ? $realtime : begin_time;
- 001250    uvm_recorder parent_recorder;
+~000260    time tmp_time = (begin_time == 0) ? $realtime : begin_time;
+ 000260    uvm_recorder parent_recorder;
         
-~001250    if (parent_handle != 0)
+~000260    if (parent_handle != 0)
 %000000      begin
 %000000        parent_recorder = uvm_recorder::get_recorder_from_handle(parent_handle);
              end
         
            
            // If we haven't ended the previous record, end it.
-~001250    if (tr_recorder != null)
+~000260    if (tr_recorder != null)
              // Don't free the handle, someone else may be using it...
 %000000      begin
 %000000        end_tr(tmp_time);
@@ -768,7 +768,7 @@
         
            // May want to establish predecessor/successor relation 
            // (don't free handle until then)
-~001250    if(is_recording_enabled()) 
+~000260    if(is_recording_enabled()) 
 %000000      begin 
 %000000        uvm_tr_database db = stream_handle.get_db();
               
@@ -807,19 +807,19 @@
         
              end
            else 
- 001250      begin
- 001250        tr_recorder = null;
- 001250        this.end_time = -1;
- 001250        this.begin_time = tmp_time;
+ 000260      begin
+ 000260        tr_recorder = null;
+ 000260        this.end_time = -1;
+ 000260        this.begin_time = tmp_time;
         
- 001250        m_begin_tr = 0;
+ 000260        m_begin_tr = 0;
              end
            
- 001250    do_begin_tr(); //execute callback before event trigger
+ 000260    do_begin_tr(); //execute callback before event trigger
            
- 001250    begin
- 001250      begin_event = events.get("begin");
- 001250      begin_event.trigger();
+ 000260    begin
+ 000260      begin_event = events.get("begin");
+ 000260      begin_event.trigger();
            end
         
         endfunction
@@ -828,12 +828,12 @@
         // end_tr
         // ------
         
-~001250 function void uvm_transaction::end_tr (time end_time=0, bit free_handle=1);
-~001250    this.end_time = (end_time == 0) ? $realtime : end_time;
+~000260 function void uvm_transaction::end_tr (time end_time=0, bit free_handle=1);
+~000260    this.end_time = (end_time == 0) ? $realtime : end_time;
         
- 001250    do_end_tr(); // Callback prior to actual ending of transaction
+ 000260    do_end_tr(); // Callback prior to actual ending of transaction
         
-~001250    if(is_recording_enabled() && (tr_recorder != null)) 
+~000260    if(is_recording_enabled() && (tr_recorder != null)) 
 %000000      begin
 %000000        record(tr_recorder);
         
@@ -846,11 +846,11 @@
                end
              end // if (is_active())
         
- 001250    tr_recorder = null;
+ 000260    tr_recorder = null;
         
- 001250    begin
- 001250      end_event = events.get("end") ;
- 001250      end_event.trigger();
+ 000260    begin
+ 000260      end_event = events.get("end") ;
+ 000260      end_event.trigger();
            end
         endfunction
         

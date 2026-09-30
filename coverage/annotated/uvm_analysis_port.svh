@@ -81,16 +81,16 @@
         
         
           // @uvm-ieee 1800.2-2020 auto 12.2.10.1.4
-~011223   function void write (input T t);
-~011223     uvm_tlm_if_base # (T, T) tif;
-~011223     for (int i = 0; i < this.size(); i++) begin
-~003741       tif = this.get_if (i);
-~003741       if ( tif == null ) begin
+~002313   function void write (input T t);
+~002313     uvm_tlm_if_base # (T, T) tif;
+~002313     for (int i = 0; i < this.size(); i++) begin
+~000771       tif = this.get_if (i);
+~000771       if ( tif == null ) begin
                 
 %000000         uvm_report_fatal ("NTCONN", {"No uvm_tlm interface is connected to ", get_full_name(), " for executing write()"}, UVM_NONE);
               end
         
-~003741       tif.write (t);
+~000771       tif.write (t);
             end 
           endfunction
         
@@ -129,8 +129,8 @@
           extends uvm_port_base #(uvm_tlm_if_base #(T,T));
           // @uvm-ieee 1800.2-2020 auto 12.2.10.2.2
 %000006   `UVM_IMP_COMMON(`UVM_TLM_ANALYSIS_MASK,"uvm_analysis_imp",IMP)
-~002494   function void write (input T t);
-~002494     m_imp.write (t);
+~000514   function void write (input T t);
+~000514     m_imp.write (t);
           endfunction
         endclass
         

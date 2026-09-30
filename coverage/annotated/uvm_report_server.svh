@@ -184,7 +184,7 @@
         
                 // @uvm-ieee 1800.2-2020 auto 6.5.1.2.15
 %000000         pure virtual function string compose_report_message(uvm_report_message report_message,
- 013520                                                             string report_object_name = "");
+ 002630                                                             string report_object_name = "");
         
         
                 // Function -- NODOCS -- report_summarize
@@ -246,9 +246,9 @@
                 //
         
                 // @uvm-ieee 1800.2-2020 auto 6.5.1.2.18
- 013532         static function uvm_report_server get_server();
- 013532             uvm_coreservice_t cs = uvm_coreservice_t::get();
- 013532                 return cs.get_report_server();
+ 002642         static function uvm_report_server get_server();
+ 002642             uvm_coreservice_t cs = uvm_coreservice_t::get();
+ 002642                 return cs.get_report_server();
                 endfunction
         
                 // @uvm-compat Added for compatibility to uvm-1.1d
@@ -493,8 +493,8 @@
           // Function --NODOCS-- incr_severity_count
         
           //@uvm-compat provided for compatibility with 1.2
- 013520   function void incr_severity_count(uvm_severity severity);
- 013520     m_severity_count[severity]++;
+ 002630   function void incr_severity_count(uvm_severity severity);
+ 002630     m_severity_count[severity]++;
           endfunction
         
           // Function --NODOCS-- reset_severity_counts
@@ -545,10 +545,10 @@
           // Set, get, or increment the counter for reports with the given id.
         
           //@uvm-compat provided for compatibility with 1.2
- 013520   function void incr_id_count(string id);
- 013479     if(m_id_count.exists(id)) begin
+ 002630   function void incr_id_count(string id);
+ 002589     if(m_id_count.exists(id)) begin
               
- 013479       m_id_count[id]++;
+ 002589       m_id_count[id]++;
             end
         
  000041     else begin
@@ -622,17 +622,17 @@
           //
           //
         
- 013520   virtual function void process_report_message(uvm_report_message report_message);
+ 002630   virtual function void process_report_message(uvm_report_message report_message);
         
- 013520     uvm_report_handler l_report_handler = report_message.get_report_handler();
- 013520         process p = process::self();
- 013520     bit report_ok = 1;
+ 002630     uvm_report_handler l_report_handler = report_message.get_report_handler();
+ 002630         process p = process::self();
+ 002630     bit report_ok = 1;
         
             // Set the report server for this message
- 013520     report_message.set_report_server(this);
+ 002630     report_message.set_report_server(this);
         
             // this functionality provided for backward compatibility with 1.1d
-~013520     if(report_message.get_action() & UVM_CALL_HOOK) begin
+~002630     if(report_message.get_action() & UVM_CALL_HOOK) begin
               
 %000000       report_ok = l_report_handler.run_hooks(
 %000000         report_message.get_report_object(),
@@ -645,32 +645,32 @@
             end
         
         
-~013520     if(report_ok) begin
+~002630     if(report_ok) begin
               
- 013520       report_ok = uvm_report_catcher::process_all_report_catchers(report_message);
+ 002630       report_ok = uvm_report_catcher::process_all_report_catchers(report_message);
             end
         
         
-~013520     if(uvm_action_type'(report_message.get_action()) == UVM_NO_ACTION) begin
+~002630     if(uvm_action_type'(report_message.get_action()) == UVM_NO_ACTION) begin
               
 %000000       report_ok = 0;
             end
         
         
-~013520     if(report_ok) begin    
- 013520       string m;
- 013520       uvm_coreservice_t cs = uvm_coreservice_t::get();
+~002630     if(report_ok) begin    
+ 002630       string m;
+ 002630       uvm_coreservice_t cs = uvm_coreservice_t::get();
               // give the global server a chance to intercept the calls
- 013520       uvm_report_server svr = cs.get_report_server();
+ 002630       uvm_report_server svr = cs.get_report_server();
         
               // no need to compose when neither UVM_DISPLAY nor UVM_LOG is set
-~013520       if (report_message.get_action() & (UVM_LOG|UVM_DISPLAY)) begin
+~002630       if (report_message.get_action() & (UVM_LOG|UVM_DISPLAY)) begin
                 
- 013520         m = svr.compose_report_message(report_message);
+ 002630         m = svr.compose_report_message(report_message);
               end
         
         
- 013520       svr.execute_report_message(report_message, m);
+ 002630       svr.execute_report_message(report_message, m);
             end
         
           endfunction
@@ -687,23 +687,23 @@
           //
           // Expert users can overload this method to customize action processing.
          
- 013520   virtual function void execute_report_message(uvm_report_message report_message,
+ 002630   virtual function void execute_report_message(uvm_report_message report_message,
                                                        string composed_message);
                                                        
- 013520                                                process p = process::self();
+ 002630                                                process p = process::self();
                                                        
             // Update counts 
- 013520     incr_severity_count(report_message.get_severity());
- 013520     incr_id_count(report_message.get_id());
+ 002630     incr_severity_count(report_message.get_severity());
+ 002630     incr_id_count(report_message.get_id());
         
-~013520     if (record_all_messages) begin
+~002630     if (record_all_messages) begin
               
 %000000       report_message.set_action(report_message.get_action() | UVM_RM_RECORD);
             end
         
         
             // UVM_RM_RECORD action
-~013520     if(report_message.get_action() & UVM_RM_RECORD) begin
+~002630     if(report_message.get_action() & UVM_RM_RECORD) begin
 %000000       uvm_tr_stream stream;
 %000000       uvm_report_object ro = report_message.get_report_object();
 %000000       uvm_report_handler rh = report_message.get_report_handler();
@@ -744,9 +744,9 @@
             end
         
             // DISPLAY action
-~013520     if(report_message.get_action() & UVM_DISPLAY) begin
+~002630     if(report_message.get_action() & UVM_DISPLAY) begin
               
- 013520       $display("%s", composed_message);
+ 002630       $display("%s", composed_message);
             end
         
         
@@ -754,7 +754,7 @@
             // if log is set we need to send to the file but not resend to the
             // display. So, we need to mask off stdout for an mcd or we need
             // to ignore the stdout file handle for a file handle.
-~013520     if(report_message.get_action() & UVM_LOG) begin
+~002630     if(report_message.get_action() & UVM_LOG) begin
               
 %000000       if( (report_message.get_file() == 0) || 
 %000000       (report_message.get_file() != 32'h8000_0001) ) begin //ignore stdout handle
@@ -768,7 +768,7 @@
             
         
             // Process the UVM_COUNT action
-~013520     if(report_message.get_action() & UVM_COUNT) begin
+~002630     if(report_message.get_action() & UVM_COUNT) begin
 %000000       if(get_max_quit_count() != 0) begin
 %000000         incr_quit_count();
                 // If quit count is reached, add the UVM_EXIT action.
@@ -779,7 +779,7 @@
             end
         
             // Process the UVM_EXIT action
-~013520     if(report_message.get_action() & UVM_EXIT) begin
+~002630     if(report_message.get_action() & UVM_EXIT) begin
 %000000       uvm_root l_root;
 %000000       uvm_coreservice_t cs;
 %000000       cs = uvm_coreservice_t::get();
@@ -788,7 +788,7 @@
             end
         
             // Process the UVM_STOP action
- 013520     if (report_message.get_action() & UVM_STOP) begin 
+ 002630     if (report_message.get_action() & UVM_STOP) begin 
               
               $stop;
             end
@@ -863,41 +863,41 @@
           //
           // @uvm-accellera The details of this API are specific to the Accellera implementation, and are not being considered for contribution to 1800.2
           
- 013520   virtual function string compose_report_message(uvm_report_message report_message,
+ 002630   virtual function string compose_report_message(uvm_report_message report_message,
                                                          string report_object_name = "");
         
- 013520     string sev_string;
- 013520     uvm_severity l_severity;
- 013520     uvm_verbosity l_verbosity;
- 013520     string filename_line_string;
- 013520     string time_str;
- 013520     string line_str;
- 013520     string context_str;
- 013520     string verbosity_str;
- 013520     string terminator_str;
- 013520     string msg_body_str;
- 013520     uvm_report_message_element_container el_container;
- 013520     string prefix;
- 013520     uvm_report_handler l_report_handler;
+ 002630     string sev_string;
+ 002630     uvm_severity l_severity;
+ 002630     uvm_verbosity l_verbosity;
+ 002630     string filename_line_string;
+ 002630     string time_str;
+ 002630     string line_str;
+ 002630     string context_str;
+ 002630     string verbosity_str;
+ 002630     string terminator_str;
+ 002630     string msg_body_str;
+ 002630     uvm_report_message_element_container el_container;
+ 002630     string prefix;
+ 002630     uvm_report_handler l_report_handler;
         
- 013520     l_severity = report_message.get_severity();
- 013520     sev_string = l_severity.name();
+ 002630     l_severity = report_message.get_severity();
+ 002630     sev_string = l_severity.name();
         
-~013517     if (report_message.get_filename() != "") begin
- 013517       line_str.itoa(report_message.get_line());
- 013517       filename_line_string = {report_message.get_filename(), "(", line_str, ") "};
+~002627     if (report_message.get_filename() != "") begin
+ 002627       line_str.itoa(report_message.get_line());
+ 002627       filename_line_string = {report_message.get_filename(), "(", line_str, ") "};
             end
         
             // Make definable in terms of units.
- 013520     $swrite(time_str, "%0t", $realtime);
+ 002630     $swrite(time_str, "%0t", $realtime);
          
- 012497     if (report_message.get_context() != "") begin
+ 002597     if (report_message.get_context() != "") begin
               
- 001023       context_str = {"@@", report_message.get_context()};
+ 000033       context_str = {"@@", report_message.get_context()};
             end
         
         
-~013520     if (show_verbosity) begin
+~002630     if (show_verbosity) begin
 %000000       if ($cast(l_verbosity, report_message.get_verbosity())) begin
                 
 %000000         verbosity_str = l_verbosity.name();
@@ -911,16 +911,16 @@
 %000000       verbosity_str = {"(", verbosity_str, ")"};
             end
         
-~013520     if (show_terminator) begin
+~002630     if (show_terminator) begin
               
 %000000       terminator_str = {" -",sev_string};
             end
         
         
- 013520     el_container = report_message.get_element_container();
-~013520     if (el_container.size() == 0) begin
+ 002630     el_container = report_message.get_element_container();
+~002630     if (el_container.size() == 0) begin
               
- 013520       msg_body_str = report_message.get_message();
+ 002630       msg_body_str = report_message.get_message();
             end
         
 %000000     else begin
@@ -931,14 +931,14 @@
 %000000       uvm_default_printer.set_line_prefix(prefix);
             end
         
-~013520     if (report_object_name == "") begin
- 013520       l_report_handler = report_message.get_report_handler();
- 013520       report_object_name = l_report_handler.get_full_name();
+~002630     if (report_object_name == "") begin
+ 002630       l_report_handler = report_message.get_report_handler();
+ 002630       report_object_name = l_report_handler.get_full_name();
             end
         
- 013520     compose_report_message = {sev_string, verbosity_str, " ", filename_line_string, "@ ", 
- 013520       time_str, ": ", report_object_name, context_str,
- 013520       " [", report_message.get_id(), "] ", msg_body_str, terminator_str};
+ 002630     compose_report_message = {sev_string, verbosity_str, " ", filename_line_string, "@ ", 
+ 002630       time_str, ": ", report_object_name, context_str,
+ 002630       " [", report_message.get_id(), "] ", msg_body_str, terminator_str};
         
           endfunction 
         

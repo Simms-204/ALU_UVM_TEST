@@ -198,14 +198,14 @@
             local static uvm_coreservice_t inst;
         
             // @uvm-ieee 1800.2-2020 auto F.4.1.3
- 052042     static function uvm_coreservice_t get();
-~052039         if(inst==null) begin
+ 019372     static function uvm_coreservice_t get();
+~019369         if(inst==null) begin
                     
 %000003           uvm_init(null);
                 end
         
                 
- 052042         return inst;
+ 019372         return inst;
             endfunction // get
         
 %000003     static function void set(uvm_coreservice_t cs);
@@ -228,14 +228,14 @@
             //
             // Returns the currently enabled uvm factory.
             // When no factory has been set before, instantiates a uvm_default_factory
- 004872     virtual function uvm_factory get_factory();
-~004869         if(factory==null) begin
+ 001902     virtual function uvm_factory get_factory();
+~001899         if(factory==null) begin
 %000003           uvm_default_factory f;
 %000003           f=new;
 %000003           factory=f;
                 end
         
- 004872         return factory;
+ 001902         return factory;
             endfunction
         
             // Function --NODOCS-- set_factory
@@ -286,14 +286,14 @@
             // returns the current global report_server
             // if no report server has been set before, returns an instance of
             // uvm_default_report_server
- 027052     virtual function uvm_report_server get_report_server();
-~027049         if(report_server==null) begin
+ 005272     virtual function uvm_report_server get_report_server();
+~005269         if(report_server==null) begin
 %000003           uvm_default_report_server f;
 %000003           f=new;
 %000003           report_server=f;
                 end
         
- 027052         return report_server;
+ 005272         return report_server;
             endfunction
         
             // Function --NODOCS-- set_report_server
@@ -341,12 +341,12 @@
             //
             // @uvm-accellera The details of this API are specific to the Accellera implementation, and are not being considered for contribution to 1800.2
         
- 007238     virtual function uvm_printer get_default_printer();
+ 001298     virtual function uvm_printer get_default_printer();
                    // using field in uvm_object_globals for backward compatibility
-~007238         if (uvm_default_printer == null) begin
+~001298         if (uvm_default_printer == null) begin
 %000000           uvm_default_printer =  uvm_table_printer::get_default() ;
                 end
- 007238         return uvm_default_printer ;
+ 001298         return uvm_default_printer ;
             endfunction
         
 %000000     virtual function void set_default_packer(uvm_packer packer);
@@ -366,12 +366,12 @@
                    // using field in uvm_object_globals for backward compatibility
 %000000        uvm_default_comparer = comparer ;
             endfunction
- 001247     virtual function uvm_comparer get_default_comparer();
+ 000257     virtual function uvm_comparer get_default_comparer();
                    // using field in uvm_object_globals for backward compatibility
-~001247        if (uvm_default_comparer == null) begin
+~000257        if (uvm_default_comparer == null) begin
 %000000          uvm_default_comparer =  new("uvm_default_comparer") ;
                end
- 001247        return uvm_default_comparer ;
+ 000257        return uvm_default_comparer ;
             endfunction
         
 %000003     local int m_default_max_ready_to_end_iters = 20;
@@ -513,8 +513,8 @@
 %000000         return m_uvm_global_seed;
             endfunction
         
- 001370    virtual function bit get_uvm_seeding();
- 001370       return uvm_object::use_uvm_seeding;
+ 000380    virtual function bit get_uvm_seeding();
+ 000380       return uvm_object::use_uvm_seeding;
            endfunction : get_uvm_seeding
         
 %000000    virtual function void set_uvm_seeding(bit enable);

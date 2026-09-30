@@ -68,7 +68,7 @@
           //@uvm-compat for compatibility with 1.2
           m_uvm_printer_knobs knobs ;
         
- 243347 protected function m_uvm_printer_knobs get_knobs() ; return knobs; endfunction
+ 041387 protected function m_uvm_printer_knobs get_knobs() ; return knobs; endfunction
         
           // Group -- NODOCS -- Methods for printer usage
         
@@ -276,7 +276,7 @@
         
           local uvm_printer_element m_element_stack[$] ;
         
- 076452   protected function int m_get_stack_size(); return m_element_stack.size(); endfunction
+ 013092   protected function int m_get_stack_size(); return m_element_stack.size(); endfunction
         
           // @uvm-ieee 1800.2-2020 auto 16.2.7.1
           extern protected virtual function uvm_printer_element get_bottom_element ();
@@ -337,24 +337,24 @@
           // Compat methods
         
           //@uvm-compat provided for compatibility with 1.2
- 076452   virtual function string format_row (uvm_printer_row_info row);
- 076452     return "";
+ 013092   virtual function string format_row (uvm_printer_row_info row);
+ 013092     return "";
           endfunction
         
           //@uvm-compat provided for compatibility with 1.2
- 007238   virtual function string format_header();
- 007238     return "";
+ 001298   virtual function string format_header();
+ 001298     return "";
           endfunction
         
           //@uvm-compat provided for compatibility with 1.2
- 007238   virtual function string format_footer();
- 007238     return "";
+ 001298   virtual function string format_footer();
+ 001298     return "";
           endfunction
         
           //@uvm-compat provided for compatibility with 1.2
- 062380   virtual protected function string adjust_name (string id,
+ 010900   virtual protected function string adjust_name (string id,
                                                          byte scope_separator=".");
-~062380     if (get_root_enabled() &&
+~010900     if (get_root_enabled() &&
                 istop() ||
                 knobs.full_name ||
 %000000         id == "...") begin
@@ -362,7 +362,7 @@
 %000000       return id;
             end
         
- 062380     return uvm_leaf_scope(id, scope_separator);
+ 010900     return uvm_leaf_scope(id, scope_separator);
           endfunction
         
           // Utility methods
@@ -857,10 +857,10 @@
 %000000    coreservice.set_default_printer(printer) ;
         endfunction
         
- 007238 function uvm_printer uvm_printer::get_default() ;
- 007238    uvm_coreservice_t coreservice ;
- 007238    coreservice = uvm_coreservice_t::get() ;
- 007238    return coreservice.get_default_printer() ;
+ 001298 function uvm_printer uvm_printer::get_default() ;
+ 001298    uvm_coreservice_t coreservice ;
+ 001298    coreservice = uvm_coreservice_t::get() ;
+ 001298    return coreservice.get_default_printer() ;
         endfunction
         
         // print_field
@@ -913,19 +913,19 @@
         // print_field_int
         // ---------
         
- 062380 function void uvm_printer::print_field_int (string name,
+ 010900 function void uvm_printer::print_field_int (string name,
                                                     uvm_integral_t value,
                                                     int          size,
                                                     uvm_radix_enum radix=UVM_NORADIX,
                                                     byte         scope_separator=".",
- 002247                                             string       type_name="");
+ 000267                                             string       type_name="");
         
- 062380   string sz_str, val_str;
+ 010900   string sz_str, val_str;
         
- 060127   if(type_name == "") begin
- 002247     if(radix == UVM_TIME) begin
+ 010627   if(type_name == "") begin
+ 000267     if(radix == UVM_TIME) begin
               
- 002247       type_name ="time";
+ 000267       type_name ="time";
             end
         
 %000006     else if(radix == UVM_STRING) begin
@@ -940,19 +940,19 @@
         
           end
         
- 062380   sz_str.itoa(size);
+ 010900   sz_str.itoa(size);
         
- 057880   if(radix == UVM_NORADIX) begin
+ 010360   if(radix == UVM_NORADIX) begin
             
- 057880     radix = get_default_radix();
+ 010360     radix = get_default_radix();
           end
         
- 062380   val_str = uvm_bit_vector_utils#(uvm_integral_t)::to_string(value, size, radix, get_radix_string(radix));
+ 010900   val_str = uvm_bit_vector_utils#(uvm_integral_t)::to_string(value, size, radix, get_radix_string(radix));
         
- 062380   name = adjust_name(name,scope_separator);
+ 010900   name = adjust_name(name,scope_separator);
         
- 062380   push_element(name,type_name,sz_str,val_str);
- 062380   pop_element() ;
+ 010900   push_element(name,type_name,sz_str,val_str);
+ 010900   pop_element() ;
         
         endfunction
         
@@ -965,53 +965,53 @@
 %000000   return "";
         endfunction
         
- 007250 function void uvm_printer::flush ();
+ 001310 function void uvm_printer::flush ();
            // recycle all elements that were on the stack
- 007250    uvm_printer_element element = get_bottom_element() ;
- 007250    uvm_printer_element all_descendent_elements[$] ;
+ 001310    uvm_printer_element element = get_bottom_element() ;
+ 001310    uvm_printer_element all_descendent_elements[$] ;
         
- 007250    element = get_bottom_element() ;
- 007235    if (element != null) begin
- 007235      element.get_children(all_descendent_elements,1) ; //recursive
-~069190      foreach (all_descendent_elements[i]) begin
- 069190        m_recycled_elements.push_back(all_descendent_elements[i]) ;
- 069190        all_descendent_elements[i].clear_children() ;
+ 001310    element = get_bottom_element() ;
+ 001295    if (element != null) begin
+ 001295      element.get_children(all_descendent_elements,1) ; //recursive
+~011770      foreach (all_descendent_elements[i]) begin
+ 011770        m_recycled_elements.push_back(all_descendent_elements[i]) ;
+ 011770        all_descendent_elements[i].clear_children() ;
              end
- 007235      element.clear_children();
- 007235      m_recycled_elements.push_back(element) ;
+ 001295      element.clear_children();
+ 001295      m_recycled_elements.push_back(element) ;
              // now delete the stack
- 007235      m_element_stack.delete() ;
+ 001295      m_element_stack.delete() ;
            end
- 007250    m_recur_states.delete();
- 007250    m_flushed = 1 ;
+ 001310    m_recur_states.delete();
+ 001310    m_flushed = 1 ;
         endfunction
         
 %000000 function void uvm_printer::set_name_enabled (bit enabled);
 %000000    knobs.identifier = enabled ;
         endfunction
- 083690 function bit uvm_printer::get_name_enabled ();
- 083690    return knobs.identifier ;
+ 014390 function bit uvm_printer::get_name_enabled ();
+ 014390    return knobs.identifier ;
         endfunction
         
 %000009 function void uvm_printer::set_type_name_enabled (bit enabled);
 %000009    knobs.type_name = enabled ;
         endfunction
- 083690 function bit uvm_printer::get_type_name_enabled ();
- 083690    return knobs.type_name ;
+ 014390 function bit uvm_printer::get_type_name_enabled ();
+ 014390    return knobs.type_name ;
         endfunction
         
 %000009 function void uvm_printer::set_size_enabled (bit enabled);
 %000009    knobs.size = enabled ;
         endfunction
- 083690 function bit uvm_printer::get_size_enabled ();
- 083690    return knobs.size ;
+ 014390 function bit uvm_printer::get_size_enabled ();
+ 014390    return knobs.size ;
         endfunction
         
 %000000 function void uvm_printer::set_id_enabled (bit enabled);
 %000000    knobs.reference = enabled ;
         endfunction
- 007325 function bit uvm_printer::get_id_enabled ();
- 007325    return knobs.reference ;
+ 001385 function bit uvm_printer::get_id_enabled ();
+ 001385    return knobs.reference ;
         endfunction
         
 %000000 function void uvm_printer::set_radix_enabled (bit enabled);
@@ -1046,7 +1046,7 @@
 %000000      `uvm_warning("PRINTER_UNKNOWN_RADIX",$sformatf("set_radix_string called with unsupported radix %s",radix))
            end
         endfunction
- 062380 function string uvm_printer::get_radix_string (uvm_radix_enum radix);
+ 010900 function string uvm_printer::get_radix_string (uvm_radix_enum radix);
 %000000    if (radix == UVM_DEC) begin
 %000000      return knobs.dec_radix ;
            end
@@ -1076,43 +1076,43 @@
 %000000 function void uvm_printer::set_default_radix (uvm_radix_enum radix);
 %000000    knobs.default_radix = radix ;
         endfunction
- 057880 function uvm_radix_enum uvm_printer::get_default_radix ();
- 057880    return knobs.default_radix ;
+ 010360 function uvm_radix_enum uvm_printer::get_default_radix ();
+ 010360    return knobs.default_radix ;
         endfunction
         
 %000000 function void uvm_printer::set_root_enabled (bit enabled);
 %000000    knobs.show_root = enabled ;
         endfunction
- 069618 function bit uvm_printer::get_root_enabled ();
- 069618    return knobs.show_root ;
+ 012198 function bit uvm_printer::get_root_enabled ();
+ 012198    return knobs.show_root ;
         endfunction
         
 %000000 function void uvm_printer::set_recursion_policy (uvm_recursion_policy_enum policy);
 %000000    knobs.recursion_policy = policy ;
         endfunction
- 007325 function uvm_recursion_policy_enum uvm_printer::get_recursion_policy ();
- 007325    return knobs.recursion_policy ;
+ 001385 function uvm_recursion_policy_enum uvm_printer::get_recursion_policy ();
+ 001385    return knobs.recursion_policy ;
         endfunction
         
 %000000 function void uvm_printer::set_max_depth (int depth);
 %000000    knobs.depth = depth ;
         endfunction
- 007325 function int uvm_printer::get_max_depth ();
- 007325    return knobs.depth ;
+ 001385 function int uvm_printer::get_max_depth ();
+ 001385    return knobs.depth ;
         endfunction
         
 %000000 function void uvm_printer::set_file (UVM_FILE fl);
 %000000    knobs.mcd = fl ;
         endfunction
- 007238 function UVM_FILE uvm_printer::get_file ();
- 007238    return knobs.mcd ;
+ 001298 function UVM_FILE uvm_printer::get_file ();
+ 001298    return knobs.mcd ;
         endfunction
         
 %000000 function void uvm_printer::set_line_prefix (string prefix);
 %000000    knobs.prefix = prefix ;
         endfunction
- 090928 function string uvm_printer::get_line_prefix ();
- 090928    return knobs.prefix ;
+ 015688 function string uvm_printer::get_line_prefix ();
+ 015688    return knobs.prefix ;
         endfunction
         
 %000000 function void uvm_printer::set_begin_elements (int elements = 5);
@@ -1129,7 +1129,7 @@
 %000000    return knobs.end_elements ;
         endfunction
         
- 021738 function uvm_printer_element uvm_printer::get_bottom_element ();
+ 003918 function uvm_printer_element uvm_printer::get_bottom_element ();
 %000000    if (m_element_stack.size() > 0) begin
 %000000      return m_element_stack[0] ;
            end
@@ -1140,7 +1140,7 @@
         
         endfunction
         
- 152904 function uvm_printer_element uvm_printer::get_top_element ();
+ 026184 function uvm_printer_element uvm_printer::get_top_element ();
 %000000    if (m_element_stack.size() > 0) begin
 %000000      return m_element_stack[$] ;
            end
@@ -1155,47 +1155,47 @@
 %000006    super.new(name) ;
         endfunction
         
- 076452 function void uvm_printer_element_proxy::get_immediate_children(uvm_printer_element s,
+ 013092 function void uvm_printer_element_proxy::get_immediate_children(uvm_printer_element s,
                                                                         ref uvm_printer_element children[$]);
- 076452    s.get_children(children,0) ;
+ 013092    s.get_children(children,0) ;
         endfunction
         
         
         
- 076452 function void uvm_printer::push_element ( string name,
+ 013092 function void uvm_printer::push_element ( string name,
                                                   string type_name,
                                                   string size,
                                                   string value="");
- 076452    uvm_printer_element element ;
- 076452    uvm_printer_element parent ;
- 076452    element = get_unused_element() ;
- 076452    parent = get_top_element() ;
-~076452    if (knobs.full_name && (parent != null)) begin
+ 013092    uvm_printer_element element ;
+ 013092    uvm_printer_element parent ;
+ 013092    element = get_unused_element() ;
+ 013092    parent = get_top_element() ;
+~013092    if (knobs.full_name && (parent != null)) begin
 %000000      name = $sformatf("%s.%s",parent.get_element_name(),name);
            end
- 076452    element.set(name,type_name,size,value);
- 069214    if (parent != null) begin
- 069214      parent.add_child(element) ;
+ 013092    element.set(name,type_name,size,value);
+ 011794    if (parent != null) begin
+ 011794      parent.add_child(element) ;
            end
         
- 076452    m_element_stack.push_back(element) ;
+ 013092    m_element_stack.push_back(element) ;
         endfunction
         
- 076452 function void uvm_printer::pop_element ();
- 069214    if (m_element_stack.size() > 1) begin
- 069214      void'(m_element_stack.pop_back());
+ 013092 function void uvm_printer::pop_element ();
+ 011794    if (m_element_stack.size() > 1) begin
+ 011794      void'(m_element_stack.pop_back());
            end
         endfunction
         
- 076452 function uvm_printer_element uvm_printer::get_unused_element() ;
- 076452    uvm_printer_element element ;
- 076350    if (m_recycled_elements.size() > 0) begin
- 076350      element = m_recycled_elements.pop_back() ;
+ 013092 function uvm_printer_element uvm_printer::get_unused_element() ;
+ 013092    uvm_printer_element element ;
+ 012990    if (m_recycled_elements.size() > 0) begin
+ 012990      element = m_recycled_elements.pop_back() ;
            end
  000102    else begin
  000102      element = new() ;
            end
- 076452    return element ;
+ 013092    return element ;
         endfunction
         
         // print_array_header
@@ -1250,58 +1250,58 @@
         // print_object_header
         // -------------------
         
- 007325 function void uvm_printer::print_object_header (string name,
+ 001385 function void uvm_printer::print_object_header (string name,
                                                         uvm_object value,
                                                         byte scope_separator=".");
-~007322   if(name == "") begin
+~001382   if(name == "") begin
             
 %000003     name = "<unnamed>";
           end
         
         
- 007325   push_element(name,
- 007325                (value != null) ?  value.get_type_name() : "object",
- 007325                "-",
-~007325                get_id_enabled() ? uvm_object_value_str(value) : "-");
+ 001385   push_element(name,
+ 001385                (value != null) ?  value.get_type_name() : "object",
+ 001385                "-",
+~001385                get_id_enabled() ? uvm_object_value_str(value) : "-");
         endfunction
         
         
         // print_object
         // ------------
         
- 007325 function void uvm_printer::print_object (string name, uvm_object value,
+ 001385 function void uvm_printer::print_object (string name, uvm_object value,
                                                  byte scope_separator=".");
- 007325   uvm_component comp, child_comp;
- 007325   uvm_field_op field_op ;
- 007325   uvm_recursion_policy_enum recursion_policy;
- 007325   recursion_policy = get_recursion_policy();
+ 001385   uvm_component comp, child_comp;
+ 001385   uvm_field_op field_op ;
+ 001385   uvm_recursion_policy_enum recursion_policy;
+ 001385   recursion_policy = get_recursion_policy();
         
-~007325   if ((value == null) ||
+~001385   if ((value == null) ||
               (recursion_policy == UVM_REFERENCE) ||
               (object_printed(value, recursion_policy) == uvm_policy::STARTED) ||
 %000000       (get_max_depth() == get_active_object_depth())) begin
 %000000     print_object_header(name,value,scope_separator); // calls push_element
 %000000     pop_element();
           end
- 007325   else begin
- 007325     push_active_object(value);
- 007325     m_recur_states[value][recursion_policy] = uvm_policy::STARTED ;
- 007325     print_object_header(name,value,scope_separator); // calls push_element
+ 001385   else begin
+ 001385     push_active_object(value);
+ 001385     m_recur_states[value][recursion_policy] = uvm_policy::STARTED ;
+ 001385     print_object_header(name,value,scope_separator); // calls push_element
         
- 007325     field_op = uvm_field_op::m_get_available_op() ;
- 007325     field_op.set(UVM_PRINT,this,null);
- 007325     value.do_execute_op(field_op);
-~007325     if (field_op.user_hook_enabled()) begin
+ 001385     field_op = uvm_field_op::m_get_available_op() ;
+ 001385     field_op.set(UVM_PRINT,this,null);
+ 001385     value.do_execute_op(field_op);
+~001385     if (field_op.user_hook_enabled()) begin
               
- 007325       value.do_print(this);
+ 001385       value.do_print(this);
             end
         
- 007325     field_op.m_recycle();
+ 001385     field_op.m_recycle();
         
- 007325     pop_element() ; // matches push in print_object_header
+ 001385     pop_element() ; // matches push in print_object_header
         
- 007325     m_recur_states[value][recursion_policy] = uvm_policy::FINISHED ;
- 007325     void'(pop_active_object());
+ 001385     m_recur_states[value][recursion_policy] = uvm_policy::FINISHED ;
+ 001385     void'(pop_active_object());
           end
         endfunction
         
@@ -1343,29 +1343,29 @@
         // print_time
         // ----------
         
- 002247 function void uvm_printer::print_time (string name,
+ 000267 function void uvm_printer::print_time (string name,
                                                time value,
                                                byte scope_separator=".");
- 002247   print_field_int(name, value, 64, UVM_TIME, scope_separator);
+ 000267   print_field_int(name, value, 64, UVM_TIME, scope_separator);
         endfunction
         
         
         // print_string
         // ------------
         
- 006741 function void uvm_printer::print_string (string name,
+ 000801 function void uvm_printer::print_string (string name,
                                                  string value,
                                                  byte scope_separator=".");
         
- 006741   push_element(name,
- 006741                "string",
- 006741                $sformatf("%0d",value.len()),
-~006741                (value == "" ? "\"\"" : value));
- 006741   pop_element() ;
+ 000801   push_element(name,
+ 000801                "string",
+ 000801                $sformatf("%0d",value.len()),
+~000801                (value == "" ? "\"\"" : value));
+ 000801   pop_element() ;
         
         endfunction
         
- 007325 function uvm_policy::recursion_state_e uvm_printer::object_printed (uvm_object value,
+ 001385 function uvm_policy::recursion_state_e uvm_printer::object_printed (uvm_object value,
                                                                             uvm_recursion_policy_enum recursion);
         
 %000000    if (!m_recur_states.exists(value)) begin
@@ -1411,58 +1411,58 @@
  000102    super.new(name) ;
         endfunction
         
- 076452 function void uvm_printer_element::set (string element_name = "",
+ 013092 function void uvm_printer_element::set (string element_name = "",
                                                 string element_type_name = "",
                                                 string element_size = "",
                                                 string element_value = ""
            );
- 076452    m_name = element_name ;
- 076452    m_type_name = element_type_name ;
- 076452    m_size = element_size ;
- 076452    m_value = element_value ;
+ 013092    m_name = element_name ;
+ 013092    m_type_name = element_type_name ;
+ 013092    m_size = element_size ;
+ 013092    m_value = element_value ;
         endfunction
         
 %000000 function void uvm_printer_element::set_element_name (string element_name);
 %000000    m_name = element_name ;
         endfunction
- 229356 function string uvm_printer_element::get_element_name ();
- 229356    return m_name ;
+ 039276 function string uvm_printer_element::get_element_name ();
+ 039276    return m_name ;
         endfunction
         
 %000000 function void uvm_printer_element::set_element_type_name (string element_type_name);
 %000000    m_type_name = element_type_name ;
         endfunction
- 229356 function string uvm_printer_element::get_element_type_name ();
- 229356    return m_type_name ;
+ 039276 function string uvm_printer_element::get_element_type_name ();
+ 039276    return m_type_name ;
         endfunction
         
 %000000 function void uvm_printer_element::set_element_size (string element_size);
 %000000    m_size = element_size ;
         endfunction
- 229356 function string uvm_printer_element::get_element_size ();
- 229356    return m_size ;
+ 039276 function string uvm_printer_element::get_element_size ();
+ 039276    return m_size ;
         endfunction
         
 %000000 function void uvm_printer_element::set_element_value (string element_value);
 %000000    m_value = element_value ;
         endfunction
- 229356 function string uvm_printer_element::get_element_value ();
- 229356    return m_value ;
+ 039276 function string uvm_printer_element::get_element_value ();
+ 039276    return m_value ;
         endfunction
         
- 069214 function void uvm_printer_element::add_child(uvm_printer_element child) ;
- 069214    m_children.push_back(child) ;
+ 011794 function void uvm_printer_element::add_child(uvm_printer_element child) ;
+ 011794    m_children.push_back(child) ;
         endfunction
- 152877 function void uvm_printer_element::get_children(ref uvm_printer_element children[$], input bit recurse) ;
-~152877    foreach (m_children[i]) begin
- 138404      children.push_back(m_children[i]) ;
- 069214      if (recurse) begin
- 069190        m_children[i].get_children(children,1) ;
+ 026157 function void uvm_printer_element::get_children(ref uvm_printer_element children[$], input bit recurse) ;
+~026157    foreach (m_children[i]) begin
+ 023564      children.push_back(m_children[i]) ;
+ 011794      if (recurse) begin
+ 011770        m_children[i].get_children(children,1) ;
              end
            end
         endfunction
- 076425 function void uvm_printer_element::clear_children() ;
- 076425    m_children.delete() ;
+ 013065 function void uvm_printer_element::clear_children() ;
+ 013065    m_children.delete() ;
         endfunction
         
         //------------------------------------------------------------------------------
@@ -1477,180 +1477,180 @@
         endfunction
         
         
- 076452 function void uvm_table_printer::pop_element();
- 076452    int name_len;
- 076452    int level ;
- 076452    uvm_printer_element popped ;
- 076452    string name_str ;
- 076452    string type_name_str ;
- 076452    string size_str ;
- 076452    string value_str ;
+ 013092 function void uvm_table_printer::pop_element();
+ 013092    int name_len;
+ 013092    int level ;
+ 013092    uvm_printer_element popped ;
+ 013092    string name_str ;
+ 013092    string type_name_str ;
+ 013092    string size_str ;
+ 013092    string value_str ;
         
- 076452    popped = get_top_element() ;
+ 013092    popped = get_top_element() ;
         
- 076452    level = m_get_stack_size() - 1 ;
- 076452    name_str = popped.get_element_name() ;
- 076452    type_name_str = popped.get_element_type_name() ;
- 076452    size_str = popped.get_element_size() ;
- 076452    value_str = popped.get_element_value() ;
+ 013092    level = m_get_stack_size() - 1 ;
+ 013092    name_str = popped.get_element_name() ;
+ 013092    type_name_str = popped.get_element_type_name() ;
+ 013092    size_str = popped.get_element_size() ;
+ 013092    value_str = popped.get_element_value() ;
         
- 062464    if ((name_str.len() + (get_indent() * level)) > m_max_name) begin
- 013988      m_max_name = (name_str.len() + (get_indent() * level));
+ 010984    if ((name_str.len() + (get_indent() * level)) > m_max_name) begin
+ 002108      m_max_name = (name_str.len() + (get_indent() * level));
            end
         
- 061973    if (type_name_str.len() > m_max_type) begin
- 014479      m_max_type = type_name_str.len();
+ 010493    if (type_name_str.len() > m_max_type) begin
+ 002599      m_max_type = type_name_str.len();
            end
         
-~076452    if (size_str.len() > m_max_size) begin
+~013092    if (size_str.len() > m_max_size) begin
 %000000      m_max_size = size_str.len();
            end
         
- 069569    if (value_str.len() > m_max_value) begin
- 006883      m_max_value = value_str.len();
+ 012351    if (value_str.len() > m_max_value) begin
+ 000741      m_max_value = value_str.len();
            end
         
         
- 076452    super.pop_element() ;
+ 013092    super.pop_element() ;
         
         endfunction
         
         // emit
         // ----
         
- 007238 function string uvm_table_printer::emit();
+ 001298 function string uvm_table_printer::emit();
         
- 007238   string s;
- 007238   string user_format;
- 007238   static string dash; // = "---------------------------------------------------------------------------------------------------";
- 007238   string dashes;
+ 001298   string s;
+ 001298   string user_format;
+ 001298   static string dash; // = "---------------------------------------------------------------------------------------------------";
+ 001298   string dashes;
         
- 007238   string linefeed;
+ 001298   string linefeed;
         
-~007238   if (!m_flushed) begin
+~001298   if (!m_flushed) begin
 %000000     `uvm_error("UVM/PRINT/NO_FLUSH","printer emit() method called twice without intervening uvm_printer::flush()")
           end
- 007238   else begin
- 007238     m_flushed = 0 ;
+ 001298   else begin
+ 001298     m_flushed = 0 ;
           end
         
- 007238   linefeed = {"\n", get_line_prefix()};
+ 001298   linefeed = {"\n", get_line_prefix()};
         
- 007238    begin
- 007238      int q[5];
- 007238      int m;
- 007238      int qq[$];
+ 001298    begin
+ 001298      int q[5];
+ 001298      int m;
+ 001298      int qq[$];
         
- 007238      q = '{m_max_name,m_max_type,m_max_size,m_max_value,100};
- 007238      qq = q.max;
- 007238      m = qq[0];
-~007235      if(dash.len()<m) begin
+ 001298      q = '{m_max_name,m_max_type,m_max_size,m_max_value,100};
+ 001298      qq = q.max;
+ 001298      m = qq[0];
+~001295      if(dash.len()<m) begin
 %000003        dash = {m{"-"}};
 %000003        m_space = {m{" "}};
              end
            end
         
           // for backward compatibility
-~007238   if (knobs.header) begin
- 007238     user_format = format_header();
-~007238     if (user_format != "") begin
+~001298   if (knobs.header) begin
+ 001298     user_format = format_header();
+~001298     if (user_format != "") begin
 %000000       s = {s, user_format, linefeed};
             end
- 007238     else begin // branch taken if backward compatibility not used
- 007238       string header;
- 007238       string dash_id, dash_typ, dash_sz;
- 007238       string head_id, head_typ, head_sz;
-~007238       if (get_name_enabled()) begin
- 007238         dashes = {dash.substr(1,m_max_name+2)};
- 007238         header = {"Name",m_space.substr(1,m_max_name-2)};
+ 001298     else begin // branch taken if backward compatibility not used
+ 001298       string header;
+ 001298       string dash_id, dash_typ, dash_sz;
+ 001298       string head_id, head_typ, head_sz;
+~001298       if (get_name_enabled()) begin
+ 001298         dashes = {dash.substr(1,m_max_name+2)};
+ 001298         header = {"Name",m_space.substr(1,m_max_name-2)};
               end
-~007238       if (get_type_name_enabled()) begin
- 007238         dashes = {dashes, dash.substr(1,m_max_type+2)};
- 007238         header = {header, "Type",m_space.substr(1,m_max_type-2)};
+~001298       if (get_type_name_enabled()) begin
+ 001298         dashes = {dashes, dash.substr(1,m_max_type+2)};
+ 001298         header = {header, "Type",m_space.substr(1,m_max_type-2)};
               end
-~007238       if (get_size_enabled()) begin
- 007238         dashes = {dashes, dash.substr(1,m_max_size+2)};
- 007238         header = {header, "Size",m_space.substr(1,m_max_size-2)};
+~001298       if (get_size_enabled()) begin
+ 001298         dashes = {dashes, dash.substr(1,m_max_size+2)};
+ 001298         header = {header, "Size",m_space.substr(1,m_max_size-2)};
               end
- 007238       dashes = {dashes, dash.substr(1,m_max_value), linefeed};
- 007238       header = {header, "Value", m_space.substr(1,m_max_value-5), linefeed};
+ 001298       dashes = {dashes, dash.substr(1,m_max_value), linefeed};
+ 001298       header = {header, "Value", m_space.substr(1,m_max_value-5), linefeed};
             
- 007238       s = {s, dashes, header, dashes};
+ 001298       s = {s, dashes, header, dashes};
             end
           end
         
         
- 007238   s = {s, m_emit_element(get_bottom_element(),0)} ;
+ 001298   s = {s, m_emit_element(get_bottom_element(),0)} ;
         
           // for backward compatibility
-~007238   if (knobs.footer) begin
- 007238     user_format = format_footer();
-~007238     if (user_format != "") begin
+~001298   if (knobs.footer) begin
+ 001298     user_format = format_footer();
+~001298     if (user_format != "") begin
 %000000       s = {s, user_format, linefeed};
             end
         
- 007238     else begin // branch taken if backward compatibility not used
- 007238       s = {s, dashes}; // add dashes for footer
+ 001298     else begin // branch taken if backward compatibility not used
+ 001298       s = {s, dashes}; // add dashes for footer
             end
           end
         
- 007238   emit = {get_line_prefix(), s};
+ 001298   emit = {get_line_prefix(), s};
         endfunction
         
- 076452 function string uvm_table_printer::m_emit_element(uvm_printer_element element, int unsigned level) ;
- 076452   string result ;
- 076452   static uvm_printer_element_proxy proxy = new("proxy") ;
- 076452   uvm_printer_element element_children[$];
- 076452   string linefeed = {"\n", get_line_prefix()};
+ 013092 function string uvm_table_printer::m_emit_element(uvm_printer_element element, int unsigned level) ;
+ 013092   string result ;
+ 013092   static uvm_printer_element_proxy proxy = new("proxy") ;
+ 013092   uvm_printer_element element_children[$];
+ 013092   string linefeed = {"\n", get_line_prefix()};
         
         // begin code for compatibility
- 076452     uvm_printer_row_info row ;
- 076452     string user_format ;
- 076452     row.level = level ;
- 076452     row.name = element.get_element_name() ;
- 076452     row.type_name = element.get_element_type_name() ;
- 076452     row.size = element.get_element_size() ;
- 076452     row.val = element.get_element_value() ;
- 076452     user_format = format_row(row);
-~076452     if (user_format != "") begin
+ 013092     uvm_printer_row_info row ;
+ 013092     string user_format ;
+ 013092     row.level = level ;
+ 013092     row.name = element.get_element_name() ;
+ 013092     row.type_name = element.get_element_type_name() ;
+ 013092     row.size = element.get_element_size() ;
+ 013092     row.val = element.get_element_value() ;
+ 013092     user_format = format_row(row);
+~013092     if (user_format != "") begin
 %000000       result = {user_format, linefeed};
             end
- 076452     else begin
+ 013092     else begin
               // end code for compatibility
         
             
- 076452       string row_str;
- 076452       string name_str ;
- 076452       string value_str ;
- 076452       string type_name_str ;
- 076452       string size_str ;
- 076452       name_str = element.get_element_name() ;
- 076452       value_str = element.get_element_value() ;
- 076452       type_name_str = element.get_element_type_name() ;
- 076452       size_str = element.get_element_size() ;
-~076452       if (get_name_enabled()) begin
+ 013092       string row_str;
+ 013092       string name_str ;
+ 013092       string value_str ;
+ 013092       string type_name_str ;
+ 013092       string size_str ;
+ 013092       name_str = element.get_element_name() ;
+ 013092       value_str = element.get_element_value() ;
+ 013092       type_name_str = element.get_element_type_name() ;
+ 013092       size_str = element.get_element_size() ;
+~013092       if (get_name_enabled()) begin
                 
- 076452         result = {result, m_space.substr(1,level * get_indent()), name_str,
- 076452                    m_space.substr(1,m_max_name-name_str.len()-(level*get_indent())+2)};
+ 013092         result = {result, m_space.substr(1,level * get_indent()), name_str,
+ 013092                    m_space.substr(1,m_max_name-name_str.len()-(level*get_indent())+2)};
               end
         
-~076452       if (get_type_name_enabled()) begin
+~013092       if (get_type_name_enabled()) begin
                 
- 076452         result = {result, type_name_str, m_space.substr(1,m_max_type-type_name_str.len()+2)};
+ 013092         result = {result, type_name_str, m_space.substr(1,m_max_type-type_name_str.len()+2)};
               end
         
-~076452       if (get_size_enabled()) begin
+~013092       if (get_size_enabled()) begin
                 
- 076452         result = {result, size_str, m_space.substr(1,m_max_size-size_str.len()+2)};
+ 013092         result = {result, size_str, m_space.substr(1,m_max_size-size_str.len()+2)};
               end
         
- 076452       result = {result, row_str, value_str, m_space.substr(1,m_max_value-value_str.len()), linefeed};
+ 013092       result = {result, row_str, value_str, m_space.substr(1,m_max_value-value_str.len()), linefeed};
             end
- 076452   proxy.get_immediate_children(element,element_children) ;
-~076452   foreach (element_children[i]) begin
- 069214     result = {result, m_emit_element(element_children[i],level+1)} ;
+ 013092   proxy.get_immediate_children(element,element_children) ;
+~013092   foreach (element_children[i]) begin
+ 011794     result = {result, m_emit_element(element_children[i],level+1)} ;
           end
- 076452   return result ;
+ 013092   return result ;
         endfunction
         
         
@@ -1852,17 +1852,17 @@
 %000000    m_uvm_printer_knobs _knobs = get_knobs();
 %000000    _knobs.indent = indent ;
         endfunction
- 243344 function int uvm_table_printer::get_indent() ;
- 243344    m_uvm_printer_knobs _knobs = get_knobs();
- 243344    return _knobs.indent ;
+ 041384 function int uvm_table_printer::get_indent() ;
+ 041384    m_uvm_printer_knobs _knobs = get_knobs();
+ 041384    return _knobs.indent ;
         endfunction
         
- 007241 function void uvm_table_printer::flush() ;
- 007241    super.flush() ;
- 007241    m_max_name=4;
- 007241    m_max_type=4;
- 007241    m_max_size=4;
- 007241    m_max_value=5;
+ 001301 function void uvm_table_printer::flush() ;
+ 001301    super.flush() ;
+ 001301    m_max_name=4;
+ 001301    m_max_type=4;
+ 001301    m_max_size=4;
+ 001301    m_max_value=5;
            //set_indent(2) ; // LRM says to include this call
         endfunction
         

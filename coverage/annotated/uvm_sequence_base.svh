@@ -533,8 +533,8 @@
           // This method should not be called directly by the user.
         
           // @uvm-ieee 1800.2-2020 auto 14.2.3.4
- 001247   virtual task pre_do(bit is_item);
- 001247     return;
+ 000257   virtual task pre_do(bit is_item);
+ 000257     return;
           endtask
         
         
@@ -545,8 +545,8 @@
           // to the driver.  This method should not be called directly by the user.
         
           // @uvm-ieee 1800.2-2020 auto 14.2.3.5
- 001247   virtual function void mid_do(uvm_sequence_item this_item);
- 001247     return;
+ 000257   virtual function void mid_do(uvm_sequence_item this_item);
+ 000257     return;
           endfunction
           
           
@@ -570,8 +570,8 @@
           // by the user.
         
           // @uvm-ieee 1800.2-2020 auto 14.2.3.7
- 001247   virtual function void post_do(uvm_sequence_item this_item);
- 001247     return;
+ 000257   virtual function void post_do(uvm_sequence_item this_item);
+ 000257     return;
           endfunction
         
         
@@ -744,8 +744,8 @@
           // This function returns the current priority of the sequence.
         
           // @uvm-ieee 1800.2-2020 auto 14.2.5.1
- 001247   function int get_priority();
- 001247     return m_priority;
+ 000257   function int get_priority();
+ 000257     return m_priority;
           endfunction
         
         
@@ -770,9 +770,9 @@
           // sequence to become relevant.
         
           // @uvm-ieee 1800.2-2020 auto 14.2.5.3
- 001247   virtual function bit is_relevant();
- 001247     is_rel_default = 1;
- 001247     return 1;
+ 000257   virtual function bit is_relevant();
+ 000257     is_rel_default = 1;
+ 000257     return 1;
           endfunction
         
         
@@ -1075,57 +1075,57 @@
           //
         
           // @uvm-ieee 1800.2-2020 auto 14.2.6.2
- 001247   virtual task start_item (uvm_sequence_item item,
+ 000257   virtual task start_item (uvm_sequence_item item,
                                    int set_priority = -1,
                                    uvm_sequencer_base sequencer=null);
         
-~001247     if(item == null) begin
+~000257     if(item == null) begin
 %000000       uvm_report_fatal("NULLITM",
 %000000          {"attempting to start a null item from sequence '",
 %000000           get_full_name(), "'"}, UVM_NONE);
 %000000       return;
             end
         
-~001247     if ( ! item.is_item() ) begin
+~000257     if ( ! item.is_item() ) begin
 %000000       uvm_report_fatal("SEQNOTITM",
 %000000          {"attempting to start a sequence using start_item() from sequence '",
 %000000           get_full_name(), "'. Use seq.start() instead."}, UVM_NONE);
 %000000       return;
             end
         
-~001247     if (sequencer == null) begin
+~000257     if (sequencer == null) begin
                 
- 001247       sequencer = item.get_sequencer();
+ 000257       sequencer = item.get_sequencer();
             end
         
         
-~001247     if(sequencer == null) begin
+~000257     if(sequencer == null) begin
                 
- 001247       sequencer = get_sequencer();
+ 000257       sequencer = get_sequencer();
             end
         
         
-~001247     if(sequencer == null) begin
+~000257     if(sequencer == null) begin
 %000000       uvm_report_fatal("SEQ",{"neither the item's sequencer nor dedicated sequencer has been supplied to start item in ",get_full_name()},UVM_NONE);
 %000000       return;
             end
         
- 001247     item.set_item_context(this, sequencer);
+ 000257     item.set_item_context(this, sequencer);
         
-~001247     if (set_priority < 0) begin
+~000257     if (set_priority < 0) begin
               
- 001247       set_priority = get_priority();
+ 000257       set_priority = get_priority();
             end
         
         
- 001247     sequencer.wait_for_grant(this, set_priority);
+ 000257     sequencer.wait_for_grant(this, set_priority);
         
-~001247     if (sequencer.is_auto_item_recording_enabled()) begin
- 001247       void'(sequencer.begin_tr(.tr(item), .stream_name(item.get_root_sequence_name()), .label("Transactions"),
- 001247                                .parent_handle((m_tr_recorder == null) ? 0 : m_tr_recorder.get_handle())));                                     
+~000257     if (sequencer.is_auto_item_recording_enabled()) begin
+ 000257       void'(sequencer.begin_tr(.tr(item), .stream_name(item.get_root_sequence_name()), .label("Transactions"),
+ 000257                                .parent_handle((m_tr_recorder == null) ? 0 : m_tr_recorder.get_handle())));                                     
             end
         
- 001247     pre_do(1);
+ 000257     pre_do(1);
         
           endtask
         
@@ -1139,26 +1139,26 @@
           //
         
           // @uvm-ieee 1800.2-2020 auto 14.2.6.3
- 001247   virtual task finish_item (uvm_sequence_item item,
+ 000257   virtual task finish_item (uvm_sequence_item item,
                                     int set_priority = -1);
         
- 001247     uvm_sequencer_base sequencer;
+ 000257     uvm_sequencer_base sequencer;
         
- 001247     sequencer = item.get_sequencer();
+ 000257     sequencer = item.get_sequencer();
         
-~001247     if (sequencer == null) begin
+~000257     if (sequencer == null) begin
 %000000       uvm_report_fatal("STRITM", "sequence_item has null sequencer", UVM_NONE);
             end
         
- 001247     mid_do(item);
- 001247     sequencer.send_request(this, item);
- 001247     sequencer.wait_for_item_done(this, -1);
+ 000257     mid_do(item);
+ 000257     sequencer.send_request(this, item);
+ 000257     sequencer.wait_for_item_done(this, -1);
         
-~001247     if (sequencer.is_auto_item_recording_enabled()) begin
- 001247       sequencer.end_tr(item);
+~000257     if (sequencer.is_auto_item_recording_enabled()) begin
+ 000257       sequencer.end_tr(item);
             end
         
- 001247     post_do(item);
+ 000257     post_do(item);
         
           endtask
         
@@ -1393,10 +1393,10 @@
           // m_get_sqr_sequence_id
           // ---------------------
         
- 003756   function int m_get_sqr_sequence_id(int sequencer_id, bit update_sequence_id);
+ 000786   function int m_get_sqr_sequence_id(int sequencer_id, bit update_sequence_id);
 %000003     if (m_sqr_seq_ids.exists(sequencer_id)) begin
-~003747       if (update_sequence_id == 1) begin
- 003747         set_sequence_id(m_sqr_seq_ids[sequencer_id]);
+~000777       if (update_sequence_id == 1) begin
+ 000777         set_sequence_id(m_sqr_seq_ids[sequencer_id]);
               end
 %000000       return m_sqr_seq_ids[sequencer_id];
             end
@@ -1407,7 +1407,7 @@
             end
         
         
- 003756     return -1;
+ 000786     return -1;
           endfunction
         
         

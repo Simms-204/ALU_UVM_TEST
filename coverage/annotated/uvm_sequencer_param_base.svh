@@ -295,43 +295,43 @@
         // send_request
         // ------------
         
-~001247 function void uvm_sequencer_param_base::send_request(uvm_sequence_base sequence_ptr,
+~000257 function void uvm_sequencer_param_base::send_request(uvm_sequence_base sequence_ptr,
                                                              uvm_sequence_item t,
                                                              bit rerandomize = 0);
-~001247   REQ param_t;
+~000257   REQ param_t;
         
-~001247   if (sequence_ptr == null) begin
+~000257   if (sequence_ptr == null) begin
 %000000     uvm_report_fatal("SNDREQ", "Send request sequence_ptr is null", UVM_NONE);
           end
         
-~001247   if (sequence_ptr.m_wait_for_grant_semaphore < 1) begin
+~000257   if (sequence_ptr.m_wait_for_grant_semaphore < 1) begin
 %000000     uvm_report_fatal("SNDREQ", "Send request called without wait_for_grant", UVM_NONE);
           end
-~001247   sequence_ptr.m_wait_for_grant_semaphore--;
+~000257   sequence_ptr.m_wait_for_grant_semaphore--;
           
-~001247   if ($cast(param_t, t)) begin
-~001247     if (rerandomize == 1) begin
+~000257   if ($cast(param_t, t)) begin
+~000257     if (rerandomize == 1) begin
 %000000       if (!param_t.randomize()) begin
 %000000         uvm_report_warning("SQRSNDREQ", "Failed to rerandomize sequence item in send_request");
               end
             end
-~001247     if (param_t.get_transaction_id() == -1) begin
-~001247       param_t.set_transaction_id(sequence_ptr.m_next_transaction_id++);
+~000257     if (param_t.get_transaction_id() == -1) begin
+~000257       param_t.set_transaction_id(sequence_ptr.m_next_transaction_id++);
             end
-~001247     m_last_req_push_front(param_t);
+~000257     m_last_req_push_front(param_t);
 %000000   end else begin
 %000000     uvm_report_fatal("SQRSNDREQCAST",$sformatf("send_request failed to cast sequence item"), UVM_NONE);
           end
         
-~001247   param_t.set_sequence_id(sequence_ptr.m_get_sqr_sequence_id(m_sequencer_id, 1));
-~001247   t.set_sequencer(this);
-~001247   if (m_req_fifo.try_put(param_t) != 1) begin
+~000257   param_t.set_sequence_id(sequence_ptr.m_get_sqr_sequence_id(m_sequencer_id, 1));
+~000257   t.set_sequencer(this);
+~000257   if (m_req_fifo.try_put(param_t) != 1) begin
 %000000     uvm_report_fatal("SQRSNDREQGNI", "Concurrent calls to get_next_item() not supported. Consider using a semaphore to ensure that concurrent processes take turns in the driver", UVM_NONE);
           end
         
-~001247   m_num_reqs_sent++;
+~000257   m_num_reqs_sent++;
           // Grant any locks as soon as possible
-~001247   grant_queued_locks();
+~000257   grant_queued_locks();
         endfunction
         
         
@@ -438,20 +438,20 @@
         // m_last_req_push_front
         // ---------------------
         
-~001247 function void uvm_sequencer_param_base::m_last_req_push_front(REQ item);
-~001247   if(!m_num_last_reqs) begin
+~000257 function void uvm_sequencer_param_base::m_last_req_push_front(REQ item);
+~000257   if(!m_num_last_reqs) begin
             
 %000000     return;
           end
         
          
-~001244   if(m_last_req_buffer.size() == m_num_last_reqs) begin
+~000254   if(m_last_req_buffer.size() == m_num_last_reqs) begin
             
-~001244     void'(m_last_req_buffer.pop_back());
+~000254     void'(m_last_req_buffer.pop_back());
           end
         
         
-~001247   this.m_last_req_buffer.push_front(item);
+~000257   this.m_last_req_buffer.push_front(item);
         endfunction
         
         
@@ -506,17 +506,17 @@
         // m_safe_select_item
         // ---------------------
         
-~001247 task uvm_sequencer_param_base::m_safe_select_item(input bit get_next_item, output REQ t);
-~001247   process select_process;
-~001247   uvm_sequence_request selected_sequence_request;
-~001247   if(sequence_item_requested == 0) begin
-~001247     m_select_sequence(selected_sequence_request);
-~001247     fork
-~001247       begin
-~001247         select_process = process::self();
+~000257 task uvm_sequencer_param_base::m_safe_select_item(input bit get_next_item, output REQ t);
+~000257   process select_process;
+~000257   uvm_sequence_request selected_sequence_request;
+~000257   if(sequence_item_requested == 0) begin
+~000257     m_select_sequence(selected_sequence_request);
+~000257     fork
+~000257       begin
+~000257         select_process = process::self();
                 // re-arbitrate if the sequence was killed or finished after it won arbitration but before it was
                 // able to send its request.
-~001247         forever begin
+~000257         forever begin
 %000000           selected_sequence_request.process_id.await();
         
 %000000           if(!m_req_fifo.is_empty()) begin
@@ -533,18 +533,18 @@
               end
             join_none
             // wait for thread to start to ensure it gets killed when peek returns
-~001247     wait(select_process != null);
+~000257     wait(select_process != null);
           end
-~001247   sequence_item_requested = 1;
-~001247   if (get_next_item) begin
+~000257   sequence_item_requested = 1;
+~000257   if (get_next_item) begin
             
-~001247     get_next_item_called = 1;
+~000257     get_next_item_called = 1;
           end
         
-~001247   m_req_fifo.peek(t);
-~001247   if ((select_process != null) && (select_process.status != process::FINISHED)) begin
+~000257   m_req_fifo.peek(t);
+~000257   if ((select_process != null) && (select_process.status != process::FINISHED)) begin
             
-~001247     select_process.kill();
+~000257     select_process.kill();
           end
         
         endtask

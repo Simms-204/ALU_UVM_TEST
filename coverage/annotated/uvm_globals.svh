@@ -467,18 +467,18 @@
         // @uvm-accellera The details of this API are specific to the Accellera implementation, and are not being considered for contribution to 1800.2
         //----------------------------------------------------------------------------
         
- 001367 task uvm_wait_for_nba_region;
+ 000377 task uvm_wait_for_nba_region;
         
           // Nonblocking assignment requires static
- 001367   static int nba;
- 001367   static int next_nba;
+ 000377   static int nba;
+ 000377   static int next_nba;
         
           //If `included directly in a program block, can't use a non-blocking assign,
           //but it isn't needed since program blocks are in a separate region.
         `ifndef UVM_NO_WAIT_FOR_NBA
- 001367   next_nba++;
- 001367   nba <= next_nba;
- 001367   @(nba);
+ 000377   next_nba++;
+ 000377   nba <= next_nba;
+ 000377   @(nba);
         `else
           repeat(`UVM_POUND_ZERO_COUNT) #0;
         `endif

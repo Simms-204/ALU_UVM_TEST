@@ -314,8 +314,8 @@
           // Create a new uvm_report_message_element_container object
           //
         
-~013520   function new(string name = "element_container");
- 013520     super.new(name);
+~002630   function new(string name = "element_container");
+ 002630     super.new(name);
           endfunction
         
         
@@ -324,8 +324,8 @@
           // Returns the size of the container, i.e. the number of elements
           //
         
- 013520   virtual function int size();
- 013520     return elements.size();
+ 002630   virtual function int size();
+ 002630     return elements.size();
           endfunction
         
         
@@ -544,9 +544,9 @@
           //
         
           // @uvm-ieee 1800.2-2020 auto 6.2.2.1
-~013520   function new(string name = "uvm_report_message");
- 013520     super.new(name);
- 013520     _report_message_element_container = new();
+~002630   function new(string name = "uvm_report_message");
+ 002630     super.new(name);
+ 002630     _report_message_element_container = new();
           endfunction
         
         
@@ -557,21 +557,21 @@
           //
         
           // @uvm-ieee 1800.2-2020 auto 6.2.2.2
- 013520   static function uvm_report_message new_report_message(string name = "uvm_report_message");
- 013520     process p;
- 013520     string rand_state;
+ 002630   static function uvm_report_message new_report_message(string name = "uvm_report_message");
+ 002630     process p;
+ 002630     string rand_state;
         
- 013520     p = process::self();
+ 002630     p = process::self();
         
-~013520     if (p != null)
- 013520       begin
- 013520         rand_state = p.get_randstate();
+~002630     if (p != null)
+ 002630       begin
+ 002630         rand_state = p.get_randstate();
               end
         
- 013520     new_report_message = new(name);
-~013520     if (p != null)
- 013520       begin
- 013520         p.set_randstate(rand_state);
+ 002630     new_report_message = new(name);
+~002630     if (p != null)
+ 002630       begin
+ 002630         p.set_randstate(rand_state);
               end
         
         
@@ -687,8 +687,8 @@
           // Function -- NODOCS -- get_report_object
         
           // @uvm-ieee 1800.2-2020 auto 6.2.3.1
- 013520   virtual function uvm_report_object get_report_object();
- 013520     return _report_object;
+ 002630   virtual function uvm_report_object get_report_object();
+ 002630     return _report_object;
           endfunction
         
           // Function -- NODOCS -- set_report_object
@@ -696,16 +696,16 @@
           // Get or set the uvm_report_object that originated the message.
         
           // @uvm-ieee 1800.2-2020 auto 6.2.3.1
- 013520   virtual function void set_report_object(uvm_report_object ro);
- 013520     _report_object = ro;
+ 002630   virtual function void set_report_object(uvm_report_object ro);
+ 002630     _report_object = ro;
           endfunction
         
         
           // Function -- NODOCS -- get_report_handler
         
           // @uvm-ieee 1800.2-2020 auto 6.2.3.2
- 027040   virtual function uvm_report_handler get_report_handler();
- 027040     return _report_handler;
+ 005260   virtual function uvm_report_handler get_report_handler();
+ 005260     return _report_handler;
           endfunction
         
           // Function -- NODOCS -- set_report_handler
@@ -714,8 +714,8 @@
           // whether the message is enabled, should be upgraded/downgraded, etc.
         
           // @uvm-ieee 1800.2-2020 auto 6.2.3.2
- 013520   virtual function void set_report_handler(uvm_report_handler rh);
- 013520     _report_handler = rh;
+ 002630   virtual function void set_report_handler(uvm_report_handler rh);
+ 002630     _report_handler = rh;
           endfunction
         
           
@@ -732,8 +732,8 @@
           // the message's actions.  
         
           // @uvm-ieee 1800.2-2020 auto 6.2.3.3
- 013520   virtual function void set_report_server(uvm_report_server rs);
- 013520     _report_server = rs;
+ 002630   virtual function void set_report_server(uvm_report_server rs);
+ 002630     _report_server = rs;
           endfunction
         
         
@@ -745,8 +745,8 @@
           // Function -- NODOCS -- get_severity
         
           // @uvm-ieee 1800.2-2020 auto 6.2.4.1
- 054086   virtual function uvm_severity get_severity();
- 054086     return _severity;
+ 010526   virtual function uvm_severity get_severity();
+ 010526     return _severity;
           endfunction
         
           // Function -- NODOCS -- set_severity
@@ -764,8 +764,8 @@
           // Function -- NODOCS -- get_id
         
           // @uvm-ieee 1800.2-2020 auto 6.2.4.2
- 040560   virtual function string get_id();
- 040560     return _id;
+ 007890   virtual function string get_id();
+ 007890     return _id;
           endfunction
         
           // Function -- NODOCS -- set_id
@@ -784,8 +784,8 @@
           // Function -- NODOCS -- get_message
         
           // @uvm-ieee 1800.2-2020 auto 6.2.4.3
- 013520   virtual function string get_message();
- 013520     return _message;
+ 002630   virtual function string get_message();
+ 002630     return _message;
           endfunction
         
           // Function -- NODOCS -- set_message
@@ -820,8 +820,8 @@
           // Function -- NODOCS -- get_filename
         
           // @uvm-ieee 1800.2-2020 auto 6.2.4.5
- 027037   virtual function string get_filename();
- 027037     return _filename;
+ 005257   virtual function string get_filename();
+ 005257     return _filename;
           endfunction
         
           // Function -- NODOCS -- set_filename
@@ -838,8 +838,8 @@
           // Function -- NODOCS -- get_line
         
           // @uvm-ieee 1800.2-2020 auto 6.2.4.6
- 013517   virtual function int get_line();
- 013517     return _line;
+ 002627   virtual function int get_line();
+ 002627     return _line;
           endfunction
         
           // Function -- NODOCS -- set_line
@@ -856,8 +856,8 @@
           // Function -- NODOCS -- get_context
         
           // @uvm-ieee 1800.2-2020 auto 6.2.4.7
- 015566   virtual function string get_context();
- 015566     return _context_name;
+ 002696   virtual function string get_context();
+ 002696     return _context_name;
           endfunction
         
           // Function -- NODOCS -- set_context
@@ -867,16 +867,16 @@
           // inherently UVM like modules, interfaces, etc.
         
           // @uvm-ieee 1800.2-2020 auto 6.2.4.7
- 001023   virtual function void set_context(string cn);
- 001023     _context_name = cn;
+ 000033   virtual function void set_context(string cn);
+ 000033     _context_name = cn;
           endfunction
          
         
           // Function -- NODOCS -- get_action
         
           // @uvm-ieee 1800.2-2020 auto 6.2.4.8
- 121680   virtual function uvm_action get_action();
- 121680     return _action;
+ 023670   virtual function uvm_action get_action();
+ 023670     return _action;
           endfunction
         
           // Function -- NODOCS -- set_action
@@ -886,8 +886,8 @@
           // message execution flow.
         
           // @uvm-ieee 1800.2-2020 auto 6.2.4.8
- 013520   virtual function void set_action(uvm_action act);
- 013520     _action = act;
+ 002630   virtual function void set_action(uvm_action act);
+ 002630     _action = act;
           endfunction
         
         
@@ -905,8 +905,8 @@
           // uvm_report_handler during message execution flow.
         
           // @uvm-ieee 1800.2-2020 auto 6.2.4.9
- 013520   virtual function void set_file(UVM_FILE fl);
- 013520     _file = fl;
+ 002630   virtual function void set_file(UVM_FILE fl);
+ 002630     _file = fl;
           endfunction
         
         
@@ -914,8 +914,8 @@
           //
           // Get the element_container of the message
         
- 013520   virtual function uvm_report_message_element_container get_element_container();
- 013520     return _report_message_element_container;
+ 002630   virtual function uvm_report_message_element_container get_element_container();
+ 002630     return _report_message_element_container;
           endfunction
         
         
@@ -925,20 +925,20 @@
           //
         
           // @uvm-ieee 1800.2-2020 auto 6.2.4.10
- 013520   virtual function void set_report_message(uvm_severity severity, 
+ 002630   virtual function void set_report_message(uvm_severity severity, 
                                    string id,
                                string message,
                                int verbosity, 
                                    string filename,
                                int line,
                                string context_name);
- 013520     this._context_name = context_name;
- 013520     this._filename = filename;
- 013520     this._line = line;
- 013520     this._severity = severity;
- 013520     this._id = id;
- 013520     this._message = message;
- 013520     this._verbosity = verbosity;
+ 002630     this._context_name = context_name;
+ 002630     this._filename = filename;
+ 002630     this._line = line;
+ 002630     this._severity = severity;
+ 002630     this._id = id;
+ 002630     this._message = message;
+ 002630     this._verbosity = verbosity;
           endfunction
         
         

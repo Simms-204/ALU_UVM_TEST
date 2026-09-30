@@ -130,30 +130,30 @@
 %000000     put_ap.write( t );
           endtask
         
-~002494   virtual task get( output T t );
+~000514   virtual task get( output T t );
           `ifndef UVM_USE_PROCESS_CONTAINER
-~002494     process pid;
-~002494     pid = process::self();
+~000514     process pid;
+~000514     pid = process::self();
           `else
             process_container_c pid=new(process::self());
           `endif     
-~002494     m_pending_blocked_gets[pid] = 1;
-~002494     m.get( t );
-~002494     m_pending_blocked_gets.delete(pid);
-~002494     get_ap.write( t );
+~000514     m_pending_blocked_gets[pid] = 1;
+~000514     m.get( t );
+~000514     m_pending_blocked_gets.delete(pid);
+~000514     get_ap.write( t );
           endtask
           
-~001247   virtual task peek( output T t );
-~001247     m.peek( t );
+~000257   virtual task peek( output T t );
+~000257     m.peek( t );
           endtask
            
-~001247   virtual function bit try_get( output T t );
-~001247     if( !m.try_get( t ) ) begin
+~000257   virtual function bit try_get( output T t );
+~000257     if( !m.try_get( t ) ) begin
 %000000       return 0;
             end
         
-~001247     get_ap.write( t );
-~001247     return 1;
+~000257     get_ap.write( t );
+~000257     return 1;
           endfunction 
           
 %000000   virtual function bit try_peek( output T t );
@@ -163,13 +163,13 @@
 %000000     return 1;
           endfunction
         
-~003741   virtual function bit try_put( input T t );
-~003741     if( !m.try_put( t ) ) begin
+~000771   virtual function bit try_put( input T t );
+~000771     if( !m.try_put( t ) ) begin
 %000000       return 0;
             end
           
-~003741     put_ap.write( t );
-~003741     return 1;
+~000771     put_ap.write( t );
+~000771     return 1;
           endfunction  
         
 %000000   virtual function bit can_put();
@@ -283,8 +283,8 @@
 %000006     analysis_export = new("analysis_export", this);
           endfunction
         
- 002494   function void write(input T t);
- 002494     void'(this.try_put(t)); // unbounded => must succeed
+ 000514   function void write(input T t);
+ 000514     void'(this.try_put(t)); // unbounded => must succeed
           endfunction
         
         endclass

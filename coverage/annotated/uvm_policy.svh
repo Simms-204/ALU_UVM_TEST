@@ -164,10 +164,10 @@
         // request will be ignored. Additionally, the policy shall push itself onto the active policy stack for obj using push_active_policy (see
         // 5.3.14.1) when push_active_object is called.
         // @uvm-ieee 1800.2-2020 auto 16.1.3.1
- 008572 virtual function void push_active_object( uvm_object obj );
-~008572     if(obj != null) begin 
+ 001642 virtual function void push_active_object( uvm_object obj );
+~001642     if(obj != null) begin 
             
- 008572       m_policy_stack.push_front(obj);
+ 001642       m_policy_stack.push_front(obj);
             end
         
             // Placeholder. Will be removed once uvm_object is updated. That's a seperate mantisi 6438
@@ -184,8 +184,8 @@
         // For additional behaviour descriptions (see
         // 5.3.14.2) when pop_active_object is called.
         // @uvm-ieee 1800.2-2020 auto 16.1.3.2
- 008572 virtual function uvm_object pop_active_object();
- 008572 uvm_object  m_tmp;
+ 001642 virtual function uvm_object pop_active_object();
+ 001642 uvm_object  m_tmp;
 %000000     if(m_policy_stack.size() != 0) begin
 %000000       m_tmp = m_policy_stack.pop_front();
 %000000       return m_tmp;
@@ -210,8 +210,8 @@
         
         // Function -- NODOCS -- get_active_object_depth
         // Returns the current depth of the internal object stack for this policy.
- 017057 virtual function int unsigned get_active_object_depth();
- 017057     return m_policy_stack.size();
+ 003197 virtual function int unsigned get_active_object_depth();
+ 003197     return m_policy_stack.size();
         endfunction
         
         endclass

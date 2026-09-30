@@ -45,8 +45,8 @@
 ~000012       m_bound = bound;
             endfunction
         
-~007482     function int num();
-~007482       return m_queue.size();
+~001542     function int num();
+~001542       return m_queue.size();
             endfunction
         
 %000000     task put(T message);
@@ -57,37 +57,37 @@
         `endif
             endtask
         
-~003741     function int try_put(T message);
-~002494       if (m_bound == 0 || num() < m_bound) begin
+~000771     function int try_put(T message);
+~000514       if (m_bound == 0 || num() < m_bound) begin
 %000000         m_queue.push_back(message);
 %000000         return 1;
               end
-~003741       return 0;
+~000771       return 0;
             endfunction
         
-~002494     task get(ref T message);
+~000514     task get(ref T message);
         `ifdef VERILATOR_TIMING
-~002494       while (m_queue.size() == 0) begin
-~002494         wait (m_queue.size() > 0);
+~000514       while (m_queue.size() == 0) begin
+~000514         wait (m_queue.size() > 0);
               end
-~002494       message = m_queue.pop_front();
+~000514       message = m_queue.pop_front();
         `endif
             endtask
         
-~001247     function int try_get(ref T message);
+~000257     function int try_get(ref T message);
 %000000       if (num() > 0) begin
 %000000         message = m_queue.pop_front();
 %000000         return 1;
               end
-~001247       return 0;
+~000257       return 0;
             endfunction
         
-~001247     task peek(ref T message);
+~000257     task peek(ref T message);
         `ifdef VERILATOR_TIMING
 %000000       while (m_queue.size() == 0) begin
 %000000         wait (m_queue.size() > 0);
               end
-~001247       message = m_queue[0];
+~000257       message = m_queue[0];
         `endif
             endtask
         
@@ -141,7 +141,7 @@
           endclass
         
           // IEEE 1800-specified standard "process"
- 051263   class process;
+ 014633   class process;
             typedef enum {
               FINISHED = 0,
               RUNNING = 1,
@@ -154,30 +154,30 @@
             // V3Name is hardcoded not to rename this variable
             protected chandle m_process;
         
- 048680     static function process self();
- 048680       process p = new;
+ 012050     static function process self();
+ 012050       process p = new;
         `ifdef VERILATOR_TIMING
- 048680       $c(p.m_process, " = vlProcess;");
+ 012050       $c(p.m_process, " = vlProcess;");
         `endif
- 048680       return p;
+ 012050       return p;
             endfunction
         
- 001289     protected function void set_status(state s);
+ 000299     protected function void set_status(state s);
         `ifdef VERILATOR_TIMING
- 001289       $c(m_process, "->state(", s, ");");
+ 000299       $c(m_process, "->state(", s, ");");
         `endif
             endfunction
         
- 006247     function state status();
+ 001297     function state status();
         `ifdef VERILATOR_TIMING
- 006247       return state'($cpure(m_process, "->state()"));
+ 001297       return state'($cpure(m_process, "->state()"));
         `else
               return RUNNING;
         `endif
             endfunction
         
- 001289     function void kill();
- 001289       set_status(KILLED);
+ 000299     function void kill();
+ 000299       set_status(KILLED);
             endfunction
         
             function void suspend();
@@ -231,16 +231,16 @@
         `endif
             // verilog_format: on
         
- 013925     function string get_randstate();
+ 003035     function string get_randstate();
               // Initialize with $c to ensure it won't be constified
- 013925       string s = string'($c("0"));
+ 003035       string s = string'($c("0"));
         
- 013925       $c(s, " = ", m_process, "->randstate();");
- 013925       return s;
+ 003035       $c(s, " = ", m_process, "->randstate();");
+ 003035       return s;
             endfunction
         
- 013925     function void set_randstate(string s);
- 013925       $c(m_process, "->randstate(", s, ");");
+ 003035     function void set_randstate(string s);
+ 003035       $c(m_process, "->randstate(", s, ");");
             endfunction
           endclass
         

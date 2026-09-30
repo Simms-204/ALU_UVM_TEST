@@ -364,29 +364,29 @@
           // (e.g. <uvm_report_error>) in <uvm_report_object>.
         
           // @uvm-ieee 1800.2-2020 auto 6.4.7
- 013520   virtual function void process_report_message(uvm_report_message report_message);
- 013520     uvm_report_server srvr = uvm_report_server::get_server();
- 013520     string id = report_message.get_id();
- 013520     uvm_severity severity = report_message.get_severity();
+ 002630   virtual function void process_report_message(uvm_report_message report_message);
+ 002630     uvm_report_server srvr = uvm_report_server::get_server();
+ 002630     string id = report_message.get_id();
+ 002630     uvm_severity severity = report_message.get_severity();
         
             // Check for severity overrides and apply them before calling the server.
             // An id specific override has precedence over a generic severity override.
-~013520     if(sev_id_overrides.exists(id)) begin
+~002630     if(sev_id_overrides.exists(id)) begin
 %000000       if(sev_id_overrides[id].exists(uvm_severity'(severity))) begin
 %000000         severity = sev_id_overrides[id].get(severity);
 %000000         report_message.set_severity(severity);
               end
             end
- 013520     else begin
-~013520       if(sev_overrides.exists(severity)) begin
+ 002630     else begin
+~002630       if(sev_overrides.exists(severity)) begin
 %000000         severity = sev_overrides.get(severity);
 %000000         report_message.set_severity(severity);
               end
             end
- 013520     report_message.set_file(get_file_handle(severity, id));
- 013520     report_message.set_report_handler(this);
- 013520     report_message.set_action(get_action(severity, id));
- 013520     srvr.process_report_message(report_message);
+ 002630     report_message.set_file(get_file_handle(severity, id));
+ 002630     report_message.set_report_handler(this);
+ 002630     report_message.set_action(get_action(severity, id));
+ 002630     srvr.process_report_message(report_message);
             
           endfunction
         
@@ -473,11 +473,11 @@
           //
           // Return the file id based on the severity and the id
         
- 013520   local function UVM_FILE get_severity_id_file(uvm_severity severity, string id);
+ 002630   local function UVM_FILE get_severity_id_file(uvm_severity severity, string id);
         
- 013520     uvm_id_file_array array;
+ 002630     uvm_id_file_array array;
         
-~013520     if(severity_id_file_handles.exists(severity)) begin
+~002630     if(severity_id_file_handles.exists(severity)) begin
 %000000       array = severity_id_file_handles[severity];      
 %000000       if(array.exists(id)) begin
                 
@@ -487,7 +487,7 @@
             end
         
         
-~013520     if(id_file_handles.exists(id)) begin
+~002630     if(id_file_handles.exists(id)) begin
               
 %000000       return id_file_handles.get(id);
             end
@@ -499,7 +499,7 @@
             end
         
         
- 013520     return default_file_handle;
+ 002630     return default_file_handle;
         
           endfunction
         
@@ -523,21 +523,21 @@
           // that.  Else, return the max verbosity setting.
         
           // @uvm-ieee 1800.2-2020 auto 6.4.3.1
- 013880   function int get_verbosity_level(uvm_severity severity=UVM_INFO, string id="" );
+ 002990   function int get_verbosity_level(uvm_severity severity=UVM_INFO, string id="" );
         
- 013880     uvm_id_verbosities_array array;
-~013880     if(severity_id_verbosities.exists(severity)) begin
+ 002990     uvm_id_verbosities_array array;
+~002990     if(severity_id_verbosities.exists(severity)) begin
 %000000       array = severity_id_verbosities[severity];
 %000000       if(array.exists(id)) begin
 %000000         return array.get(id);
               end
             end
         
-~013880     if(id_verbosities.exists(id)) begin
+~002990     if(id_verbosities.exists(id)) begin
 %000000       return id_verbosities.get(id);
             end
         
- 013880     return m_max_verbosity_level;
+ 002990     return m_max_verbosity_level;
         
           endfunction
         
@@ -552,10 +552,10 @@
           // that. Else, return the default action associated with the ~severity~.
         
           // @uvm-ieee 1800.2-2020 auto 6.4.4.1
- 027037   function uvm_action get_action(uvm_severity severity, string id);
+ 005257   function uvm_action get_action(uvm_severity severity, string id);
         
- 027037     uvm_id_actions_array array;
-~027037     if(severity_id_actions.exists(severity)) begin
+ 005257     uvm_id_actions_array array;
+~005257     if(severity_id_actions.exists(severity)) begin
 %000000       array = severity_id_actions[severity];
 %000000       if(array.exists(id)) begin
                 
@@ -564,13 +564,13 @@
         
             end
         
-~027037     if(id_actions.exists(id)) begin
+~005257     if(id_actions.exists(id)) begin
               
 %000000       return id_actions.get(id);
             end
         
         
- 027037     return severity_actions[severity];
+ 005257     return severity_actions[severity];
         
           endfunction
         
@@ -585,17 +585,17 @@
           // that. Else, return the default file handle.
         
           // @uvm-ieee 1800.2-2020 auto 6.4.5.1
- 013520   function UVM_FILE get_file_handle(uvm_severity severity, string id);
- 013520     UVM_FILE file;
+ 002630   function UVM_FILE get_file_handle(uvm_severity severity, string id);
+ 002630     UVM_FILE file;
           
- 013520     file = get_severity_id_file(severity, id);
-~013520     if (file != 0) begin
+ 002630     file = get_severity_id_file(severity, id);
+~002630     if (file != 0) begin
               
 %000000       return file;
             end
         
           
-~013520     if (id_file_handles.exists(id)) begin
+~002630     if (id_file_handles.exists(id)) begin
 %000000       file = id_file_handles.get(id);
 %000000       if (file != 0) begin
                 
@@ -604,16 +604,16 @@
         
             end
         
-~013520     if (severity_file_handles.exists(severity)) begin
- 013520       file = severity_file_handles[severity];
-~013520       if(file != 0) begin
+~002630     if (severity_file_handles.exists(severity)) begin
+ 002630       file = severity_file_handles[severity];
+~002630       if(file != 0) begin
                 
 %000000         return file;
               end
         
             end
         
- 013520     return default_file_handle;
+ 002630     return default_file_handle;
           endfunction
         
         

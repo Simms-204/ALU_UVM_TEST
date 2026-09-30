@@ -122,8 +122,8 @@
           // Returns the number of items stored in the queue.
         
           // @uvm-ieee 1800.2-2020 auto 11.3.2.5
-~019585   virtual function int size ();
-~019585     return queue.size();
+~004735   virtual function int size ();
+~004735     return queue.size();
           endfunction
         
         

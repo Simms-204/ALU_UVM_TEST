@@ -786,18 +786,18 @@
         // new
         // ---
         
- 044269 function uvm_object::new (string name="");
+ 010609 function uvm_object::new (string name="");
         
- 044269   m_inst_id = m_inst_count++;
- 044269   m_leaf_name = name;
+ 010609   m_inst_id = m_inst_count++;
+ 010609   m_leaf_name = name;
         endfunction
         
         // get_uvm_seeding
         // ------
         
- 001370 function bit uvm_object::get_uvm_seeding();
- 001370   uvm_coreservice_t cs = uvm_coreservice_t::get();
- 001370   return cs.get_uvm_seeding();
+ 000380 function bit uvm_object::get_uvm_seeding();
+ 000380   uvm_coreservice_t cs = uvm_coreservice_t::get();
+ 000380   return cs.get_uvm_seeding();
         endfunction
         
         // set_uvm_seeding
@@ -811,10 +811,10 @@
         // reseed
         // ------
         
- 001370 function void uvm_object::reseed ();
-~001370   if(get_uvm_seeding()) begin
+ 000380 function void uvm_object::reseed ();
+~000380   if(get_uvm_seeding()) begin
             
- 001370     this.srandom(uvm_create_random_seed(get_type_name(), get_full_name()));
+ 000380     this.srandom(uvm_create_random_seed(get_type_name(), get_full_name()));
           end
         
         endfunction
@@ -832,8 +832,8 @@
         // get inst_id
         // -----------
         
- 007325 function int uvm_object::get_inst_id();
- 007325   return m_inst_id;
+ 001385 function int uvm_object::get_inst_id();
+ 001385   return m_inst_id;
         endfunction
         
         
@@ -862,16 +862,16 @@
         // get_name
         // --------
         
- 039776 function string uvm_object::get_name ();
- 039776   return m_leaf_name;
+ 008096 function string uvm_object::get_name ();
+ 008096   return m_leaf_name;
         endfunction
         
         
         // get_full_name
         // -------------
         
- 013520 function string uvm_object::get_full_name ();
- 013520   return get_name();
+ 002630 function string uvm_object::get_full_name ();
+ 002630   return get_name();
         endfunction
         
         
@@ -886,36 +886,36 @@
         // print 
         // -----
          
- 007238 function void uvm_object::print(uvm_printer printer=null);
-~007235   if (printer==null) begin
- 007235     printer = uvm_printer::get_default();
+ 001298 function void uvm_object::print(uvm_printer printer=null);
+~001295   if (printer==null) begin
+ 001295     printer = uvm_printer::get_default();
           end
         
- 007238   $fwrite(printer.get_file(),sprint(printer)); 
+ 001298   $fwrite(printer.get_file(),sprint(printer)); 
         endfunction
         
         
         // sprint
         // ------
         
- 007238 function string uvm_object::sprint(uvm_printer printer=null);
- 007238   string name;
+ 001298 function string uvm_object::sprint(uvm_printer printer=null);
+ 001298   string name;
         
-~007238   if(printer==null) begin
+~001298   if(printer==null) begin
 %000000     printer = uvm_printer::get_default();
           end
         
-~007238   if (printer.get_active_object_depth() == 0) begin
- 007238     printer.flush() ;
- 007238     name  = printer.get_root_enabled() ? get_full_name() : get_name();
+~001298   if (printer.get_active_object_depth() == 0) begin
+ 001298     printer.flush() ;
+ 001298     name  = printer.get_root_enabled() ? get_full_name() : get_name();
           end
 %000000   else begin
 %000000     name  = get_name();
           end
           
- 007238   printer.print_object(name,this);
+ 001298   printer.print_object(name,this);
           
- 007238   return printer.emit();
+ 001298   return printer.emit();
         
         endfunction
         
@@ -1019,18 +1019,18 @@
         // compare
         // -------
         
- 001247 function bit  uvm_object::compare (uvm_object rhs,
+ 000257 function bit  uvm_object::compare (uvm_object rhs,
                                            uvm_comparer comparer=null);
-~001247   if (comparer == null) begin
- 001247     comparer = uvm_comparer::get_default();
+~000257   if (comparer == null) begin
+ 000257     comparer = uvm_comparer::get_default();
           end
         
-~001247   if (comparer.get_active_object_depth() == 0) begin 
+~000257   if (comparer.get_active_object_depth() == 0) begin 
             
- 001247     comparer.flush() ;
+ 000257     comparer.flush() ;
           end
         
- 001247   compare = comparer.compare_object(get_name(),this,rhs);
+ 000257   compare = comparer.compare_object(get_name(),this,rhs);
         
         endfunction
         
@@ -1038,9 +1038,9 @@
         // do_compare
         // ----------
         
- 001247 function bit  uvm_object::do_compare (uvm_object rhs,
+ 000257 function bit  uvm_object::do_compare (uvm_object rhs,
                                               uvm_comparer comparer);
- 001247   return 1;
+ 000257   return 1;
         endfunction
         
         
@@ -1058,8 +1058,8 @@
         // do_print (virtual override)
         // ------------
         
- 007325 function void uvm_object::do_print(uvm_printer printer);
- 007325   return;
+ 001385 function void uvm_object::do_print(uvm_printer printer);
+ 001385   return;
         endfunction
         
         
@@ -1206,7 +1206,7 @@
         endfunction
         
         
- 008602 function void uvm_object::do_execute_op ( uvm_field_op op);
+ 001672 function void uvm_object::do_execute_op ( uvm_field_op op);
         
         endfunction
         

@@ -57,7 +57,7 @@
         class uvm_seq_item_pull_port #(type REQ=int, type RSP=REQ)
           extends uvm_port_base #(uvm_sqr_if_base #(REQ, RSP));
 %000006   `UVM_SEQ_PORT(`UVM_SEQ_ITEM_PULL_MASK, "uvm_seq_item_pull_port")
-~001247   `UVM_SEQ_ITEM_PULL_IMP(this.m_if, REQ, RSP, t, t)
+~000257   `UVM_SEQ_ITEM_PULL_IMP(this.m_if, REQ, RSP, t, t)
         
           bit print_enabled;
             
@@ -95,7 +95,7 @@
           extends uvm_port_base #(uvm_sqr_if_base #(REQ, RSP));
            // Function -- NODOCS -- new
 %000003   `UVM_IMP_COMMON(`UVM_SEQ_ITEM_PULL_MASK, "uvm_seq_item_pull_imp",IMP)
-~001247   `UVM_SEQ_ITEM_PULL_IMP(m_imp, REQ, RSP, t, t)
+~000257   `UVM_SEQ_ITEM_PULL_IMP(m_imp, REQ, RSP, t, t)
         
         endclass
         

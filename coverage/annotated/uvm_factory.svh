@@ -1532,15 +1532,15 @@
         // create_object_by_type
         // ---------------------
         
- 004230 function uvm_object uvm_default_factory::create_object_by_type (uvm_object_wrapper requested_type,  
+ 001260 function uvm_object uvm_default_factory::create_object_by_type (uvm_object_wrapper requested_type,  
                                                                 string parent_inst_path="",  
                                                                 string name=""); 
         
- 004230   string full_inst_path;
+ 001260   string full_inst_path;
         
- 004224   if (parent_inst_path == "") begin
+ 001254   if (parent_inst_path == "") begin
             
- 004224     full_inst_path = name;
+ 001254     full_inst_path = name;
           end
         
 %000006   else if (name != "") begin
@@ -1554,9 +1554,9 @@
           end
         
         
- 004230   requested_type = find_override_by_type(requested_type, full_inst_path);
+ 001260   requested_type = find_override_by_type(requested_type, full_inst_path);
         
- 004230   return requested_type.create_object(name);
+ 001260   return requested_type.create_object(name);
         
         endfunction
         
@@ -1775,23 +1775,23 @@
         // find_override_by_type
         // ---------------------
         
- 004266 function uvm_object_wrapper uvm_default_factory::find_override_by_type(uvm_object_wrapper requested_type,
+ 001296 function uvm_object_wrapper uvm_default_factory::find_override_by_type(uvm_object_wrapper requested_type,
                                                                        string full_inst_path);
- 004266    uvm_factory_override override_info[$];
+ 001296    uvm_factory_override override_info[$];
            
- 004266    return m_find_override_by_type(requested_type, full_inst_path, override_info);
+ 001296    return m_find_override_by_type(requested_type, full_inst_path, override_info);
            
         endfunction                                                               
         
- 004266 function uvm_object_wrapper uvm_default_factory::m_find_override_by_type(uvm_object_wrapper requested_type,
+ 001296 function uvm_object_wrapper uvm_default_factory::m_find_override_by_type(uvm_object_wrapper requested_type,
                                                                        string full_inst_path, ref uvm_factory_override override_info[$]);
         
- 004266   uvm_object_wrapper override;
- 004266   uvm_factory_override lindex;
+ 001296   uvm_object_wrapper override;
+ 001296   uvm_factory_override lindex;
           
- 004266   uvm_factory_queue_class qc;
+ 001296   uvm_factory_queue_class qc;
         
-~004266   foreach (override_info[index]) begin
+~001296   foreach (override_info[index]) begin
 %000000     if ( //index != m_override_info.size()-1 &&
 %000000     override_info[index].orig.m_type == requested_type) begin
 %000000       uvm_report_error("OVRDLOOP", "Recursive loop detected while finding override.", UVM_NONE);
@@ -1805,9 +1805,9 @@
 %000000       return requested_type;
             end
           end
- 004242   if(full_inst_path != "") begin
+ 001272   if(full_inst_path != "") begin
           
-~004242     foreach(m_inst_overrides[i]) begin
+~001272     foreach(m_inst_overrides[i]) begin
 %000000       if(m_matches_inst_override(.override(m_inst_overrides[i]),
               .requested_type(requested_type),
               .requested_type_name(requested_type.get_type_name()),
@@ -1823,10 +1823,10 @@
             end
           end
         
-~004266   if ((lindex == null) || m_debug_pass) begin
- 004266     uvm_factory_override matched_overrides[$]; 
+~001296   if ((lindex == null) || m_debug_pass) begin
+ 001296     uvm_factory_override matched_overrides[$]; 
             // type override - exact match
-~004266     foreach (m_type_overrides[index]) begin
+~001296     foreach (m_type_overrides[index]) begin
 %000000       if(m_matches_type_override(.override(m_type_overrides[index]),
               .requested_type(requested_type),
               .requested_type_name(requested_type.get_type_name()),
@@ -1846,7 +1846,7 @@
                 end 
               end
             end
-~004266     if(matched_overrides.size() != 0) begin
+~001296     if(matched_overrides.size() != 0) begin
 %000000       if (m_debug_pass) begin
 %000000         override_info = {override_info,matched_overrides};
               end
@@ -1856,7 +1856,7 @@
             end
           end
           
-~004266   if (lindex != null) begin
+~001296   if (lindex != null) begin
 %000000     uvm_object_wrapper override = lindex.ovrd.m_type;
             
 %000000     lindex.used++;
@@ -1890,7 +1890,7 @@
         
           // No override found
           
- 004266   return requested_type;
+ 001296   return requested_type;
         
         endfunction
         

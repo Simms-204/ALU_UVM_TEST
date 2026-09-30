@@ -551,25 +551,25 @@
           //method called by report_server.report to process catchers
           //
         
- 013520   static function int process_all_report_catchers(uvm_report_message rm);
- 013520     int iter;
- 013520     uvm_report_catcher catcher;
- 013520     int thrown = 1;
- 013520     uvm_severity orig_severity;
- 013520     static bit in_catcher;
- 013520     uvm_report_object l_report_object = rm.get_report_object();
+ 002630   static function int process_all_report_catchers(uvm_report_message rm);
+ 002630     int iter;
+ 002630     uvm_report_catcher catcher;
+ 002630     int thrown = 1;
+ 002630     uvm_severity orig_severity;
+ 002630     static bit in_catcher;
+ 002630     uvm_report_object l_report_object = rm.get_report_object();
         
-~013520     if(in_catcher == 1) begin
+~002630     if(in_catcher == 1) begin
 %000000       return 1;
             end
- 013520     in_catcher = 1;    
- 013520     uvm_callbacks_base::m_tracing = 0;  //turn off cb tracing so catcher stuff doesn't print
+ 002630     in_catcher = 1;    
+ 002630     uvm_callbacks_base::m_tracing = 0;  //turn off cb tracing so catcher stuff doesn't print
         
- 013520     orig_severity = uvm_severity'(rm.get_severity());
- 013520     m_modified_report_message = rm;
+ 002630     orig_severity = uvm_severity'(rm.get_severity());
+ 002630     m_modified_report_message = rm;
         
- 013520     catcher = uvm_report_cb::get_first(iter,l_report_object);
-~013520     if (catcher != null) begin
+ 002630     catcher = uvm_report_cb::get_first(iter,l_report_object);
+~002630     if (catcher != null) begin
 %000000       if(m_debug_flags & DO_NOT_MODIFY) begin
 %000000         process p = process::self(); // Keep random stability
 %000000         string randstate;
@@ -586,7 +586,7 @@
         
               end
             end
-~013520     while(catcher != null) begin
+~002630     while(catcher != null) begin
 %000000       uvm_severity prev_sev;
         
 %000000       if (!catcher.callback_mode()) begin
@@ -631,7 +631,7 @@
             end //while
         
             //update counters if message was returned with demoted severity
- 013520     case(orig_severity)
+ 002630     case(orig_severity)
 %000000       UVM_FATAL: begin    
                 
 %000000         if(m_modified_report_message.get_severity() < orig_severity) begin
@@ -661,10 +661,10 @@
         
             endcase
         
- 013520     in_catcher = 0;
- 013520     uvm_callbacks_base::m_tracing = 1;  //turn tracing stuff back on
+ 002630     in_catcher = 0;
+ 002630     uvm_callbacks_base::m_tracing = 1;  //turn tracing stuff back on
         
- 013520     return thrown; 
+ 002630     return thrown; 
           endfunction
         
         

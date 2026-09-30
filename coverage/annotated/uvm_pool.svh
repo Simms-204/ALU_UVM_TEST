@@ -62,8 +62,8 @@
           // Creates a new pool with the given ~name~.
         
           // @uvm-ieee 1800.2-2020 auto 11.2.2.1
-~003876   function new (string name="");
-~003876     super.new(name);
+~000906   function new (string name="");
+~000906     super.new(name);
           endfunction
         
         
@@ -157,8 +157,8 @@
           // 0 otherwise.
         
           // @uvm-ieee 1800.2-2020 auto 11.2.2.8
-~067957   virtual function int exists (KEY key);
-~067957     return pool.exists(key);
+~013507   virtual function int exists (KEY key);
+~013507     return pool.exists(key);
           endfunction
         
         
@@ -285,8 +285,8 @@
         
           // @uvm-ieee 1800.2-2020 auto 10.4.1.2.1
           // @uvm-ieee 1800.2-2020 auto 10.4.2.2.1
-~003876   function new (string name="");
-~003876     super.new(name);
+~000906   function new (string name="");
+~000906     super.new(name);
           endfunction
         
           // Function -- NODOCS -- get_global_pool
@@ -330,13 +330,13 @@
         
           // @uvm-ieee 1800.2-2020 auto 10.4.1.2.4
           // @uvm-ieee 1800.2-2020 auto 10.4.2.2.4
-~012506   virtual function T get (string key);
-~007512     if (!pool.exists(key))
-~007512       begin
-~007512         pool[key] = new (key);
+~002606   virtual function T get (string key);
+~001572     if (!pool.exists(key))
+~001572       begin
+~001572         pool[key] = new (key);
               end
         
-~012506     return pool[key];
+~002606     return pool[key];
           endfunction
           
         

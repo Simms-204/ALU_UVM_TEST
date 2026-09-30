@@ -1905,7 +1905,7 @@
         // get_full_name
         // -------------
         
- 009227 function string uvm_component::get_full_name ();
+ 004277 function string uvm_component::get_full_name ();
           // Note- Implementation choice to construct full name once since the
           // full name may be used often for lookups.
 %000000   if(m_name == "") begin
@@ -2745,23 +2745,23 @@
         // begin_tr
         // --------
         
- 001250 function uvm_tr_handle_t uvm_component::begin_tr (uvm_transaction tr,
+ 000260 function uvm_tr_handle_t uvm_component::begin_tr (uvm_transaction tr,
                                                           string stream_name="main",
                                                           string label="",
                                                           string desc="",
                                                           time begin_time=0,
                                                           uvm_tr_handle_t parent_handle=0);
- 001250    return m_begin_tr(tr, parent_handle, stream_name, label, desc, begin_time);
+ 000260    return m_begin_tr(tr, parent_handle, stream_name, label, desc, begin_time);
         endfunction
         
         // get_tr_database
         // ---------------------
- 001250    function uvm_tr_database uvm_component::get_tr_database();
-~001247      if (tr_database == null) begin
+ 000260    function uvm_tr_database uvm_component::get_tr_database();
+~000257      if (tr_database == null) begin
 %000003        uvm_coreservice_t cs = uvm_coreservice_t::get();
 %000003        tr_database = cs.get_default_tr_database();
              end
- 001250      return tr_database;
+ 000260      return tr_database;
            endfunction : get_tr_database
         
         // set_tr_database
@@ -2826,63 +2826,63 @@
         // m_begin_tr
         // ----------
         
- 001250 function uvm_tr_handle_t uvm_component::m_begin_tr (uvm_transaction tr,
+ 000260 function uvm_tr_handle_t uvm_component::m_begin_tr (uvm_transaction tr,
                                                             uvm_tr_handle_t parent_handle=0,
                                                             string stream_name="main",
                                                             string label="",
                                                             string desc="",
                                                             time begin_time=0);
- 001250    uvm_event#(uvm_object) e;
- 001250    string    name;
- 001250    string    kind;
- 001250    uvm_tr_database db;
- 001250    uvm_tr_handle_t handle, link_handle;
- 001250    uvm_tr_stream stream;
- 001250    uvm_recorder recorder, parent_recorder, link_recorder;
+ 000260    uvm_event#(uvm_object) e;
+ 000260    string    name;
+ 000260    string    kind;
+ 000260    uvm_tr_database db;
+ 000260    uvm_tr_handle_t handle, link_handle;
+ 000260    uvm_tr_stream stream;
+ 000260    uvm_recorder recorder, parent_recorder, link_recorder;
         
-~001250    if (tr == null) begin
+~000260    if (tr == null) begin
              
 %000000      return 0;
            end
         
         
- 001250    db = get_tr_database();
+ 000260    db = get_tr_database();
            
-~001250    if (parent_handle != 0) begin
+~000260    if (parent_handle != 0) begin
 %000000      parent_recorder = uvm_recorder::get_recorder_from_handle(parent_handle);
 %000000      if (parent_recorder == null) begin
 %000000        `uvm_error("ILLHNDL","begin_tr was passed a non-0 parent handle that corresponds to a null recorder")
              end
            end
            
- 001250    else begin 
- 001250      uvm_sequence_item seq;
-~001250      if ($cast(seq,tr)) begin
- 001250        uvm_sequence_base parent_seq = seq.get_parent_sequence();
-~001247        if (parent_seq != null) begin
- 001247          parent_recorder = parent_seq.m_tr_recorder;
+ 000260    else begin 
+ 000260      uvm_sequence_item seq;
+~000260      if ($cast(seq,tr)) begin
+ 000260        uvm_sequence_base parent_seq = seq.get_parent_sequence();
+~000257        if (parent_seq != null) begin
+ 000257          parent_recorder = parent_seq.m_tr_recorder;
                end
              end
            end
         
- 001250    link_handle = 0;
-~001250    if(parent_recorder != null) begin
+ 000260    link_handle = 0;
+~000260    if(parent_recorder != null) begin
 %000000      link_handle = tr.begin_tr(begin_time, parent_recorder.get_handle());
            end
- 001250    else begin
- 001250      link_handle = tr.begin_tr(begin_time);
+ 000260    else begin
+ 000260      link_handle = tr.begin_tr(begin_time);
            end
         
-~001250    if (link_handle != 0) begin
+~000260    if (link_handle != 0) begin
              
 %000000      link_recorder = uvm_recorder::get_recorder_from_handle(link_handle);
            end
         
         
            
-~001250    if (tr.get_name() != "") begin
+~000260    if (tr.get_name() != "") begin
              
- 001250      name = tr.get_name();
+ 000260      name = tr.get_name();
            end
         
 %000000    else begin
@@ -2891,8 +2891,8 @@
            end
         
         
- 001250    handle = 0;
-~001250    if (get_recording_enabled()) begin
+ 000260    handle = 0;
+~000260    if (get_recording_enabled()) begin
 %000000      if (stream_name == "") begin
 %000000        stream_name = "main";
              end
@@ -2933,16 +2933,16 @@
 %000000      handle = (recorder == null) ? 0 : recorder.get_handle();
               
            end
- 001250    do_begin_tr(tr, stream_name, handle); 
+ 000260    do_begin_tr(tr, stream_name, handle); 
            
- 001250    e = event_pool.get("begin_tr");
-~001250    if (e!=null) begin 
+ 000260    e = event_pool.get("begin_tr");
+~000260    if (e!=null) begin 
              
- 001250      e.trigger(tr);
+ 000260      e.trigger(tr);
            end
         
            
- 001250    return handle;
+ 000260    return handle;
            
         endfunction
         
@@ -2950,29 +2950,29 @@
         // end_tr
         // ------
         
- 001250 function void uvm_component::end_tr (uvm_transaction tr,
+ 000260 function void uvm_component::end_tr (uvm_transaction tr,
                                              time end_time=0,
                                              bit free_handle=1);
- 001250    uvm_event#(uvm_object) e;
- 001250    uvm_recorder recorder;
+ 000260    uvm_event#(uvm_object) e;
+ 000260    uvm_recorder recorder;
         
-~001250    if (tr == null) begin
+~000260    if (tr == null) begin
              
 %000000      return;
            end
         
         
- 001250    tr.end_tr(end_time,free_handle);
+ 000260    tr.end_tr(end_time,free_handle);
         
-~001250    if (get_recording_enabled()) begin
+~000260    if (get_recording_enabled()) begin
 %000000      if (m_tr_h.exists(tr)) begin
 %000000        recorder = m_tr_h[tr];
              end
            end
         
- 001250    do_end_tr(tr, (recorder == null) ? 0: recorder.get_handle()); // callback
+ 000260    do_end_tr(tr, (recorder == null) ? 0: recorder.get_handle()); // callback
         
-~001250    if (recorder != null) begin
+~000260    if (recorder != null) begin
 %000000      m_tr_h.delete(tr);
         
 %000000      tr.record(recorder);
@@ -2986,10 +2986,10 @@
               
            end
         
- 001250    e = event_pool.get("end_tr");
-~001250    if(e!=null) begin 
+ 000260    e = event_pool.get("end_tr");
+~000260    if(e!=null) begin 
              
- 001250      e.trigger();
+ 000260      e.trigger();
            end
         
         
@@ -3155,19 +3155,19 @@
         // do_begin_tr
         // -----------
         
- 001250 function void uvm_component::do_begin_tr (uvm_transaction tr,
+ 000260 function void uvm_component::do_begin_tr (uvm_transaction tr,
                                                   string stream_name,
                                                   uvm_tr_handle_t tr_handle);
- 001250   return;
+ 000260   return;
         endfunction
         
         
         // do_end_tr
         // ---------
         
- 001250 function void uvm_component::do_end_tr (uvm_transaction tr,
+ 000260 function void uvm_component::do_end_tr (uvm_transaction tr,
                                                 uvm_tr_handle_t tr_handle);
- 001250   return;
+ 000260   return;
         endfunction
         
         
@@ -3425,8 +3425,8 @@
 %000000   print_config(recurse, 1);
         endfunction
         
- 002500 function bit uvm_component::get_recording_enabled();
- 002500    return (uvm_verbosity'(recording_detail) != UVM_NONE);
+ 000520 function bit uvm_component::get_recording_enabled();
+ 000520    return (uvm_verbosity'(recording_detail) != UVM_NONE);
         endfunction
         
 %000000 function void uvm_component::print_config_settings (string field="",

@@ -66,12 +66,12 @@
         
         
            // @uvm-ieee 1800.2-2020 auto 5.7.2.2
- 008602    virtual function void set( uvm_field_flag_t op_type, uvm_policy policy = null, uvm_object rhs = null);
- 008602       uvm_field_flag_t flag_check;
+ 001672    virtual function void set( uvm_field_flag_t op_type, uvm_policy policy = null, uvm_object rhs = null);
+ 001672       uvm_field_flag_t flag_check;
         
- 008602       flag_check = (op_type & ( UVM_COPY | UVM_COMPARE | UVM_PRINT | UVM_RECORD | UVM_PACK | UVM_UNPACK | UVM_SET));
+ 001672       flag_check = (op_type & ( UVM_COPY | UVM_COMPARE | UVM_PRINT | UVM_RECORD | UVM_PACK | UVM_UNPACK | UVM_SET));
         
-~008602       if (flag_check & !$onehot(flag_check)) begin
+~001672       if (flag_check & !$onehot(flag_check)) begin
 %000000          string msg_queue[$];
         
 %000000          msg_queue.push_back("(");
@@ -113,11 +113,11 @@
 %000000          msg_queue[$] = ")";
 %000000          `uvm_error("UVM/FIELD_OP/SET_BAD_OP_TYPE", {"set() was passed op_type matching multiple operations: ", `UVM_STRING_QUEUE_STREAMING_PACK(msg_queue)})
               end
-~008602       if(m_is_set == 0) begin
- 008602          m_op_type = op_type;
- 008602          m_policy = policy;
- 008602          m_object = rhs;
- 008602          m_is_set = 1'b1;
+~001672       if(m_is_set == 0) begin
+ 001672          m_op_type = op_type;
+ 001672          m_policy = policy;
+ 001672          m_object = rhs;
+ 001672          m_is_set = 1'b1;
               end
 %000000       else begin
 %000000          `uvm_error("UVM/FIELD_OP/SET","Attempting to set values in policy without flushing")
@@ -163,7 +163,7 @@
            endfunction
         
            // @uvm-ieee 1800.2-2020 auto 5.7.2.4
- 008602    virtual function uvm_field_flag_t get_op_type();
+ 001672    virtual function uvm_field_flag_t get_op_type();
 %000000       if(m_is_set == 1'b1) begin
         
 %000000         return m_op_type;
@@ -176,7 +176,7 @@
         
         
            // @uvm-ieee 1800.2-2020 auto 5.7.2.5
- 008572    virtual function uvm_policy get_policy();
+ 001642    virtual function uvm_policy get_policy();
 %000000       if(m_is_set == 1'b1) begin
         
 %000000         return m_policy;
@@ -188,7 +188,7 @@
            endfunction
         
            // @uvm-ieee 1800.2-2020 auto 5.7.2.6
- 016964    virtual function uvm_object get_rhs();
+ 003104    virtual function uvm_object get_rhs();
 %000000       if(m_is_set == 1'b1) begin
         
 %000000         return m_object;
@@ -200,7 +200,7 @@
            endfunction
         
            // @uvm-ieee 1800.2-2020 auto 5.7.2.7
- 008572    function bit user_hook_enabled();
+ 001642    function bit user_hook_enabled();
 %000000       if(m_is_set == 1'b1) begin
         
 %000000         return m_user_hook;
@@ -219,31 +219,31 @@
            static uvm_field_op m_recycled_op[$] ;
         
            // @uvm-ieee 1800.2-2020 auto 5.7.2.9
- 008602    virtual function void flush();
- 008602       m_policy = null;
- 008602       m_object = null;
- 008602       m_user_hook = 1'b1;
- 008602       m_is_set = 0;
+ 001672    virtual function void flush();
+ 001672       m_policy = null;
+ 001672       m_object = null;
+ 001672       m_user_hook = 1'b1;
+ 001672       m_is_set = 0;
            endfunction
         
            // API for reusing uvm_field_op instances.  Implementation
            // artifact, should not be used directly by the user.
- 008602    function void m_recycle();
- 008602      this.flush();
- 008602      m_recycled_op.push_back(this);
+ 001672    function void m_recycle();
+ 001672      this.flush();
+ 001672      m_recycled_op.push_back(this);
            endfunction : m_recycle
         
- 008602    static function uvm_field_op m_get_available_op() ;
- 008602       uvm_field_op field_op ;
- 008584       if (m_recycled_op.size() > 0) begin
- 008584         field_op = m_recycled_op.pop_back() ;
+ 001672    static function uvm_field_op m_get_available_op() ;
+ 001672       uvm_field_op field_op ;
+ 001654       if (m_recycled_op.size() > 0) begin
+ 001654         field_op = m_recycled_op.pop_back() ;
               end
         
  000018       else begin
  000018         field_op = uvm_field_op::type_id::create("field_op");
               end
         
- 008602       return field_op ;
+ 001672       return field_op ;
            endfunction
         endclass
         

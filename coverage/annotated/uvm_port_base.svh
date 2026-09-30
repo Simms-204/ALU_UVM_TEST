@@ -448,8 +448,8 @@
           // not yet been resolved.
         
           // @uvm-ieee 1800.2-2020 auto 5.5.2.12
-~030513   function int size ();
-~030513     return m_imp_list.num();
+~006753   function int size ();
+~006753     return m_imp_list.num();
           endfunction
         
         
@@ -912,19 +912,19 @@
           // This method can only be called at the end_of_elaboration phase or after, as
           // port connections are not resolved before then.
         
-~003801   function uvm_port_base #(IF) get_if(int index=0);
-~003801     string s;
-~003801     if (size()==0) begin
+~000831   function uvm_port_base #(IF) get_if(int index=0);
+~000831     string s;
+~000831     if (size()==0) begin
 %000000       m_comp.uvm_report_warning("get_if",
 %000000         "Port size is zero; cannot get interface at any index", UVM_NONE);
 %000000       return null;
             end
-~003801     if (index < 0 || index >= size()) begin
+~000831     if (index < 0 || index >= size()) begin
 %000000       $sformat(s, "Index %0d out of range [0,%0d]", index, size()-1);
 %000000       m_comp.uvm_report_warning(s_connection_error_id, s, UVM_NONE);
 %000000       return null;
             end
-~003801     foreach (m_imp_list[nm]) begin
+~000831     foreach (m_imp_list[nm]) begin
 %000000       if (index == 0) begin
                 
 %000000         return m_imp_list[nm];

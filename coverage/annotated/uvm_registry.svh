@@ -192,17 +192,17 @@
           // You should not call this method directly. Call <create> instead.
         
           // @uvm-ieee 1800.2-2020 auto 8.2.4.2.1
-~003750   virtual function uvm_object create_object(string name="");
-~003750     T obj;
-~003750     if (name=="") begin
+~000780   virtual function uvm_object create_object(string name="");
+~000780     T obj;
+~000780     if (name=="") begin
 %000003       obj = new();
             end
         
-~003750     else begin
-~003750       obj = new(name);
+~000780     else begin
+~000780       obj = new(name);
             end
         
-~003750     return obj;
+~000780     return obj;
           endfunction
         
 %000000   static function string type_name();
@@ -224,14 +224,14 @@
           // Returns the singleton instance of this type. Type-based factory operation
           // depends on there being a single proxy instance for each registered type.
         
-~006250   static function this_type get();
-~006250      static this_type m_inst;
-~006247      if (m_inst == null) begin
+~001300   static function this_type get();
+~001300      static this_type m_inst;
+~001297      if (m_inst == null) begin
                
 %000003        m_inst = new();
              end
         
-~006250     return m_inst;
+~001300     return m_inst;
           endfunction
         
         
@@ -244,9 +244,9 @@
           // if provided.
         
           // @uvm-ieee 1800.2-2020 auto 8.2.4.2.4
-~003750   static function T create (string name="", uvm_component parent=null,
+~000780   static function T create (string name="", uvm_component parent=null,
                                     string contxt="");
-~003750     return common_type::create( name, parent, contxt );
+~000780     return common_type::create( name, parent, contxt );
           endfunction
         
         
@@ -587,15 +587,15 @@
 ~000015      return m_inst;
           endfunction : get
         
-~003750   static function Tcreated create(string name, uvm_component parent, string contxt);
-~003750     uvm_object obj;
-~003750     if (contxt == "" && parent != null) begin
+~000780   static function Tcreated create(string name, uvm_component parent, string contxt);
+~000780     uvm_object obj;
+~000780     if (contxt == "" && parent != null) begin
               
 %000003       contxt = parent.get_full_name();
             end
         
-~003750     obj = Tcreator::create_by_type( Tregistry::get(), contxt, name, parent );
-~003750     if (!$cast(create, obj)) begin
+~000780     obj = Tcreator::create_by_type( Tregistry::get(), contxt, name, parent );
+~000780     if (!$cast(create, obj)) begin
 %000000       string msg;
 %000000       msg = {"Factory did not return a ", Tcreator::base_type_name(), " of type '",Tregistry::type_name,
 %000000         "'. A component of type '",obj == null ? "null" : obj.get_type_name(),
@@ -701,16 +701,16 @@
         
 %000000 virtual class uvm_registry_object_creator;
         
- 004230   static function uvm_object create_by_type(
+ 001260   static function uvm_object create_by_type(
             uvm_object_wrapper obj_wrpr,
             string contxt,
             string name,
             uvm_object unused
           );
- 004230     uvm_coreservice_t cs = uvm_coreservice_t::get();
- 004230     uvm_factory factory = cs.get_factory();
- 004230     unused = unused;  // ... to keep linters happy.
- 004230     return factory.create_object_by_type( obj_wrpr, contxt, name );
+ 001260     uvm_coreservice_t cs = uvm_coreservice_t::get();
+ 001260     uvm_factory factory = cs.get_factory();
+ 001260     unused = unused;  // ... to keep linters happy.
+ 001260     return factory.create_object_by_type( obj_wrpr, contxt, name );
           endfunction
         
 %000000   static function string base_type_name();  return "object"; endfunction

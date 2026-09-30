@@ -53,15 +53,15 @@
             protected event      m_event;
             protected int        num_waiters;
             protected bit        on;
- 007512     protected time       trigger_time=0;
+ 001572     protected time       trigger_time=0;
         
             // Function -- NODOCS -- new
             //
             // Creates a new event object.
         
             // @uvm-ieee 1800.2-2020 auto 10.1.1.2.1
- 007512     function new (string name="");
- 007512         super.new(name);
+ 001572     function new (string name="");
+ 001572         super.new(name);
             endfunction  
         
             //---------//
@@ -317,8 +317,8 @@
             // Creates a new event object.
         
             // @uvm-ieee 1800.2-2020 auto 10.1.2.2.1
-~007512     function new (string name="");
-~007512         super.new(name);
+~001572     function new (string name="");
+~001572         super.new(name);
             endfunction  
         
             // Function -- NODOCS -- reset
@@ -364,31 +364,31 @@
             // trigger-specific information.
         
             // @uvm-ieee 1800.2-2020 auto 10.1.2.2.4
-~005000     virtual function void trigger (T data=get_default_data());
-~005000       int   skip;
-~005000       cb_type cb_q[$];
-~005000       skip=0;
-~005000       cbs_type::get_all(cb_q, this);
+~001040     virtual function void trigger (T data=get_default_data());
+~001040       int   skip;
+~001040       cb_type cb_q[$];
+~001040       skip=0;
+~001040       cbs_type::get_all(cb_q, this);
                   
               // Call all pre_trigger, bail out after
               // if any return !0
-~005000       foreach (cb_q[i])
+~001040       foreach (cb_q[i])
 %000000         begin
 %000000           skip += cb_q[i].pre_trigger(this, data);
                 end
         
-~005000       if (skip==0) 
-~005000         begin
-~005000           on = 1;
-~005000           trigger_time = $realtime;
-~005000           trigger_data = data;
-~005000           ->m_event;
-~005000           foreach (cb_q[i])
+~001040       if (skip==0) 
+~001040         begin
+~001040           on = 1;
+~001040           trigger_time = $realtime;
+~001040           trigger_data = data;
+~001040           ->m_event;
+~001040           foreach (cb_q[i])
 %000000           begin
 %000000             cb_q[i].post_trigger(this, data);
                   end
         
-~005000           num_waiters = 0;
+~001040           num_waiters = 0;
                 end
             endfunction
         
@@ -405,8 +405,8 @@
                 // Function -- NODOCS -- default data
         
                 // @uvm-ieee 1800.2-2020 auto 10.1.2.2.6
-~003750         virtual function T get_default_data();
-~003750        return default_data;
+~000780         virtual function T get_default_data();
+~000780        return default_data;
             endfunction : get_default_data
         
                 // @uvm-ieee 1800.2-2020 auto 10.1.2.2.6

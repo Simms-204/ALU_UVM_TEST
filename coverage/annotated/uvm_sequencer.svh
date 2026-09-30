@@ -216,20 +216,20 @@
         // get_next_item
         // -------------
         
-~001247 task uvm_sequencer::get_next_item(output REQ t);
-~001247   REQ req_item;
+~000257 task uvm_sequencer::get_next_item(output REQ t);
+~000257   REQ req_item;
         
           // If a sequence_item has already been requested, then get_next_item()
           // should not be called again until item_done() has been called.
         
-~001250   if (get_next_item_called == 1) begin
+~000260   if (get_next_item_called == 1) begin
             
 %000000     uvm_report_error(get_full_name(),
 %000000       "Get_next_item called twice without item_done or get in between", UVM_NONE);
           end
         
           
-~001247   m_safe_select_item(1, t);
+~000257   m_safe_select_item(1, t);
         endtask
         
         
@@ -313,27 +313,27 @@
         // item_done
         // ---------
         
-~001247 function void uvm_sequencer::item_done(RSP item = null);
-~001247   REQ t;
+~000257 function void uvm_sequencer::item_done(RSP item = null);
+~000257   REQ t;
         
           // Set flag to allow next get_next_item or peek to get a new sequence_item
-~001247   sequence_item_requested = 0;
-~001247   get_next_item_called = 0;
+~000257   sequence_item_requested = 0;
+~000257   get_next_item_called = 0;
           
-~001247   if (m_req_fifo.try_get(t) == 0) begin
+~000257   if (m_req_fifo.try_get(t) == 0) begin
 %000000     uvm_report_fatal("SQRBADITMDN", {"Item_done() called with no outstanding requests.",
 %000000       " Each call to item_done() must be paired with a previous call to get_next_item()."});
-~001247   end else begin
-~001247     m_wait_for_item_sequence_id = t.get_sequence_id();
-~001247     m_wait_for_item_transaction_id = t.get_transaction_id();
+~000257   end else begin
+~000257     m_wait_for_item_sequence_id = t.get_sequence_id();
+~000257     m_wait_for_item_transaction_id = t.get_transaction_id();
           end
           
-~001247   if (item != null) begin
+~000257   if (item != null) begin
 %000000     seq_item_export.put_response(item);
           end
         
           // Grant any locks as soon as possible
-~001247   grant_queued_locks();
+~000257   grant_queued_locks();
         endfunction
         
         
