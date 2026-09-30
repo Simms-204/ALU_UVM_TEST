@@ -656,6 +656,9 @@ class ALU_COVERAGE extends uvm_subscriber #(write_xtn);
 			bins neg_1   = {8'shFF}; // -1
 			bins pos_64  = {8'sh40}; // 64
 			bins pos_20  = {8'sh14}; // 20
+			bins range1 = {[8'sh01:8'sh7E]}; // 1..126
+			bins range2 = {[8'sh81:8'shBF]}; // -127..-65
+			bins range3 = {[8'shC0:8'sh00]}; // -64..-1
 		}
 
 		// values actually assigned to 'b' across the directed corner vectors
@@ -668,8 +671,16 @@ class ALU_COVERAGE extends uvm_subscriber #(write_xtn);
 			bins neg_64  = {8'shC0}; // -64
 			bins pos_64  = {8'sh40}; // 64
 			bins pos_30  = {8'sh1E}; // 30
+			bins range1 = {[8'sh01:8'sh7E]}; // 1..126
+			bins range2 = {[8'sh81:8'shBF]}; // -127..-65
+			bins range3 = {[8'shC0:8'sh00]}; // -64..-1
 		}
-
+		cp_out: coverpoint cov_xtn.out {
+			bins range1 = {[8'sh01:8'sh7E]}; // 1..126
+			bins range2 = {[8'sh81:8'shBF]}; // -127..-65
+			bins range3 = {[8'shC0:8'sh00]}; // -64..-1
+			bins zero    = {8'sh00}; // 0
+		}
 		cp_z: coverpoint cov_xtn.z { bins z0 = {0}; bins z1 = {1}; }
 		cp_n: coverpoint cov_xtn.n { bins n0 = {0}; bins n1 = {1}; }
 		cp_v: coverpoint cov_xtn.v { bins v0 = {0}; bins v1 = {1}; }
@@ -686,22 +697,22 @@ class ALU_COVERAGE extends uvm_subscriber #(write_xtn);
 		// this is a coverpoint on {operation,z,n,v,c} with only the 20 legal bins.
 		op_x_zn: coverpoint {cov_xtn.operation, cov_xtn.z, cov_xtn.n, cov_xtn.v, cov_xtn.c} {
 			//                  op  z n v c
-			bins add_z0n0v0c0 = {6'b00_0_0_0_0};
-			bins add_z0n0v0c1 = {6'b00_0_0_0_1};
-			bins add_z0n0v1c1 = {6'b00_0_0_1_1};
-			bins add_z0n1v0c0 = {6'b00_0_1_0_0};
-			bins add_z0n1v0c1 = {6'b00_0_1_0_1};
-			bins add_z0n1v1c0 = {6'b00_0_1_1_0};
-			bins add_z1n0v0c0 = {6'b00_1_0_0_0};
-			bins add_z1n0v0c1 = {6'b00_1_0_0_1};
-			bins add_z1n0v1c1 = {6'b00_1_0_1_1};
-			bins sub_z0n0v0c1 = {6'b01_0_0_0_1};
-			bins sub_z0n0v1c0 = {6'b01_0_0_1_0};
-			bins sub_z0n1v0c0 = {6'b01_0_1_0_0};
-			bins sub_z0n1v1c1 = {6'b01_0_1_1_1};
-			bins sub_z1n0v0c1 = {6'b01_1_0_0_1};
-			bins and_z0n0     = {6'b10_0_0_0_0};
-			bins and_z0n1     = {6'b10_0_1_0_0};
+			bins add_z0n0v0c0 = {6'b00_0_0_0_0};//0
+			bins add_z0n0v0c1 = {6'b00_0_0_0_1};//1
+			bins add_z0n0v1c1 = {6'b00_0_0_1_1};//3
+			bins add_z0n1v0c0 = {6'b00_0_1_0_0};//4
+			bins add_z0n1v0c1 = {6'b00_0_1_0_1};//5
+			bins add_z0n1v1c0 = {6'b00_0_1_1_0};//6
+			bins add_z1n0v0c0 = {6'b00_1_0_0_0};//8
+			bins add_z1n0v0c1 = {6'b00_1_0_0_1};//9
+			bins add_z1n0v1c1 = {6'b00_1_0_1_1};//11
+			bins sub_z0n0v0c1 = {6'b01_0_0_0_1};//17
+			bins sub_z0n0v1c0 = {6'b01_0_0_1_0};//18
+			bins sub_z0n1v0c0 = {6'b01_0_1_0_0};//
+			bins sub_z0n1v1c1 = {6'b01_0_1_1_1};//
+			bins sub_z1n0v0c1 = {6'b01_1_0_0_1};//
+			bins and_z0n0     = {6'b10_0_0_0_0};//
+			bins and_z0n1     = {6'b10_0_1_0_0};//
 			bins and_z1n0     = {6'b10_1_0_0_0};
 			bins or_z0n0      = {6'b11_0_0_0_0};
 			bins or_z0n1      = {6'b11_0_1_0_0};
