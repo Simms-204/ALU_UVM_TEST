@@ -143,7 +143,7 @@ class ALU_SEQUENCE extends uvm_sequence #(write_xtn);
 	`uvm_object_utils(ALU_SEQUENCE)
 
 
-
+write_xtn gen_q[$];// every transaction this sequence generated, in order
 	extern function new(string name = "ALU_SEQUENCE");
 	extern task body();
 endclass
@@ -158,10 +158,25 @@ task ALU_SEQUENCE:: body();
 		req = write_xtn::type_id::create("req");
 		start_item(req);
 		assert(req.randomize());
-		`uvm_info(get_type_name(),"ALU SEQUENCE",UVM_LOW)
+`uvm_info(get_type_name(),"ALU SEQUENCE",UVM_LOW)
+`uvm_info(get_type_name(),
+          $sformatf("a=%0d b=%0d operation=%0d", req.a, req.b, req.operation),
+          UVM_LOW)
 		req.print();
+		gen_q.push_back(req);
 		finish_item(req);
 		end
+			// ---- after all items are sent: print them as one table ----
+	table_str = "\n  #    OP     a      b      a(hex)  b(hex)\n";
+		table_str = {table_str, "  ---  ----  -----  -----  ------  ------\n"};
+	foreach (gen_q[i])
+		table_str = {table_str, $sformatf("  %-3d  %-4s  %5d  %5d  'h%02h    'h%02h\n",
+		             i+1, op_name[gen_q[i].operation],
+		             gen_q[i].a, gen_q[i].b, gen_q[i].a, gen_q[i].b)};
+	`uvm_info(get_type_name(),
+	          $sformatf("%0d random values generated:%s", gen_q.size(), table_str),
+	          UVM_LOW)
+endtask
 	endtask
 
 
