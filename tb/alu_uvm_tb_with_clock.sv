@@ -156,7 +156,7 @@ endfunction
 task ALU_SEQUENCE:: body();
 string op_name[4] = '{"ADD", "SUB", "AND", "OR"};
 	string table_str;
-	repeat(10)
+	repeat(300)
 		begin
 		req = write_xtn::type_id::create("req");
 		start_item(req);
@@ -180,7 +180,7 @@ string op_name[4] = '{"ADD", "SUB", "AND", "OR"};
 	          $sformatf("%0d random values generated:%s", gen_q.size(), table_str),
 	          UVM_LOW)
 endtask
-	endtask
+	
 
 
 
@@ -201,7 +201,7 @@ class ALU_DIRECTED_SEQUENCE extends uvm_sequence #(write_xtn);
 	typedef struct {
 		bit signed [7:0] a;
 		bit signed [7:0] b;
-		bit [1:0]        operation;
+		bit [1:0]        operation; it has almost no chance. ALU_SEQUENCE still randomizes a and b uniformly
 	} corner_vec_t;
 
 	corner_vec_t corner_vectors[] = '{
