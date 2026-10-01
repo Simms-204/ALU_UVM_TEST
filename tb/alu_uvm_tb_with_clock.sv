@@ -201,7 +201,7 @@ class ALU_DIRECTED_SEQUENCE extends uvm_sequence #(write_xtn);
 	typedef struct {
 		bit signed [7:0] a;
 		bit signed [7:0] b;
-		bit [1:0]        operation; it has almost no chance. ALU_SEQUENCE still randomizes a and b uniformly
+		bit [1:0]        operation; //it has almost no chance. ALU_SEQUENCE still randomizes a and b uniformly
 	} corner_vec_t;
 
 	corner_vec_t corner_vectors[] = '{
